@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Categories
+namespace BulletinBoard.Contracts.Bulletin.BulletinsCategories
 {
-    internal class Class2
+    public class BulletinCategoryFilterDto
     {
+        public Guid? ParentCategoryId { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Contexts\Bulletin\Repository\" />
+    <Folder Include="Contexts\Bulletin\Services\" />
+  </ItemGroup>
+
 </Project>

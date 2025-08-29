@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.BulletinsCharacteristics
+namespace BulletinBoard.Contracts.Bulletin.BulletinsCharacteristics
 {
-    internal class Class2
+    public class BulletinsCharacteristicFilterDto
     {
+        public Guid BelletinId { get; set; }
+
+        public Guid CharacteristicNameId { get; set; }
+
+        public Guid CharacteristicValueId { get; set; }
     }
 }

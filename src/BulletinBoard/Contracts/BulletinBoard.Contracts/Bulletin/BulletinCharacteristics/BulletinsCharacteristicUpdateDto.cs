@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.BulletinsCharacteristics
+namespace BulletinBoard.Contracts.Bulletin.BulletinsCharacteristics
 {
-    internal class Class4
+    public class BulletinsCharacteristicUpdateDto : BulletinsCharacteristicCreateDto
     {
     }
 }

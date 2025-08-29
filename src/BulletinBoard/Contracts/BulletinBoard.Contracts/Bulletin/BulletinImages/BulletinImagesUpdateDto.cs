@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinImages
 {
-    internal class Class4
+    public class BulletinImagesUpdateDto : BulletinImagesCreateDto
     {
     }
 }

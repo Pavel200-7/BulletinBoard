@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Domain.Base
 {
-    internal class EntityBase
+    public class EntityBase
     {
+        public Guid Id { get; set; }
     }
 }

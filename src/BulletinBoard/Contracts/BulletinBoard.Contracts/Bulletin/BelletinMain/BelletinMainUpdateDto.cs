@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Contexts.Bulletin
+namespace BulletinBoard.Contracts.Bulletin.BelletinMain
 {
-    internal class Class1
+    public class BelletinMainUpdateDto : BelletinMainCreateDto
     {
     }
 }

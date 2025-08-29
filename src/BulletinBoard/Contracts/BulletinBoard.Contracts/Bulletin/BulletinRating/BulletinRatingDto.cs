@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinRating
 {
-    internal class Class1
+    public class BulletinRatingDto
     {
+        public Guid BulletinId { get; set; }
+
+        public decimal Rating { get; set; }
+
+        public int VievsCount { get; set; }
     }
 }

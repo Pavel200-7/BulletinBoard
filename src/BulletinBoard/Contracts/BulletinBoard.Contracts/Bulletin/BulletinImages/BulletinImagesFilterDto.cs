@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinImages
 {
-    internal class Class2
+    public class BulletinImagesFilterDto
     {
+
+        public Guid BelletinId { get; set; }
+
+        public bool IsMain { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
     }
 }
