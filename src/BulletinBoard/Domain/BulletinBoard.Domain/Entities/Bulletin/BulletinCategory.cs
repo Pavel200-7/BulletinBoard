@@ -1,0 +1,18 @@
+﻿using BulletinBoard.Domain.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BulletinBoard.Domain.Entities.Bulletin
+{
+    public class BulletinCategory : EntityBase
+    {
+        public Guid Id { get; set; }
+
+        public Guid? ParentCategoryId { get; set; }
+
+        public string CategoryName { get; set; }
+    }
+}
