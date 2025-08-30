@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinsCategories
+namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
     public class BulletinCategoryFilterDto
     {
-        public Guid? ParentCategoryId { get; set; }
-
-        public string CategoryName { get; set; }
-
-        public bool IsLeafy { get; set; }
+        // Фильтр сейчас не нужен, можно удалять.
     }
 }

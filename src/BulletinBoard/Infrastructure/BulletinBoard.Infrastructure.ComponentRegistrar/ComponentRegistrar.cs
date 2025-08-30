@@ -1,12 +1,13 @@
-﻿using System;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
-using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 
 
 
@@ -31,11 +32,17 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
             services.AddScoped<IBulletinsCharacteristicRepository, BulletinsCharacteristicRepository>();
             services.AddScoped<IBulletinsCharacteristicValueRepository, BulletinsCharacteristicValueRepository>();
 
-
-
+            // Репозитории следующего домена
 
             return services;
         }
+
+        public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
+        {
+            //services.AddAutoMapper(typeof(Program));
+            return services;
+        }
+
 
 
     }

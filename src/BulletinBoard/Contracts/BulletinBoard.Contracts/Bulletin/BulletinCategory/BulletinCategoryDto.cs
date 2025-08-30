@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinsCategories
+namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
     public class BulletinCategoryDto
     {

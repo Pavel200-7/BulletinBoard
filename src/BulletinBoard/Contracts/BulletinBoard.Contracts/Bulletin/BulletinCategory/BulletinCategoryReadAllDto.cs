@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
-    public class BulletinCategoryCreateDto
+    public class BulletinCategoryReadAllDto
     {
+        public Guid Id { get; set; }
+
         public Guid? ParentCategoryId { get; set; }
 
         public string CategoryName { get; set; }
 
         public bool IsLeafy { get; set; }
+
+        public List<BulletinCategoryReadAllDto>? ChildrenCategories { get; set; }
     }
 }

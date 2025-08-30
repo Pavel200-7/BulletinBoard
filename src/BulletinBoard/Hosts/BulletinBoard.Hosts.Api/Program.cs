@@ -1,10 +1,16 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.RegisterAppServices();
 builder.Services.RegisterAppRepositories();
+
+//builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
