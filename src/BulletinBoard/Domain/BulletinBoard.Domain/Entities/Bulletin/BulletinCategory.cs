@@ -14,5 +14,7 @@ namespace BulletinBoard.Domain.Entities.Bulletin
         public Guid? ParentCategoryId { get; set; }
 
         public string CategoryName { get; set; }
+
+        public bool IsLeafy { get; set; }
     }
 }

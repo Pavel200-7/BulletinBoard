@@ -11,5 +11,7 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinsCategories
         public Guid? ParentCategoryId { get; set; }
 
         public string CategoryName { get; set; }
+
+        public bool IsLeafy { get; set; }
     }
 }
