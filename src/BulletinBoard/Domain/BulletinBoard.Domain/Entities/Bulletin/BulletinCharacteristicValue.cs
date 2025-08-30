@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Domain.Entities.Bulletin
 {
-    public class BulletinCategoryName : EntityBase
+    public class BulletinCharacteristicValue : EntityBase
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public Guid ConnectedNameId { get; set; }
+
+        public string Value { get; set; }
     }
 }

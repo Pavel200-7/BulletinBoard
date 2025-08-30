@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Domain.Entities.Bulletin
 {
-    public class BelletinMain : EntityBase
+    public class BelletinMain : EntityBase 
     {
         public Guid Id { get; set; }
 

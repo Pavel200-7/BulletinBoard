@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinCategoryValue
 {
-    public class BulletinsCharacteristicValueFilterDto
+    public class BulletinsCharacteristicValueCreateDto
     {
+
+        public Guid ConnectedNameId { get; set; }
+
         public string Value { get; set; }
     }
 }

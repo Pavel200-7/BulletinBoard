@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinCategoryValue
 {
-    public class BulletinsCharacteristicValueDto
+    public class BulletinsCharacteristicValueFilterDto
     {
-        public Guid Id { get; set; }
+        public Guid ConnectedNameId { get; set; }
 
         public string Value { get; set; }
     }

@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contexts\Bulletin\Repository\" />
-    <Folder Include="Contexts\Bulletin\Services\" />
+    <Folder Include="Contexts\Bulletin\Builder\" />
   </ItemGroup>
 
 </Project>
