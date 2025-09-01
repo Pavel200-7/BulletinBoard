@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.19" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Application\BulletinBoard.AppServices\BulletinBoard.AppServices.csproj" />
+    <ProjectReference Include="..\..\Domain\BulletinBoard.Domain\BulletinBoard.Domain.csproj" />
   </ItemGroup>
 
 </Project>

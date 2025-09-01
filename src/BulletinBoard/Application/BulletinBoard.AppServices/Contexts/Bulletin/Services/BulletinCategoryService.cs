@@ -37,6 +37,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
             // нужно описать логику работы с БД
 
             throw new NotImplementedException();
+
+            //return BulletinCategoryDto
         }
 
         public Task<bool> DeleteAsync(Guid id)

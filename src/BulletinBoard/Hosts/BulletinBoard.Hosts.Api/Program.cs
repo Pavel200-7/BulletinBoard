@@ -5,11 +5,13 @@ using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Сервисы, репозитории, мапперы
 builder.Services.RegisterAppServices();
 builder.Services.RegisterAppRepositories();
+builder.Services.RegistrarAppMappers();
 
-//builder.Services.AddAutoMapper(typeof(Program));
+// Контекст Entity framework
+builder.Services.RegistrarAppContexsts(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
 builder.Services.AddControllers();
 
@@ -24,6 +26,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
 
 app.UseHttpsRedirection();

@@ -1,6 +1,9 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -39,7 +42,14 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
         {
-            //services.AddAutoMapper(typeof(Program));
+            services.AddAutoMapper(typeof(BulletinMappingProfile));
+            return services;
+        }
+
+        public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<BulletinContext>(options => options.UseSqlServer(connectionString));
+
             return services;
         }
 

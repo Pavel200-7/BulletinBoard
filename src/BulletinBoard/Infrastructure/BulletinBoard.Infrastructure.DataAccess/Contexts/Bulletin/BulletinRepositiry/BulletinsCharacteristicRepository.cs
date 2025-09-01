@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry
 {
-    public class BulletinsCharacteristicRepository : IBulletinsCharacteristicRepository
+    public class BulletinsCharacteristicRepository : BulletinBaseRepository, IBulletinsCharacteristicRepository
     {
+        BulletinsCharacteristicRepository(BulletinContext context) : base(context)
+        {
+        }
     }
 }
