@@ -17,5 +17,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
 
 
 
+
+
     }
 }

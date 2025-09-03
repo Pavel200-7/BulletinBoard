@@ -14,5 +14,10 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
         {
             this.context = context;
         }
+
+        public void SameChanges()
+        {
+            context.SaveChangesAsync();
+        }
     }
 }

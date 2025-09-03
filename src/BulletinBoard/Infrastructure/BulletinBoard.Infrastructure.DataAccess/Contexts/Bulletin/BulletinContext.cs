@@ -25,7 +25,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // На случай необходимости поменять названия БД
+            // На случай необходимости поменять названия таблиц БД
             modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
             modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
             modelBuilder.Entity<BulletinCharacteristic>().ToTable("BulletinCharacteristic");
