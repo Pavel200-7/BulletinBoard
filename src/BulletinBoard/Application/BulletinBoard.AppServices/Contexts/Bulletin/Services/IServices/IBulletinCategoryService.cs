@@ -10,17 +10,16 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices
 {
     public interface IBulletinCategoryService
     {
+        public Task<BulletinCategoryDto> GetByIdAsync(Guid id);
+
         public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category);
+
+        public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto category);
 
         public Task<bool> DeleteAsync(Guid id);
 
         public Task<BulletinCategoryReadAllDto> GetAllAsync();
 
         public Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id);
-
-        
-
-        public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto category);
-
     }
 }

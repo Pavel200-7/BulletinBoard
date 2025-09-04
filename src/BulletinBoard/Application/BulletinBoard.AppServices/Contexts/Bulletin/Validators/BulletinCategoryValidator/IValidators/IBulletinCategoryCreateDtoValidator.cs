@@ -1,6 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.ValidatorBase;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Errors.ErrorsList;
 using BulletinBoard.Domain.Entities.Bulletin;
 using System;
 using System.Collections.Generic;

@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+//using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,8 +28,17 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         public static IServiceCollection RegisterAppServices(this IServiceCollection services)
         {
 
+            //Bulletin
+            // BulletinServices
+            services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
+
+
             // BulletinValidators
             services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
+            services.AddScoped<IBulletinCategoryUpdateDtoValidator, BulletinCategoryUpdateDtoValidator>();
+            services.AddScoped<IBulletinCategoryDtoValidatorFacade, BulletinCategoryDtoValidatorFacade>();
+
+
 
             return services;
         }
@@ -34,12 +47,12 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         {
             // BulletinRepositories
             services.AddScoped<IBulletinCategoryRepository, BulletinCategoryRepository>();
-            services.AddScoped<IBulletinImagesRepository, BulletinImagesRepository>();
-            services.AddScoped<IBulletinMainRepository, BulletinMainRepository>();
-            services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
-            services.AddScoped<IBulletinsCharacteristicName, BulletinsCharacteristicName>();
-            services.AddScoped<IBulletinsCharacteristicRepository, BulletinsCharacteristicRepository>();
-            services.AddScoped<IBulletinsCharacteristicValueRepository, BulletinsCharacteristicValueRepository>();
+            //services.AddScoped<IBulletinImagesRepository, BulletinImagesRepository>();
+            //services.AddScoped<IBulletinMainRepository, BulletinMainRepository>();
+            //services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
+            //services.AddScoped<IBulletinsCharacteristicName, BulletinsCharacteristicName>();
+            //services.AddScoped<IBulletinsCharacteristicRepository, BulletinsCharacteristicRepository>();
+            //services.AddScoped<IBulletinsCharacteristicValueRepository, BulletinsCharacteristicValueRepository>();
 
             
 
