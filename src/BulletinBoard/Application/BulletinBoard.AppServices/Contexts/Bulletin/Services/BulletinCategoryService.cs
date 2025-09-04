@@ -1,34 +1,32 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Errors.ErrorsList;
+using BulletinBoard.Domain.Entities.Bulletin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.IValidators;
-using BulletinBoard.Domain.Entities.Bulletin;
-
-using BulletinBoard.Contracts.Errors.ErrorsList;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
 {
     public sealed class BulletinCategoryService  : IBulletinCategoryService 
     {
         private IBulletinCategoryRepository repository;
-        private IBulletinCategoryValidator validator;
+        private IBulletinCategoryCreateDtoValidator validator;
 
-        public BulletinCategoryService(IBulletinCategoryRepository bulletinCategoryRepository, IBulletinCategoryValidator bulletinCategoryValidator) 
+        public BulletinCategoryService(IBulletinCategoryRepository bulletinCategoryRepository, IBulletinCategoryCreateDtoValidator BulletinCategoryCreateDtoValidator) 
         {
             repository = bulletinCategoryRepository;
-            validator = bulletinCategoryValidator;
+            validator = BulletinCategoryCreateDtoValidator;
         }
 
         public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
         {
-            BulletinCategory bulletinCategory = new BulletinCategory();
-
-            ErrorsDictionaryValidating errorsDictionary = validator.Validate(bulletinCategory);
+            ErrorsDictionaryValidating errorsDictionary = validator.Validate(category);
             if (!errorsDictionary.IsEmpty())
             {
                 // Нужно описать ошибку

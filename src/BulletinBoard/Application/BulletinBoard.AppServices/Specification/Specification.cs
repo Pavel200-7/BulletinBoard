@@ -17,5 +17,15 @@ namespace BulletinBoard.AppServices.Specification
             return new AndSpecification<T>(this, specification);
         }
 
+        public Specification<T> Or(Specification<T> specification)
+        {
+            return new OrSpecification<T>(this, specification);
+        }
+
+        public Specification<T> Not(Specification<T> specification)
+        {
+            return new NotSpecification<T>(this);
+        }
+
     }
 }

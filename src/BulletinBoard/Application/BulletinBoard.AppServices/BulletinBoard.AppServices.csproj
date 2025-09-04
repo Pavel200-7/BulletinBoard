@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contexts\Bulletin\Builder\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Specification\NotSpecification.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\BulletinBoard.Contracts\BulletinBoard.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\BulletinBoard.Domain\BulletinBoard.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contexts\Bulletin\Builder\IBuilders\" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
-    public class BulletinCategoryUpdateDto : BulletinCategoryCreateDto
+    public class BulletinCategoryUpdateDto
     {
+        public Guid? ParentCategoryId { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

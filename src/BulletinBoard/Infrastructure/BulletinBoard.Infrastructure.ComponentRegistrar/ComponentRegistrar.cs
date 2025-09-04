@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +23,10 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
     {
         public static IServiceCollection RegisterAppServices(this IServiceCollection services)
         {
+
+            // BulletinValidators
+            services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
+
             return services;
         }
 
@@ -34,6 +40,9 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
             services.AddScoped<IBulletinsCharacteristicName, BulletinsCharacteristicName>();
             services.AddScoped<IBulletinsCharacteristicRepository, BulletinsCharacteristicRepository>();
             services.AddScoped<IBulletinsCharacteristicValueRepository, BulletinsCharacteristicValueRepository>();
+
+            
+
 
             // Репозитории следующего домена
 
