@@ -45,7 +45,10 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
                 throw new ValidationExeption(validationResult.ToDictionary());
             }
 
-            return _categoryRepository.CreateAsync(category);
+            var CategoryDto = _categoryRepository.CreateAsync(category);
+            _categoryRepository.SaveChangesAsync();
+
+            return CategoryDto;
         }
 
         public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto category)

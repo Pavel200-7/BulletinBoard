@@ -1,16 +1,21 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+
+using BulletinBoard.Domain.Entities.Bulletin;
+
 //using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Infrastructure.ComponentRegistrar
 {
-    public static class ComponentRegistrar
+    public static class ComponentRegistrar 
     {
         public static IServiceCollection RegisterAppServices(this IServiceCollection services)
         {
@@ -64,13 +69,26 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(BulletinMappingProfile));
+
+            //services.AddAutoMapper(typeof(BulletinMappingProfile));
+            // Нужно переделать завтра
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.CreateMap<BulletinCategoryCreateDto, BulletinCategory>().ReverseMap();
+                cfg.CreateMap<BulletinCategoryDto, BulletinCategory>().ReverseMap();
+                cfg.CreateMap<BulletinCategoryUpdateDto, BulletinCategory>().ReverseMap();
+            });
+
             return services;
         }
 
         public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<BulletinContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BulletinContext>(options => options.UseNpgsql(
+                connectionString,
+                b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
+                ));
 
             return services;
         }

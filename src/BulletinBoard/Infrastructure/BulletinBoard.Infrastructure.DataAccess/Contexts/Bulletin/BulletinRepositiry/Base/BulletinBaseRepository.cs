@@ -19,7 +19,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
             _mapper = mapper;
         }
 
-        public void SameChanges()
+        public void SaveChangesAsync()
         {
             _context.SaveChangesAsync();
         }

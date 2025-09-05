@@ -15,24 +15,30 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
         {
         }
 
-        public DbSet<BelletinMain> BelletinMain { get; set; }
+        //public DbSet<BelletinMain> BelletinMain { get; set; }
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
-        public DbSet<BulletinCharacteristic> BulletinCharacteristic { get; set; }
-        public DbSet<BulletinCharacteristicName> BulletinCharacteristicName { get; set; }
-        public DbSet<BulletinCharacteristicValue> BulletinCharacteristicValue { get; set; }
-        public DbSet<BulletinImages> BulletinImages { get; set; }
-        public DbSet<BulletinRating> BulletinRating { get; set; }
+        //public DbSet<BulletinCharacteristic> BulletinCharacteristic { get; set; }
+        //public DbSet<BulletinCharacteristicName> BulletinCharacteristicName { get; set; }
+        //public DbSet<BulletinCharacteristicValue> BulletinCharacteristicValue { get; set; }
+        //public DbSet<BulletinImages> BulletinImages { get; set; }
+        //public DbSet<BulletinRating> BulletinRating { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // На случай необходимости поменять названия таблиц БД
-            modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
+            //modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
             modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
-            modelBuilder.Entity<BulletinCharacteristic>().ToTable("BulletinCharacteristic");
-            modelBuilder.Entity<BulletinCharacteristicName>().ToTable("BulletinCharacteristicName");
-            modelBuilder.Entity<BulletinCharacteristicValue>().ToTable("BulletinCharacteristicValue");
-            modelBuilder.Entity<BulletinImages>().ToTable("BulletinImages");
-            modelBuilder.Entity<BulletinRating>().ToTable("BulletinRating");
+            //modelBuilder.Entity<BulletinCharacteristic>().ToTable("BulletinCharacteristic");
+            //modelBuilder.Entity<BulletinCharacteristicName>().ToTable("BulletinCharacteristicName");
+            //modelBuilder.Entity<BulletinCharacteristicValue>().ToTable("BulletinCharacteristicValue");
+            //modelBuilder.Entity<BulletinImages>().ToTable("BulletinImages");
+            //modelBuilder.Entity<BulletinRating>().ToTable("BulletinRating");
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Важно!!! это очень опасно и нужно убрать следующим же коммитом.
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=BulletinBoard;Username=postgres;Password=iamdeadlytired795795");
         }
     }
 }

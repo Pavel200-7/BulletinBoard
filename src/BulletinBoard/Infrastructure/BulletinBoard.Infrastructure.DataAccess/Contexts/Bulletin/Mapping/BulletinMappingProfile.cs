@@ -14,6 +14,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping
     {
         public BulletinMappingProfile()
         {
+            // Не используется
             CreateMap<BulletinCategoryCreateDto, BulletinCategory>().ReverseMap();
             CreateMap<BulletinCategoryDto, BulletinCategory>().ReverseMap();
             CreateMap<BulletinCategoryUpdateDto, BulletinCategory>().ReverseMap();

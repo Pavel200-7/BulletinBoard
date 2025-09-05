@@ -17,5 +17,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository
         Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto);
 
         Task<bool> DeleteAsync(Guid id);
+
+        void SaveChangesAsync();
     }
 }
