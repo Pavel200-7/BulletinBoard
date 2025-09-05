@@ -12,9 +12,9 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository
     {
         Task<BulletinCategoryDto> GetByIdAsync(Guid id);
 
-        Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category);
+        Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto);
 
-        Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto category);
+        Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto);
 
         Task<bool> DeleteAsync(Guid id);
     }

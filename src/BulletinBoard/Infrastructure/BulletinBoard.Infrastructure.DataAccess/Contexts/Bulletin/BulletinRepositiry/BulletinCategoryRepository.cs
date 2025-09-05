@@ -1,5 +1,8 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
 using System;
 using System.Collections.Generic;
@@ -11,17 +14,18 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
 {
     public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCategoryRepository
     {
-        public BulletinCategoryRepository(BulletinContext context) : base(context)
+        public BulletinCategoryRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
-        public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
+        public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
         {
-            //throw new NotImplementedException();
-            var res = new BulletinCategoryDto();
-            res.IsLeafy = true;
-            res.CategoryName = "111";
-            return Task.FromResult<BulletinCategoryDto>(res);
+            BulletinCategory category = _mapper.Map<BulletinCategory>(categoryDto);
+            var categoryEntry = _context.Add(category);
+            category = categoryEntry.Entity;
+            BulletinCategoryDto bulletinCategoryDto = _mapper.Map<BulletinCategoryDto>(category);
+
+            return Task.FromResult<BulletinCategoryDto>(bulletinCategoryDto);
         }
 
         public Task<bool> DeleteAsync(Guid id)

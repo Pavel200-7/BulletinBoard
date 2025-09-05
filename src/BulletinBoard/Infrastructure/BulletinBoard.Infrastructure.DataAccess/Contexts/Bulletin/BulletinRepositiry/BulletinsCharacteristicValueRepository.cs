@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
 {
     public class BulletinsCharacteristicValueRepository : BulletinBaseRepository, IBulletinsCharacteristicValueRepository
     {
-        BulletinsCharacteristicValueRepository(BulletinContext context) : base(context)
+        public BulletinsCharacteristicValueRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
         {
         }
     }
