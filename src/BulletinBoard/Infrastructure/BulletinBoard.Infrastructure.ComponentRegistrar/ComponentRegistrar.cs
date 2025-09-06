@@ -14,6 +14,7 @@ using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -83,12 +84,23 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
             return services;
         }
 
-        public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, string connectionString)
+        public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BulletinContext>(options => options.UseNpgsql(
-                connectionString,
-                b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
+ 
+
+            services.AddDbContext<BulletinContext>(
+                options => options.UseNpgsql
+                (
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
                 ));
+
+            return services;
+        }
+
+        public static IServiceCollection RegistrarAppInitializers(this IServiceCollection services)
+        {
+            services.AddAsyncInitializer<DbInitializer>();
 
             return services;
         }

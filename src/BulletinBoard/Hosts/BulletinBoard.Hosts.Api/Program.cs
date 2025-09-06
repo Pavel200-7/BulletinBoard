@@ -12,13 +12,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Контекст Entity framework
+builder.Services.RegistrarAppContexsts(builder.Configuration);
+
+
 // Сервисы, репозитории, мапперы
 builder.Services.RegisterAppServices();
 builder.Services.RegisterAppRepositories();
 builder.Services.RegistrarAppMappers();
+builder.Services.RegistrarAppInitializers();
 
-// Контекст Entity framework
-builder.Services.RegistrarAppContexsts(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
 builder.Services.AddControllers();
 
@@ -43,4 +47,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.InitAndRunAsync();

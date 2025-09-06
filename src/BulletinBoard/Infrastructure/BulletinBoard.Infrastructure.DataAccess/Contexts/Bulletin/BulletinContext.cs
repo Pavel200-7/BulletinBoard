@@ -1,5 +1,8 @@
 ﻿using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 {
     public class BulletinContext : DbContext
     {
+
         public BulletinContext(DbContextOptions<BulletinContext> options) : base(options)
         {
         }
@@ -37,8 +41,19 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Важно!!! это очень опасно и нужно убрать следующим же коммитом.
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=BulletinBoard;Username=postgres;Password=iamdeadlytired795795");
+
+            var appSettingsPath = Path.GetFullPath(Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "..", "..", "Hosts", "BulletinBoard.Hosts.Api", "appsettings.json"
+            ));
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(appSettingsPath) // Полный путь к файлу
+                .Build();
+
+            var connectionString = configuration.GetSection("ConnectionString:DefaultConnection").Value;
+
+            optionsBuilder.UseNpgsql(connectionString);
         }
     }
 }
