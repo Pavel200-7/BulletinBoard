@@ -12,57 +12,32 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 {
-    public class BulletinContext : DbContext
+    public partial class BulletinContext : DbContext
     {
-
-        public BulletinContext(DbContextOptions<BulletinContext> options) : base(options)
+        public BulletinContext()
         {
         }
 
-        public DbSet<BelletinMain> BelletinMain { get; set; }
+        public BulletinContext(DbContextOptions<BulletinContext> options)
+            : base(options)
+        {
+        }
+
+        //public DbSet<BelletinMain> BelletinMain { get; set; }
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
-        public DbSet<BulletinCharacteristic> BulletinCharacteristic { get; set; }
-        //public DbSet<BulletinCharacteristicName> BulletinCharacteristicName { get; set; }
-        //public DbSet<BulletinCharacteristicValue> BulletinCharacteristicValue { get; set; }
-        //public DbSet<BulletinImages> BulletinImages { get; set; }
-        //public DbSet<BulletinRating> BulletinRating { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            OnModelCreatingPartial(modelBuilder);
 
             // На случай необходимости поменять названия таблиц БД
             //modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
             modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
-            //modelBuilder.Entity<BulletinCharacteristic>().ToTable("BulletinCharacteristic");
-            //modelBuilder.Entity<BulletinCharacteristicName>().ToTable("BulletinCharacteristicName");
-            //modelBuilder.Entity<BulletinCharacteristicValue>().ToTable("BulletinCharacteristicValue");
-            //modelBuilder.Entity<BulletinImages>().ToTable("BulletinImages");
-            //modelBuilder.Entity<BulletinRating>().ToTable("BulletinRating");
+
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            var connectionString = GetConnectionString("DefaultConnection");
-            optionsBuilder.UseNpgsql(connectionString);
-        }
-
-        private string GetConnectionString(string connectionString)
-        {
-            var appSettingsPath = Path.GetFullPath(Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "..", "..", "Hosts", "BulletinBoard.Hosts.Api", "appsettings.json"
-            ));
-
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(appSettingsPath)
-                .Build();
-
-            connectionString = configuration.GetSection($"ConnectionString:{connectionString}").Value;
-
-            return connectionString!;
-        }
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

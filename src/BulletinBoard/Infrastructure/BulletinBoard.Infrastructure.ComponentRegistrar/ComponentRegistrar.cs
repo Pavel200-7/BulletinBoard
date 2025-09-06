@@ -53,16 +53,8 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         {
             // BulletinRepositories
             services.AddScoped<IBulletinCategoryRepository, BulletinCategoryRepository>();
-            //services.AddScoped<IBulletinImagesRepository, BulletinImagesRepository>();
-            //services.AddScoped<IBulletinMainRepository, BulletinMainRepository>();
-            //services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
-            //services.AddScoped<IBulletinsCharacteristicName, BulletinsCharacteristicName>();
-            //services.AddScoped<IBulletinsCharacteristicRepository, BulletinsCharacteristicRepository>();
-            //services.AddScoped<IBulletinsCharacteristicValueRepository, BulletinsCharacteristicValueRepository>();
 
-            
-
-
+           
             // Репозитории следующего домена
 
             return services;
@@ -86,12 +78,14 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BulletinContext>(
-                options => options.UseNpgsql
-                (
+
+            services.AddDbContext<BulletinContext>(options =>
+            {
+                options.UseNpgsql(
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
-                ));
+                );
+            });
 
             return services;
         }
@@ -103,8 +97,5 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
             return services;
         }
-
-
-
     }
 }

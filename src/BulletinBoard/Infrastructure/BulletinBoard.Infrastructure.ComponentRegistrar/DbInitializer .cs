@@ -24,7 +24,6 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            //_bulletinContext.
             await _bulletinContext.Database.MigrateAsync(cancellationToken);
         }
     }

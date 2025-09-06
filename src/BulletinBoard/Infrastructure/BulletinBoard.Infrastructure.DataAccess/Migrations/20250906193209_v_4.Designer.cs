@@ -3,6 +3,7 @@ using System;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BulletinBoard.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(BulletinContext))]
-    partial class BulletinContextModelSnapshot : ModelSnapshot
+    [Migration("20250906193209_v_4")]
+    partial class v_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
