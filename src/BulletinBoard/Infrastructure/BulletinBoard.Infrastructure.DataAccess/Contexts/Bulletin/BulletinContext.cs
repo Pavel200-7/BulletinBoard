@@ -19,9 +19,9 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
         {
         }
 
-        //public DbSet<BelletinMain> BelletinMain { get; set; }
+        public DbSet<BelletinMain> BelletinMain { get; set; }
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
-        //public DbSet<BulletinCharacteristic> BulletinCharacteristic { get; set; }
+        public DbSet<BulletinCharacteristic> BulletinCharacteristic { get; set; }
         //public DbSet<BulletinCharacteristicName> BulletinCharacteristicName { get; set; }
         //public DbSet<BulletinCharacteristicValue> BulletinCharacteristicValue { get; set; }
         //public DbSet<BulletinImages> BulletinImages { get; set; }
@@ -29,6 +29,8 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // На случай необходимости поменять названия таблиц БД
             //modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
             modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
@@ -39,21 +41,28 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
             //modelBuilder.Entity<BulletinRating>().ToTable("BulletinRating");
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
         {
+            base.OnConfiguring(optionsBuilder);
 
+            var connectionString = GetConnectionString("DefaultConnection");
+            optionsBuilder.UseNpgsql(connectionString);
+        }
+
+        private string GetConnectionString(string connectionString)
+        {
             var appSettingsPath = Path.GetFullPath(Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "..", "..", "Hosts", "BulletinBoard.Hosts.Api", "appsettings.json"
             ));
 
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile(appSettingsPath) // Полный путь к файлу
+                .AddJsonFile(appSettingsPath)
                 .Build();
 
-            var connectionString = configuration.GetSection("ConnectionString:DefaultConnection").Value;
+            connectionString = configuration.GetSection($"ConnectionString:{connectionString}").Value;
 
-            optionsBuilder.UseNpgsql(connectionString);
+            return connectionString!;
         }
     }
 }

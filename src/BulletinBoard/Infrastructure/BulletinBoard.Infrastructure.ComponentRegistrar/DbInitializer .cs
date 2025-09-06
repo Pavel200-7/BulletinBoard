@@ -11,7 +11,7 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 {
     public class DbInitializer : IAsyncInitializer
     {
-        private BulletinContext _bulletinContext;
+        private readonly BulletinContext _bulletinContext;
 
 
         public DbInitializer
@@ -24,6 +24,7 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
+            //_bulletinContext.
             await _bulletinContext.Database.MigrateAsync(cancellationToken);
         }
     }

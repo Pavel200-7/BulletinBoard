@@ -86,8 +86,6 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration)
         {
- 
-
             services.AddDbContext<BulletinContext>(
                 options => options.UseNpgsql
                 (
@@ -97,6 +95,7 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
             return services;
         }
+
 
         public static IServiceCollection RegistrarAppInitializers(this IServiceCollection services)
         {
