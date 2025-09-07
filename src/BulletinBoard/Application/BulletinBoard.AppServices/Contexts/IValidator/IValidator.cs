@@ -12,6 +12,6 @@ namespace BulletinBoard.AppServices.Contexts.IValidator
 {
     public interface IValidator<T>
     {
-        public ValidationResult Validate(T entityDto);
+        public Task<ValidationResult> ValidateAsync(T entityDto, CancellationToken cancellation = new());
     }
 }

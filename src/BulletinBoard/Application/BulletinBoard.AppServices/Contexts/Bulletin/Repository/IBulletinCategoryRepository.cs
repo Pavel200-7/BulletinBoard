@@ -10,14 +10,20 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository
 {
     public interface IBulletinCategoryRepository
     {
-        Task<BulletinCategoryDto> GetByIdAsync(Guid id);
+        public Task<BulletinCategoryDto> GetByIdAsync(Guid id);
 
-        Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto);
+        public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto);
 
-        Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto);
+        public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto);
 
-        Task<bool> DeleteAsync(Guid id);
+        public Task<bool> DeleteAsync(Guid id);
 
-        void SaveChangesAsync();
+        public Task<bool> IsTheIdExist(Guid id);
+
+        public Task<bool> IsTheCategoryNameExist(string categoryName);
+
+        public Task<bool> IsTheCategoryLeafy(Guid id);
+
+        public void SaveChangesAsync();
     }
 }

@@ -6,13 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BulletinBoard.Infrastructure.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v_1 : Migration
+    public partial class initialization_version : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "public");
+
             migrationBuilder.CreateTable(
                 name: "BulletinCategory",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -23,14 +27,27 @@ namespace BulletinBoard.Infrastructure.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BulletinCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BulletinCategory_BulletinCategory_ParentCategoryId",
+                        column: x => x.ParentCategoryId,
+                        principalSchema: "public",
+                        principalTable: "BulletinCategory",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BulletinCategory_ParentCategoryId",
+                schema: "public",
+                table: "BulletinCategory",
+                column: "ParentCategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BulletinCategory");
+                name: "BulletinCategory",
+                schema: "public");
         }
     }
 }

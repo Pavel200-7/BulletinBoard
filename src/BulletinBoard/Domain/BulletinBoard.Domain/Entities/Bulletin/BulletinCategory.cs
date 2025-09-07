@@ -10,7 +10,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
 {
     public class BulletinCategory : EntityBase
     {
-        [Key]
         public Guid Id { get; set; }
 
         public Guid? ParentCategoryId { get; set; }
@@ -18,5 +17,10 @@ namespace BulletinBoard.Domain.Entities.Bulletin
         public string CategoryName { get; set; }
 
         public bool IsLeafy { get; set; }
+
+
+        public BulletinCategory ParentCategory { get; set; }
+
+        public List<BulletinCategory> ChildrenCategories { get; set; }
     }
 }

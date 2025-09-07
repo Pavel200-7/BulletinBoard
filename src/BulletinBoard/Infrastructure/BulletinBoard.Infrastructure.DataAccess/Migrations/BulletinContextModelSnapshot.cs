@@ -17,6 +17,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("public")
                 .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -40,7 +41,24 @@ namespace BulletinBoard.Infrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BulletinCategory", (string)null);
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("BulletinCategory", "public");
+                });
+
+            modelBuilder.Entity("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", b =>
+                {
+                    b.HasOne("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", "ParentCategory")
+                        .WithMany("ChildrenCategories")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", b =>
+                {
+                    b.Navigation("ChildrenCategories");
                 });
 #pragma warning restore 612, 618
         }

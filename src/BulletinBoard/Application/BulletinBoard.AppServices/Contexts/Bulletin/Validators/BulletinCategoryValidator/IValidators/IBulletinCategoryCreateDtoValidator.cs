@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.IValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Domain.Entities.Bulletin;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;

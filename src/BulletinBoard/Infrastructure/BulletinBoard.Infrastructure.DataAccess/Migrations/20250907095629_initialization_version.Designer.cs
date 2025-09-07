@@ -12,14 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BulletinBoard.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(BulletinContext))]
-    [Migration("20250906193209_v_4")]
-    partial class v_4
+    [Migration("20250907095629_initialization_version")]
+    partial class initialization_version
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("public")
                 .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -43,7 +44,23 @@ namespace BulletinBoard.Infrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BulletinCategory", (string)null);
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("BulletinCategory", "public");
+                });
+
+            modelBuilder.Entity("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", b =>
+                {
+                    b.HasOne("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", "ParentCategory")
+                        .WithMany("ChildrenCategoryes")
+                        .HasForeignKey("ParentCategoryId");
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("BulletinBoard.Domain.Entities.Bulletin.BulletinCategory", b =>
+                {
+                    b.Navigation("ChildrenCategoryes");
                 });
 #pragma warning restore 612, 618
         }

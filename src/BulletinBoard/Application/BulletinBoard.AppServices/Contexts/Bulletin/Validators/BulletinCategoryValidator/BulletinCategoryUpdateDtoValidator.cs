@@ -1,22 +1,34 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.CategoryNameValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.ParentCategoryIdValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator
 {
     public sealed class BulletinCategoryUpdateDtoValidator : AbstractValidator<BulletinCategoryUpdateDto>, IBulletinCategoryUpdateDtoValidator
     {
-        public BulletinCategoryUpdateDtoValidator()
+
+        private IBulletinCategoryRepository _categoryRepository;
+
+        public BulletinCategoryUpdateDtoValidator(IBulletinCategoryRepository categoryRepository)
         {
-            RuleFor(category => category.CategoryName)
-                .NotEmpty().WithMessage("The field is requered");
+            _categoryRepository = categoryRepository;
+
+            RuleFor(bulletinCategoryCreateDto => bulletinCategoryCreateDto.ParentCategoryId)
+                .SetAsyncValidator(new ExistingParrentCategoryValidator<BulletinCategoryUpdateDto>(_categoryRepository))
+                    .When(bulletinCategoryCreateDto => bulletinCategoryCreateDto.ParentCategoryId != null)
+                .SetAsyncValidator(new ParrentCategoryIsNotLeafyValidator<BulletinCategoryUpdateDto>(_categoryRepository))
+                    .When(bulletinCategoryCreateDto => bulletinCategoryCreateDto.ParentCategoryId != null);
+
+            RuleFor(bulletinCategoryCreateDto => bulletinCategoryCreateDto.CategoryName)
+                .NotEmpty()
+                .Length(3, 50)
+                .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
+                .SetAsyncValidator(new UniqueCategoryNameValidator<BulletinCategoryUpdateDto>(_categoryRepository));
         }
     }
 }

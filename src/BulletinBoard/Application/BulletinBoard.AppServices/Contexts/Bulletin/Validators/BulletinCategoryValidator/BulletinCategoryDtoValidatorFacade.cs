@@ -1,13 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.ValidatorBase;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator
 {
@@ -26,14 +21,14 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
             _bulletinCategoryUpdateDtoValidator = bulletinCategoryUpdateDtoValidator;
         }
 
-        public ValidationResult Validate(BulletinCategoryCreateDto entityDto)
+        public async Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto)
         {
-            return _bulletinCategoryCreateDtoValidator.Validate(entityDto);
+            return await _bulletinCategoryCreateDtoValidator.ValidateAsync(entityDto);
         }
 
-        public ValidationResult Validate(BulletinCategoryUpdateDto entityDto)
+        public async Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto)
         {
-            return _bulletinCategoryUpdateDtoValidator.Validate(entityDto);
+            return await _bulletinCategoryUpdateDtoValidator.ValidateAsync(entityDto);
         }
     }
 }

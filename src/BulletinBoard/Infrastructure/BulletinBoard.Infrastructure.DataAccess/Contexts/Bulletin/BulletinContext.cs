@@ -1,11 +1,13 @@
 ﻿using BulletinBoard.Domain.Entities.Bulletin;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +29,12 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("public");
             OnModelCreatingPartial(modelBuilder);
 
-            // На случай необходимости поменять названия таблиц БД
-            modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
+            new BulletinCategoryEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinCategory>());
+
+
 
         }
 

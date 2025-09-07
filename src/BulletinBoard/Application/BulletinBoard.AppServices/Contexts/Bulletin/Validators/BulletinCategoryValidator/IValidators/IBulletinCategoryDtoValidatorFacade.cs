@@ -10,8 +10,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 {
     public interface IBulletinCategoryDtoValidatorFacade
     {
-        public ValidationResult Validate(BulletinCategoryCreateDto entityDto);
+        public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto);
 
-        public ValidationResult Validate(BulletinCategoryUpdateDto entityDto);
+        public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto);
     }
 }

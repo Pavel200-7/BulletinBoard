@@ -37,15 +37,15 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
             throw new NotImplementedException();
         }
 
-        public Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
+        public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
         {
-            var validationResult = _validator.Validate(category);
+            var validationResult = await _validator.ValidateAsync(category);
             if (!validationResult.IsValid)
             {
                 throw new ValidationExeption(validationResult.ToDictionary());
             }
 
-            var CategoryDto = _categoryRepository.CreateAsync(category);
+            var CategoryDto = await _categoryRepository.CreateAsync(category);
             _categoryRepository.SaveChangesAsync();
 
             return CategoryDto;
