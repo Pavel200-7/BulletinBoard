@@ -63,15 +63,12 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
         {
 
-            //services.AddAutoMapper(typeof(BulletinMappingProfile));
-            // Нужно переделать завтра
+            services.AddAutoMapper(
+                cnf => { },
+                typeof(BulletinMappingProfile)
+                // Другие профайлеры
 
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.CreateMap<BulletinCategoryCreateDto, BulletinCategory>().ReverseMap();
-                cfg.CreateMap<BulletinCategoryDto, BulletinCategory>().ReverseMap();
-                cfg.CreateMap<BulletinCategoryUpdateDto, BulletinCategory>().ReverseMap();
-            });
+                );
 
             return services;
         }
@@ -87,6 +84,8 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
                 );
             });
 
+            // Другие контексты
+
             return services;
         }
 
@@ -94,6 +93,8 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         public static IServiceCollection RegistrarAppInitializers(this IServiceCollection services)
         {
             services.AddAsyncInitializer<DbInitializer>();
+
+            //  Другие инициализаторы
 
             return services;
         }

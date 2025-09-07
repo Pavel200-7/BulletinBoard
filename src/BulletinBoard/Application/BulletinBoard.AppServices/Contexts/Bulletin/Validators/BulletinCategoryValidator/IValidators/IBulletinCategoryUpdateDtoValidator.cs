@@ -1,4 +1,4 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.ValidatorBase;
+﻿using BulletinBoard.AppServices.Contexts.IValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using System;
 using System.Collections.Generic;

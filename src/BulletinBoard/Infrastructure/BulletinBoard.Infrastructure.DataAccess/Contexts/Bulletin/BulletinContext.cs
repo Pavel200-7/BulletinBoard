@@ -23,17 +23,13 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
         {
         }
 
-        //public DbSet<BelletinMain> BelletinMain { get; set; }
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnModelCreatingPartial(modelBuilder);
 
             // На случай необходимости поменять названия таблиц БД
-            //modelBuilder.Entity<BelletinMain>().ToTable("BelletinMain");
             modelBuilder.Entity<BulletinCategory>().ToTable("BulletinCategory");
 
         }

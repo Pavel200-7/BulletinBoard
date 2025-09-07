@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using FluentValidation.Results;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.ValidatorBase
+namespace BulletinBoard.AppServices.Contexts.IValidator
 {
     public interface IValidator<T>
     {
