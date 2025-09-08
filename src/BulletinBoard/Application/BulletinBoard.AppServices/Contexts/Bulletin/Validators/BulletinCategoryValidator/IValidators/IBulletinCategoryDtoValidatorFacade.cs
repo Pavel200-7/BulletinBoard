@@ -1,4 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+﻿using BulletinBoard.AppServices.Contexts.IValidator;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators
 {
-    public interface IBulletinCategoryDtoValidatorFacade
+    public interface IBulletinCategoryDtoValidatorFacade : IValidatorFacede<BulletinCategoryCreateDto>
     {
-        public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto);
-
         public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto);
     }
 }

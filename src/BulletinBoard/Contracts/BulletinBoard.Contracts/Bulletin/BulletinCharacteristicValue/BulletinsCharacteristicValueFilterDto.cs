@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BulletinBoard.Contracts.Bulletin.BulletinCategoryValue
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue
 {
     public class BulletinsCharacteristicValueFilterDto
     {

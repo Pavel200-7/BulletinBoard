@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.CategoryNameValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.ParentCategoryIdValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation;
 
@@ -9,7 +9,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 {
     public sealed class BulletinCategoryCreateDtoValidator : AbstractValidator<BulletinCategoryCreateDto>, IBulletinCategoryCreateDtoValidator
     {
-        private IBulletinCategoryRepository _categoryRepository;
+        private readonly IBulletinCategoryRepository _categoryRepository;
 
         public BulletinCategoryCreateDtoValidator(IBulletinCategoryRepository categoryRepository)
         {

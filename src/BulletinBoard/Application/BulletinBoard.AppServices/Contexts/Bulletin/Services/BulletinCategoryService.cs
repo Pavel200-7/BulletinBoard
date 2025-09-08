@@ -1,18 +1,11 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Errors;
 using BulletinBoard.Contracts.Errors.Exeptions;
-//using BulletinBoard.Contracts.Errors.ErrorsList;
-using BulletinBoard.Domain.Entities.Bulletin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentValidation.Results;
+
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
 {
@@ -39,14 +32,14 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
 
         public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
         {
-            var validationResult = await _validator.ValidateAsync(category);
+            ValidationResult validationResult = await _validator.ValidateAsync(category);
             if (!validationResult.IsValid)
             {
                 throw new ValidationExeption(validationResult.ToDictionary());
             }
 
-            var CategoryDto = await _categoryRepository.CreateAsync(category);
-            _categoryRepository.SaveChangesAsync();
+            BulletinCategoryDto CategoryDto = await _categoryRepository.CreateAsync(category);
+            await _categoryRepository.SaveChangesAsync();
 
             return CategoryDto;
         }

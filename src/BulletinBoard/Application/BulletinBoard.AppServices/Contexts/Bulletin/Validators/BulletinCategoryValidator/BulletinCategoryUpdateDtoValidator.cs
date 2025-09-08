@@ -1,18 +1,16 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.CategoryNameValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.ParentCategoryIdValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation;
-using FluentValidation.Results;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator
 {
     public sealed class BulletinCategoryUpdateDtoValidator : AbstractValidator<BulletinCategoryUpdateDto>, IBulletinCategoryUpdateDtoValidator
     {
 
-        private IBulletinCategoryRepository _categoryRepository;
+        private readonly IBulletinCategoryRepository _categoryRepository;
 
         public BulletinCategoryUpdateDtoValidator(IBulletinCategoryRepository categoryRepository)
         {
