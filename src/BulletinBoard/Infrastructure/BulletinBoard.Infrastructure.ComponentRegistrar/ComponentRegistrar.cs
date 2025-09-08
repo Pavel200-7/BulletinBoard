@@ -1,29 +1,16 @@
-﻿using AutoMapper;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-
-using BulletinBoard.Domain.Entities.Bulletin;
-
-//using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-
 
 
 namespace BulletinBoard.Infrastructure.ComponentRegistrar
@@ -37,6 +24,8 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
             // BulletinServices
             services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
 
+            // BulletinSpecificationBuilders
+            services.AddScoped<IBulletinCategorySpecificationBuilder, BulletinCategorySpecificationBuilder>();
 
             // BulletinValidators
             services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();

@@ -1,4 +1,4 @@
-﻿using BulletinBoard.AppServices.Contexts.IValidator;
+﻿using BulletinBoard.AppServices.Contexts.Validator;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation.Results;
 using System;

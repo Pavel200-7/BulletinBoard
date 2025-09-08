@@ -1,4 +1,7 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;
@@ -14,15 +17,27 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
         public override string Name => "UniqueCategoryNameValidator";
 
         private readonly IBulletinCategoryRepository _categoryRepository;
+        private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
-        public UniqueCategoryNameValidator(IBulletinCategoryRepository categoryRepository)
+        public UniqueCategoryNameValidator
+            (
+            IBulletinCategoryRepository categoryRepository, 
+            IBulletinCategorySpecificationBuilder specificationBuilder
+            )
         {
             _categoryRepository = categoryRepository;
+            _specificationBuilder = specificationBuilder;
         }
 
         public override async Task<bool> IsValidAsync(ValidationContext<T> context, string categoryName, CancellationToken cancellation)
         {
-            return !await _categoryRepository.IsTheCategoryNameExist(categoryName);
+            ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
+                .WhereCategoryName(categoryName)
+                .Build();
+
+            var categories = await _categoryRepository.FindAsync(specification);
+
+            return !categories.Any();
         }
 
         protected override string GetDefaultMessageTemplate(string errorCode)

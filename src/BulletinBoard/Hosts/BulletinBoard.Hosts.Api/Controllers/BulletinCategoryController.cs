@@ -25,7 +25,7 @@ namespace BulletinBoard.Hosts.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateArticle(BulletinCategoryCreateDto category)
+        public async Task<IActionResult> CreateBulletinCategory(BulletinCategoryCreateDto category)
         {
             var categoryDto = await _bulletinCategoryService.CreateAsync(category);
             if (category == null)
@@ -34,8 +34,18 @@ namespace BulletinBoard.Hosts.Api.Controllers
             }
 
             return Ok(categoryDto);
-            //return CreatedAtAction(nameof(GetArticleById), new { id = articleDto.Id }, articleDto);
         }
+
+        //[HttpPost]
+        //[Route("filter")]
+        //[ProducesResponseType(typeof(IReadOnlyCollection<BulletinCategoryDto>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> GetBulletinCategoryFilter(BulletinCategoryFilterDto category)
+        //{
+        //    var categoryDto = await _bulletinCategoryService.GetAsync(category);
+        //    return Ok(categoryDto);
+        //}
+
 
 
 

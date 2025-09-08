@@ -1,4 +1,7 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;
@@ -14,15 +17,23 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
         public override string Name => "ParrentCategoryIsNotLeafyValidator";
 
         private readonly IBulletinCategoryRepository _categoryRepository;
+        private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
-        public ParrentCategoryIsNotLeafyValidator(IBulletinCategoryRepository categoryRepository)
+
+        public ParrentCategoryIsNotLeafyValidator(
+            IBulletinCategoryRepository categoryRepository,
+            IBulletinCategorySpecificationBuilder specificationBuilder
+            )
         {
             _categoryRepository = categoryRepository;
+            _specificationBuilder = specificationBuilder;
         }
 
         public override async Task<bool> IsValidAsync(ValidationContext<T> context, Guid categoryId, CancellationToken cancellation)
         {
-            return !await _categoryRepository.IsTheCategoryLeafy(categoryId);
+            var category = await _categoryRepository.GetByIdAsync(categoryId);
+
+            return category!.IsLeafy;
         }
 
         protected override string GetDefaultMessageTemplate(string errorCode)

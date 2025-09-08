@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
-namespace BulletinBoard.AppServices.Specification
+
+namespace BulletinBoard.AppServices.Specification;
+
+public class ParameterReplacer : ExpressionVisitor
 {
-    public class ParameterReplacer : ExpressionVisitor
+    private readonly ParameterExpression _parameter;
+
+    public ParameterReplacer(ParameterExpression parameter)
     {
-        private readonly ParameterExpression _parameter;
+        _parameter = parameter;
+    }
 
-        public ParameterReplacer(ParameterExpression parameter)
-        {
-            _parameter = parameter;
-        }
-
-        protected override Expression VisitParameter(ParameterExpression node)
-        {
-            return base.VisitParameter(_parameter);
-        }
+    protected override Expression VisitParameter(ParameterExpression node)
+    {
+        return base.VisitParameter(_parameter);
     }
 }

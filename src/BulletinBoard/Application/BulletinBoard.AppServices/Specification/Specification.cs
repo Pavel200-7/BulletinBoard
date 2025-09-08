@@ -1,31 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BulletinBoard.AppServices.Specification.LogicalOperations;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Specification
+
+namespace BulletinBoard.AppServices.Specification;
+
+public abstract class Specification<T>
 {
-    public abstract class Specification<T>
+    public abstract Expression<Func<T, bool>> ToExpression();
+
+    public Specification<T> And(Specification<T> specification)
     {
-        public abstract Expression<Func<T, bool>> ToExpression();
-
-        public Specification<T> And(Specification<T> specification)
-        {
-            return new AndSpecification<T>(this, specification);
-        }
-
-        public Specification<T> Or(Specification<T> specification)
-        {
-            return new OrSpecification<T>(this, specification);
-        }
-
-        public Specification<T> Not(Specification<T> specification)
-        {
-            return new NotSpecification<T>(this);
-        }
-
+        return new AndSpecification<T>(this, specification);
     }
+
+    public Specification<T> Or(Specification<T> specification)
+    {
+        return new OrSpecification<T>(this, specification);
+    }
+
+    public Specification<T> Not(Specification<T> specification)
+    {
+        return new NotSpecification<T>(this);
+    }
+
 }

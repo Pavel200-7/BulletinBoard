@@ -8,6 +8,10 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
     public class BulletinCategoryFilterDto
     {
-        // Фильтр сейчас не нужен, можно удалять.
+        public Guid? ParentCategoryId { get; set; }
+
+        public string CategoryName { get; set; }
+
+        //public bool IsLeafy { get; set; }
     }
 }

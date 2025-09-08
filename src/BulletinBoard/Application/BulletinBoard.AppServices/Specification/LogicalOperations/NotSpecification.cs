@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Specification
+namespace BulletinBoard.AppServices.Specification.LogicalOperations
 {
     public class NotSpecification<T> : Specification<T>
     {

@@ -1,4 +1,7 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;
@@ -15,14 +18,16 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 
         private readonly IBulletinCategoryRepository _categoryRepository;
 
-        public ExistingParrentCategoryValidator(IBulletinCategoryRepository categoryRepository)
+        public ExistingParrentCategoryValidator(
+            IBulletinCategoryRepository categoryRepository
+            )
         {
             _categoryRepository = categoryRepository;
         }
 
         public override async Task<bool> IsValidAsync(ValidationContext<T> context, Guid categoryId, CancellationToken cancellation)
         {
-            return await _categoryRepository.IsTheIdExist(categoryId);
+            return (await _categoryRepository.GetByIdAsync(categoryId)) is not null;
         }
 
         protected override string GetDefaultMessageTemplate(string errorCode)

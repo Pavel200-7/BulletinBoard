@@ -1,9 +1,14 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 
 
@@ -13,15 +18,18 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
     {
         private readonly IBulletinCategoryRepository _categoryRepository;
         private readonly IBulletinCategoryDtoValidatorFacade _validator;
+        private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
         public BulletinCategoryService
             (
                 IBulletinCategoryRepository bulletinCategoryRepository, 
-                IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade
+                IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade,
+                IBulletinCategorySpecificationBuilder specificationBuilder
             ) 
         {
             _categoryRepository = bulletinCategoryRepository;
             _validator = bulletinCategoryDtoValidatorFacade;
+            _specificationBuilder = specificationBuilder;
         }
 
 
@@ -30,21 +38,32 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services
             throw new NotImplementedException();
         }
 
-        public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto category)
+        public async Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryDto)
         {
-            ValidationResult validationResult = await _validator.ValidateAsync(category);
+            ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
+                .WhereParentId(categoryDto.ParentCategoryId)
+                .WhereCategoryName(categoryDto.CategoryName)
+                .Build();
+
+            return await _categoryRepository.FindAsync(specification);
+        }
+
+
+        public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
+        {
+            ValidationResult validationResult = await _validator.ValidateAsync(categoryDto);
             if (!validationResult.IsValid)
             {
                 throw new ValidationExeption(validationResult.ToDictionary());
             }
 
-            BulletinCategoryDto CategoryDto = await _categoryRepository.CreateAsync(category);
+            BulletinCategoryDto ouputCategoryDto = await _categoryRepository.CreateAsync(categoryDto);
             await _categoryRepository.SaveChangesAsync();
 
-            return CategoryDto;
+            return ouputCategoryDto;
         }
 
-        public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto category)
+        public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
         {
             throw new NotImplementedException();
         }
