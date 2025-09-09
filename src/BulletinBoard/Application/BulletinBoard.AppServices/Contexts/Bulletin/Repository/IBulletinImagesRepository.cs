@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository
+public interface IBulletinImagesRepository
 {
-    public interface IBulletinImagesRepository
-    {
-    }
 }

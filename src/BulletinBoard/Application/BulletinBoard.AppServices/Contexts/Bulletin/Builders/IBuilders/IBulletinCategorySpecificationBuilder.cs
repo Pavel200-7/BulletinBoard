@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 
+
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 
 public interface IBulletinCategorySpecificationBuilder

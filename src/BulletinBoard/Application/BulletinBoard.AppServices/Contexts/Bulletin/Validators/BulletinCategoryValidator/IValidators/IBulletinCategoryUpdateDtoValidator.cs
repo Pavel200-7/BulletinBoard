@@ -1,14 +1,11 @@
-﻿using BulletinBoard.AppServices.Contexts.Validator;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using FluentValidation.Results;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators
+
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+
+public interface IBulletinCategoryUpdateDtoValidator 
 {
-    public interface IBulletinCategoryUpdateDtoValidator : IValidator<BulletinCategoryUpdateDto>
-    {
-    }
+    public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto, CancellationToken cancellation = default);
+
 }

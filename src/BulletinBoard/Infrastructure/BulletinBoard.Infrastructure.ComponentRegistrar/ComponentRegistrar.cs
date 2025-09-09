@@ -1,5 +1,4 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -11,6 +10,7 @@ using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
 
 namespace BulletinBoard.Infrastructure.ComponentRegistrar

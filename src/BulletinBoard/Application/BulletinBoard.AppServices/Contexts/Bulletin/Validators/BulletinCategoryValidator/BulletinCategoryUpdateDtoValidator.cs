@@ -5,31 +5,31 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryVal
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using FluentValidation;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator
+
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
+
+public sealed class BulletinCategoryUpdateDtoValidator : AbstractValidator<BulletinCategoryUpdateDto>, IBulletinCategoryUpdateDtoValidator
 {
-    public sealed class BulletinCategoryUpdateDtoValidator : AbstractValidator<BulletinCategoryUpdateDto>, IBulletinCategoryUpdateDtoValidator
+
+    private readonly IBulletinCategoryRepository _categoryRepository;
+    private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
+
+    public BulletinCategoryUpdateDtoValidator
+        (
+            IBulletinCategoryRepository categoryRepository,
+            IBulletinCategorySpecificationBuilder specificationBuilder
+        )
     {
+        _categoryRepository = categoryRepository;
+        _specificationBuilder = specificationBuilder;
 
-        private readonly IBulletinCategoryRepository _categoryRepository;
-        private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
+        RuleFor(BulletinCategoryUpdateDto => BulletinCategoryUpdateDto.ParentCategoryId)
+            .SetAsyncValidator(new ParentCategoryValidator<BulletinCategoryUpdateDto>(_categoryRepository));
 
-        public BulletinCategoryUpdateDtoValidator
-            (
-                IBulletinCategoryRepository categoryRepository,
-                IBulletinCategorySpecificationBuilder specificationBuilder
-            )
-        {
-            _categoryRepository = categoryRepository;
-            _specificationBuilder = specificationBuilder;
-
-            RuleFor(BulletinCategoryUpdateDto => BulletinCategoryUpdateDto.ParentCategoryId)
-                .SetAsyncValidator(new ParentCategoryValidator<BulletinCategoryUpdateDto>(_categoryRepository));
-
-            RuleFor(BulletinCategoryUpdateDto => BulletinCategoryUpdateDto.CategoryName)
-                .NotEmpty()
-                .Length(3, 50)
-                .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
-                .SetAsyncValidator(new CategoryNameValidator<BulletinCategoryUpdateDto>(_categoryRepository, _specificationBuilder));
-        }
+        RuleFor(BulletinCategoryUpdateDto => BulletinCategoryUpdateDto.CategoryName)
+            .NotEmpty()
+            .Length(3, 50)
+            .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
+            .SetAsyncValidator(new CategoryNameValidator<BulletinCategoryUpdateDto>(_categoryRepository, _specificationBuilder));
     }
 }

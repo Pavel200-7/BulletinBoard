@@ -1,11 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using FluentValidation;
 using FluentValidation.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators;
 

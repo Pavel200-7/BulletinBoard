@@ -4,49 +4,44 @@ using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation;
 using FluentValidation.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators
+
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators;
+
+public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
 {
-    public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
+    public override string Name => "CategoryNameValidator";
+
+    private readonly IBulletinCategoryRepository _categoryRepository;
+    private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
+
+    public CategoryNameValidator
+        (
+        IBulletinCategoryRepository categoryRepository, 
+        IBulletinCategorySpecificationBuilder specificationBuilder
+        )
     {
-        public override string Name => "CategoryNameValidator";
-
-        private readonly IBulletinCategoryRepository _categoryRepository;
-        private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
-
-        public CategoryNameValidator
-            (
-            IBulletinCategoryRepository categoryRepository, 
-            IBulletinCategorySpecificationBuilder specificationBuilder
-            )
-        {
-            _categoryRepository = categoryRepository;
-            _specificationBuilder = specificationBuilder;
-        }
-
-        public override async Task<bool> IsValidAsync(ValidationContext<T> context, string categoryName, CancellationToken cancellation)
-        {
-            ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
-                .WhereCategoryName(categoryName)
-                .Build();
-
-            var categories = await _categoryRepository.FindAsync(specification);
-
-            if (categories.Any())
-            {
-                context.MessageFormatter.AppendArgument("Error", "A category with this name is already exist.");
-                return false;
-            }
-
-            return true;
-        }
-
-        protected override string GetDefaultMessageTemplate(string errorCode)
-        => "{Error}";
+        _categoryRepository = categoryRepository;
+        _specificationBuilder = specificationBuilder;
     }
+
+    public override async Task<bool> IsValidAsync(ValidationContext<T> context, string categoryName, CancellationToken cancellation)
+    {
+        ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
+            .WhereCategoryName(categoryName)
+            .Build();
+
+        var categories = await _categoryRepository.FindAsync(specification);
+
+        if (categories.Any())
+        {
+            context.MessageFormatter.AppendArgument("Error", "A category with this name is already exist.");
+            return false;
+        }
+
+        return true;
+    }
+
+    protected override string GetDefaultMessageTemplate(string errorCode)
+    => "{Error}";
 }
