@@ -10,16 +10,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators.CategoryNameValidators
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators
 {
-    public class UniqueCategoryNameValidator<T> : AsyncPropertyValidator<T, string>
+    public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
     {
-        public override string Name => "UniqueCategoryNameValidator";
+        public override string Name => "CategoryNameValidator";
 
         private readonly IBulletinCategoryRepository _categoryRepository;
         private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
-        public UniqueCategoryNameValidator
+        public CategoryNameValidator
             (
             IBulletinCategoryRepository categoryRepository, 
             IBulletinCategorySpecificationBuilder specificationBuilder
@@ -37,10 +37,16 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 
             var categories = await _categoryRepository.FindAsync(specification);
 
-            return !categories.Any();
+            if (categories.Any())
+            {
+                context.MessageFormatter.AppendArgument("Error", "A category with this name is already exist.");
+                return false;
+            }
+
+            return true;
         }
 
         protected override string GetDefaultMessageTemplate(string errorCode)
-            => "A category with that name already exists.";
+        => "{Error}";
     }
 }
