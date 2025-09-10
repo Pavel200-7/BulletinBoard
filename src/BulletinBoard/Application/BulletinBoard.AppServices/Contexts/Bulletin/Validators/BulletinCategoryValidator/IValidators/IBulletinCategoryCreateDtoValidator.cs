@@ -2,10 +2,9 @@
 using FluentValidation.Results;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+
+public interface IBulletinCategoryCreateDtoValidator
 {
-    public interface IBulletinCategoryCreateDtoValidator
-    {
-        public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto, CancellationToken cancellation = default);
-    }
+    public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto, CancellationToken cancellation = default);
 }

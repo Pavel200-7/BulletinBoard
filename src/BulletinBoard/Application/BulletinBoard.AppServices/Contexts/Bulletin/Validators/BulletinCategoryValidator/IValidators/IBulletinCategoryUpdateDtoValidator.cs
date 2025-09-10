@@ -7,5 +7,4 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 public interface IBulletinCategoryUpdateDtoValidator 
 {
     public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto, CancellationToken cancellation = default);
-
 }
