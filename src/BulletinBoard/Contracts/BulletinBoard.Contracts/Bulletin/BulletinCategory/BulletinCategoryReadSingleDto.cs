@@ -8,7 +8,7 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 {
     public class BulletinCategoryReadSingleDto
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public Guid? ParentCategoryId { get; set; }
 
@@ -16,6 +16,6 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
 
         public bool IsLeafy { get; set; }
 
-        public BulletinCategoryReadAllDto? ChildrenCategory { get; set; }
+        public BulletinCategoryReadSingleDto? ChildrenCategory { get; set; }
     }
 }

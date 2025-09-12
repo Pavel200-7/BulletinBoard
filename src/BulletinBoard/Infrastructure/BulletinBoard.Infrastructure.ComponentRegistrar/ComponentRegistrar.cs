@@ -1,4 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
+using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -10,7 +13,6 @@ using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
 
 namespace BulletinBoard.Infrastructure.ComponentRegistrar
@@ -20,9 +22,12 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
         public static IServiceCollection RegisterAppServices(this IServiceCollection services)
         {
 
-            //Bulletin
+            // Bulletin
             // BulletinServices
             services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
+
+            // BulletinMappingServices
+            services.AddScoped<IBulletinCategoryMappingService, BulletinCategoryMappingService>();
 
             // BulletinSpecificationBuilders
             services.AddScoped<IBulletinCategorySpecificationBuilder, BulletinCategorySpecificationBuilder>();
@@ -50,12 +55,10 @@ namespace BulletinBoard.Infrastructure.ComponentRegistrar
 
         public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
         {
-
             services.AddAutoMapper(
                 cnf => { },
                 typeof(BulletinMappingProfile)
                 // Другие профайлеры
-
                 );
 
             return services;

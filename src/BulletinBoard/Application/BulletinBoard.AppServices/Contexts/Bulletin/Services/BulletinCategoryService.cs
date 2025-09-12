@@ -1,4 +1,6 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -7,6 +9,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -16,23 +19,26 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     private readonly IBulletinCategoryRepository _categoryRepository;
     private readonly IBulletinCategoryDtoValidatorFacade _validator;
     private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
+    private readonly IBulletinCategoryMappingService _mapper;
 
     public BulletinCategoryService
         (
             IBulletinCategoryRepository bulletinCategoryRepository, 
             IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade,
-            IBulletinCategorySpecificationBuilder specificationBuilder
+            IBulletinCategorySpecificationBuilder specificationBuilder,
+            IBulletinCategoryMappingService mapper
         ) 
     {
         _categoryRepository = bulletinCategoryRepository;
         _validator = bulletinCategoryDtoValidatorFacade;
         _specificationBuilder = specificationBuilder;
+        _mapper = mapper;
     }
 
 
     public async Task<BulletinCategoryDto> GetByIdAsync(Guid id)
     {
-        var outputCategoryDto = await _categoryRepository.GetByIdAsync(id);
+        BulletinCategoryDto? outputCategoryDto = await _categoryRepository.GetByIdAsync(id);
 
         if (outputCategoryDto is null)
         {
@@ -104,14 +110,39 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         return isOnDeleting;
     }
 
-    public Task<BulletinCategoryReadAllDto> GetAllAsync()
+    public async Task<BulletinCategoryReadAllDto> GetAllAsync()
     {
-        throw new NotImplementedException();
+        ExtendedSpecification<BulletinCategory> specificationWithouFilter = _specificationBuilder
+            .Build();
+
+        IReadOnlyCollection<BulletinCategoryDto> allCategories = await _categoryRepository.FindAsync(specificationWithouFilter);
+        BulletinCategoryReadAllDto categoriesReadAllDto = await _mapper.ConvertToBulletinCategoryReadAllDto(allCategories);
+
+        return categoriesReadAllDto;
     }
 
-    public Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id)
+    public async Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id)
     {
-        throw new NotImplementedException();
+        List<BulletinCategoryDto> CategoriesList = new List<BulletinCategoryDto>();
+        Guid? searchingCategoryId = id;
+
+        while(searchingCategoryId != null)
+        {
+            var currentCategory = await _categoryRepository.GetByIdAsync(searchingCategoryId.Value);
+            if (currentCategory is null) 
+            {
+                string errorMessage = $"The note with id {searchingCategoryId} is not found.";
+                throw new NotFoundException(errorMessage);
+            }
+
+            CategoriesList.Add(currentCategory);
+            searchingCategoryId = currentCategory.ParentCategoryId;
+        }
+
+        IReadOnlyCollection<BulletinCategoryDto> allCategories = CategoriesList.AsReadOnly();  
+        BulletinCategoryReadSingleDto categoriesReadSingleDto = await _mapper.ConvertToBulletinCategoryReadSingleDto(allCategories);
+
+        return categoriesReadSingleDto;
     }
 
     

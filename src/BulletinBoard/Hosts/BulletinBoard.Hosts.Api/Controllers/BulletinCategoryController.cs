@@ -25,7 +25,7 @@ namespace BulletinBoard.Hosts.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateBulletinCategory(Guid id)
+        public async Task<IActionResult> GetBulletinCategory(Guid id)
         {
             var categoryDto = await _bulletinCategoryService.GetByIdAsync(id);
             return Ok(categoryDto);
@@ -61,6 +61,24 @@ namespace BulletinBoard.Hosts.Api.Controllers
         {
             bool isDeleted = await _bulletinCategoryService.DeleteAsync(id);
             return Ok(isDeleted);
+        }
+
+        [HttpGet]
+        [Route("All")]
+        [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllBulletinCategory()
+        {
+            var categoryDto = await _bulletinCategoryService.GetAllAsync();
+            return Ok(categoryDto);
+        }
+
+        [HttpGet]
+        [Route("SingleChain")]
+        [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetsingleBulletinCategory(Guid id)
+        {
+            var categoryDto = await _bulletinCategoryService.GetSingleAsync(id);
+            return Ok(categoryDto);
         }
 
 
