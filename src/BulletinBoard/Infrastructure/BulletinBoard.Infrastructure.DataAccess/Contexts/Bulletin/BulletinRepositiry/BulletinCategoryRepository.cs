@@ -57,7 +57,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
 
         if (category == null) { return null; }
 
-        category  = _mapper.Map<BulletinCategory>(categoryDto); 
+        _mapper.Map(categoryDto, category);
 
         return _mapper.Map<BulletinCategoryDto>(category);
     }

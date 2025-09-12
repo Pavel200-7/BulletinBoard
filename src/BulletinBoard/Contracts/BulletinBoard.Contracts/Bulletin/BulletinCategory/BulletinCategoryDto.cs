@@ -15,6 +15,5 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
         public string CategoryName { get; set; }
 
         public bool IsLeafy { get; set; }
-
     }
 }

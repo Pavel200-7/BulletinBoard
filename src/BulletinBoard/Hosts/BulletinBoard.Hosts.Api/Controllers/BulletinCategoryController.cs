@@ -22,6 +22,15 @@ namespace BulletinBoard.Hosts.Api.Controllers
             _bulletinCategoryService = bulletinCategoryService;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateBulletinCategory(Guid id)
+        {
+            var categoryDto = await _bulletinCategoryService.GetByIdAsync(id);
+            return Ok(categoryDto);
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,15 +45,25 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(categoryDto);
         }
 
-        //[HttpPost]
-        //[Route("filter")]
-        //[ProducesResponseType(typeof(IReadOnlyCollection<BulletinCategoryDto>), StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public async Task<IActionResult> GetBulletinCategoryFilter(BulletinCategoryFilterDto category)
-        //{
-        //    var categoryDto = await _bulletinCategoryService.GetAsync(category);
-        //    return Ok(categoryDto);
-        //}
+        [HttpPut]
+        [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category)
+        {
+            var categoryDto = await _bulletinCategoryService.UpdateAsync(id, category);
+            return Ok(categoryDto);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteBulletinCategory(Guid id)
+        {
+            bool isDeleted = await _bulletinCategoryService.DeleteAsync(id);
+            return Ok(isDeleted);
+        }
+
+
 
 
 

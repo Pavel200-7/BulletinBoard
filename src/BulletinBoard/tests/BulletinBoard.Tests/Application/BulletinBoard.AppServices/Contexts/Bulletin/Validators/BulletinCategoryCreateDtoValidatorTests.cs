@@ -1,10 +1,13 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
+using FluentValidation.Results;
 using Moq;
 
 
@@ -12,4 +15,5 @@ namespace BulletinBoard.Tests.Application.BulletinBoard.AppServices.Contexts.Bul
 
 public class BulletinCategoryCreateDtoValidatorTests
 {
+
 }

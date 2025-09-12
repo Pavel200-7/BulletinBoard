@@ -30,9 +30,17 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     }
 
 
-    public Task<BulletinCategoryDto> GetByIdAsync(Guid id)
+    public async Task<BulletinCategoryDto> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var outputCategoryDto = await _categoryRepository.GetByIdAsync(id);
+
+        if (outputCategoryDto is null)
+        {
+            string errorMessage = $"The note with id {id} is not found.";
+            throw new NotFoundException(errorMessage);
+        }
+
+        return outputCategoryDto!;
     }
 
     public async Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryDto)
@@ -54,20 +62,46 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCategoryDto ouputCategoryDto = await _categoryRepository.CreateAsync(categoryDto);
+        BulletinCategoryDto outputCategoryDto = await _categoryRepository.CreateAsync(categoryDto);
         await _categoryRepository.SaveChangesAsync();
 
-        return ouputCategoryDto;
+        return outputCategoryDto;
     }
 
-    public Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
+    public async Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
     {
-        throw new NotImplementedException();
+        ValidationResult validationResult = await _validator.ValidateAsync(categoryDto);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
+
+        BulletinCategoryDto? outputCategoryDto = await _categoryRepository.UpdateAsync(id, categoryDto);
+
+        if (outputCategoryDto is null)
+        {
+            string errorMessage = $"The note with id {id} is not found.";
+            throw new NotFoundException(errorMessage);
+        }
+
+        await _categoryRepository.SaveChangesAsync();
+
+        return outputCategoryDto;
     }
 
-    public Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        bool isOnDeleting = await _categoryRepository.DeleteAsync(id);
+
+        if (!isOnDeleting)
+        {
+            string errorMessage = $"The note with id {id} is not found.";
+            throw new NotFoundException(errorMessage);
+        }
+
+        await _categoryRepository.SaveChangesAsync();
+
+        return isOnDeleting;
     }
 
     public Task<BulletinCategoryReadAllDto> GetAllAsync()

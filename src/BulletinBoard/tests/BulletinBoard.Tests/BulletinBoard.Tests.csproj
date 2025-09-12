@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\BulletinBoard.AppServices\Contexts\Bulletin\Services\" />
     <Folder Include="Clients\" />
     <Folder Include="Contracts\" />
     <Folder Include="Domain\" />

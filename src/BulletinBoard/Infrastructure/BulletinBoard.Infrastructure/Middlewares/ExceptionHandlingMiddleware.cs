@@ -29,9 +29,14 @@ namespace BulletinBoard.Infrastructure.Middlewares
             {
                 await _next(context);
             }
+            catch (NotFoundException e) 
+            {
+                _logger.LogError(e, "Что-то пошло не так");
+                await HandleNotFoundExceptionAsync(context, e);
+            }
             catch (ValidationExeption e)
             {
-                //_logger.LogError(e, "Что-то пошло не так");
+                _logger.LogError(e, "Что-то пошло не так");
                 await HandleValidatioExceptionAsync(context, e);
             }
             catch (Exception e)
@@ -39,6 +44,21 @@ namespace BulletinBoard.Infrastructure.Middlewares
                 _logger.LogError(e, "Что-то пошло не так");
                 await HandleExceptionAsync(context, e);
             }
+        }
+
+        private static Task HandleNotFoundExceptionAsync(HttpContext context, NotFoundException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+            var response = new ErrorDto
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = exception.errorMessage,
+                TraceId = context.TraceIdentifier
+            };
+
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }
 
         private static Task HandleValidatioExceptionAsync(HttpContext context, ValidationExeption exception)
