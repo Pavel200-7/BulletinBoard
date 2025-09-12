@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinCategory
+/// <summary>
+/// Формат данных изменения категории
+/// </summary>
+public class BulletinCategoryUpdateDto
 {
-    public class BulletinCategoryUpdateDto
-    {
-        public Guid? ParentCategoryId { get; set; }
+    /// <summary>
+    /// Id родительской категории
+    /// </summary>
+    public Guid? ParentCategoryId { get; set; }
 
-        public string CategoryName { get; set; }
-    }
+    /// <summary>
+    /// Название категории
+    /// </summary>
+    public string CategoryName { get; set; }
 }

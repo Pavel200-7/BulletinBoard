@@ -15,14 +15,25 @@ namespace BulletinBoard.Hosts.Api.Controllers
     [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
     public class BulletinCategoryController : ControllerBase
     {
-        private readonly IBulletinCategoryService _bulletinCategoryService;        
+        private readonly IBulletinCategoryService _bulletinCategoryService;
 
         public BulletinCategoryController(IBulletinCategoryService bulletinCategoryService)
         {
             _bulletinCategoryService = bulletinCategoryService;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Получение категории по id
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///    GET /BulletinCategory/01992529-1ec8-766f-a03d-a7ac4f0996b9
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор категории</param>
+        /// <returns>Базовый формат данных категории</returns>
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetBulletinCategory(Guid id)
@@ -31,6 +42,29 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(categoryDto);
         }
 
+        /// <summary>
+        /// Создание категории
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     POST /BulletinCategory
+        ///     {
+        ///        "parentCategoryId" : "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///        "categoryName" : "Категория 1",
+        ///        "isLeafy": false
+        ///     }
+        ///     
+        ///     POST /BulletinCategory
+        ///     {
+        ///        "parentCategoryId" : null,
+        ///        "categoryName" : "Категория 2",
+        ///        "isLeafy": true
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="category">Формат данных создания категории</param>
+        /// <returns>Базовый формат данных категории</returns>
         [HttpPost]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,7 +79,29 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(categoryDto);
         }
 
-        [HttpPut]
+        /// <summary>
+        /// Изменение категории
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     PUT /BulletinCategory/01992a7c-71f5-7081-9311-44884bac8d58
+        ///     {
+        ///        "parentCategoryId" : "0199252f-2d8c-7892-ada3-91600c780739",
+        ///        "categoryName" : "Категория 5",
+        ///     }
+        ///     
+        ///     PUT /BulletinCategory/01992529-1ec8-766f-a03d-a7ac4f0996b9
+        ///     {
+        ///        "parentCategoryId" : null,
+        ///        "categoryName" : "Категория 2",
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор категории, которую нужно обновить</param>
+        /// <param name="category">Формат данных изменения категории</param>
+        /// <returns>Базовый формат данных категории</returns>
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category)
@@ -54,6 +110,17 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(categoryDto);
         }
 
+        /// <summary>
+        /// Удалить категории
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     Delete /BulletinCategory/01992529-1ec8-766f-a03d-a7ac4f0996b9
+        ///
+        /// </remarks>
+        /// <param name="id">Идентификатор категории, которую нужно удалить</param>
+        /// <returns>true если все прошло успешно</returns>
         [HttpDelete]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,8 +130,17 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(isDeleted);
         }
 
+        /// <summary>
+        /// Получение всех категорий в их правильном иерархическом виде
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     Get /BulletinCategory
+        ///
+        /// </remarks>
+        /// <returns>Формат данных для вывода всех категорий в их правильном иерархическом виде</returns>
         [HttpGet]
-        [Route("All")]
         [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllBulletinCategory()
         {
@@ -72,19 +148,23 @@ namespace BulletinBoard.Hosts.Api.Controllers
             return Ok(categoryDto);
         }
 
-        [HttpGet]
-        [Route("SingleChain")]
+
+        /// <summary>
+        /// Получение одной карегории в виде древовидной струкруры от самого корня
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     Get /BulletinCategory/01992529-1ec8-766f-a03d-a7ac4f0996b9/SingleChain
+        ///
+        /// </remarks>
+        /// <returns>Формат данных для вывода одной карегории в виде древовидной струкруры от самого корня</returns>
+        [HttpGet("{id}/SingleChain")]
         [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetsingleBulletinCategory(Guid id)
         {
             var categoryDto = await _bulletinCategoryService.GetSingleAsync(id);
             return Ok(categoryDto);
         }
-
-
-
-
-
-
     }
 }

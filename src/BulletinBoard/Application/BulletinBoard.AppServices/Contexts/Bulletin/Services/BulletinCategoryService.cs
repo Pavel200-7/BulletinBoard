@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;

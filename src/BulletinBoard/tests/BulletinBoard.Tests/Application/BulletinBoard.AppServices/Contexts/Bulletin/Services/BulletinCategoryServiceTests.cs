@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -15,6 +16,8 @@ public class BulletinCategoryServiceTests
     private readonly Mock<IBulletinCategoryRepository> _mockRepo;
     private readonly Mock<IBulletinCategoryDtoValidatorFacade> _mockValidator;
     private readonly Mock<IBulletinCategorySpecificationBuilder> _mockSpecBuilder;
+    private readonly Mock<IBulletinCategoryMappingService> _mockMapper;
+
     private readonly BulletinCategoryService _service;
 
     public BulletinCategoryServiceTests()
@@ -22,11 +25,14 @@ public class BulletinCategoryServiceTests
         _mockRepo = new Mock<IBulletinCategoryRepository>();
         _mockValidator = new Mock<IBulletinCategoryDtoValidatorFacade>();
         _mockSpecBuilder = new Mock<IBulletinCategorySpecificationBuilder>();
+        _mockMapper = new Mock<IBulletinCategoryMappingService>();
+
 
         _service = new BulletinCategoryService(
             _mockRepo.Object,
             _mockValidator.Object,
-            _mockSpecBuilder.Object);
+            _mockSpecBuilder.Object,
+            _mockMapper.Object);
     }
 
     [Fact]

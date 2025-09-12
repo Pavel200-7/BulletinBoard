@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BulletinBoard.Hosts.Api</name>
+    </assembly>
+    <members>
+        <member name="M:BulletinBoard.Hosts.Api.Controllers.BulletinCategoryController.CreateBulletinCategory(BulletinBoard.Contracts.Bulletin.BulletinCategory.BulletinCategoryCreateDto)">
+             <summary>
+             Создание категории
+             </summary>
+             <remarks>
+             Пример запроса:
+            
+                 POST /Todo
+                 {
+                    "parentCategoryId" : "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "categoryName" : "Категория 1",
+                    "isLeafy": false
+                 }
+                 
+                 POST /Todo
+                 {
+                    "parentCategoryId" : null,
+                    "categoryName" : "Категория 2",
+                    "isLeafy": true
+                 }
+            
+             </remarks>
+             <param name="model">Категория</param>
+             <returns></returns>
+        </member>
+    </members>
+</doc>
