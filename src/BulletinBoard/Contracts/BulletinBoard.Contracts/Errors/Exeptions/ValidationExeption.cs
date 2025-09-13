@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Errors.Exeptions;
 
-namespace BulletinBoard.Contracts.Errors.Exeptions
+/// <summary>
+/// Ошибка ввода данных для создания или изменения сущности
+/// </summary>
+public class ValidationExeption : Exception
 {
-    public class ValidationExeption : Exception
-    {
-        public IDictionary<string, string[]> ValidationErrors { get; }
+    /// <summary>
+    /// Словарь, сопоставляющий поле и список его ошибок
+    /// </summary>
+    public IDictionary<string, string[]> ValidationErrors { get; }
 
-        public ValidationExeption(IDictionary<string, string[]> errors)
-            : base("Validation errors occurred.")
-        {
-            ValidationErrors = errors;
-        }
+    /// <inheritdoc/>
+    public ValidationExeption(IDictionary<string, string[]> errors)
+        : base("Validation errors occurred.")
+    {
+        ValidationErrors = errors;
     }
 }

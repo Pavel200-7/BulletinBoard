@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinRating;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinRating
+/// <summary>
+/// Базовый формат данных рейтинга объявления
+/// </summary>
+public class BulletinRatingDto
 {
-    public class BulletinRatingDto
-    {
-        public Guid BulletinId { get; set; }
+    /// <summary>
+    /// Id объявления
+    /// </summary>
+    public Guid BulletinId { get; set; }
 
-        public decimal Rating { get; set; }
+    /// <summary>
+    /// Рейтинг
+    /// </summary>
+    public decimal Rating { get; set; }
 
-        public int VievsCount { get; set; }
-    }
+    /// <summary>
+    /// Количество просмотров объявления
+    /// </summary>
+    public int VievsCount { get; set; }
 }

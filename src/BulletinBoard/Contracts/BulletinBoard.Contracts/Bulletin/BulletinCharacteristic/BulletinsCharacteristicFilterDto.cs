@@ -1,11 +1,10 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristic
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
+
+/// <summary>
+/// Формат данных для фильтрации характеристик по
+///     1. Требует доработки
+/// </summary>
+public class BulletinsCharacteristicFilterDto
 {
-    public class BulletinsCharacteristicFilterDto
-    {
-        public Guid BelletinId { get; set; }
-
-        public Guid CharacteristicNameId { get; set; }
-
-        public Guid CharacteristicValueId { get; set; }
-    }
+    // Требует доработки
 }

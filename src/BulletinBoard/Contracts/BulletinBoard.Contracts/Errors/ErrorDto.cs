@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿namespace BulletinBoard.Contracts.Errors;
 
-
-namespace BulletinBoard.Contracts.Errors
+/// <summary>
+/// ДТО вывода ошибок
+/// </summary>
+public class ErrorDto
 {
-    public class ErrorDto
-    {
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
-        public string TraceId { get; set; }
-    }
+    /// <summary>
+    /// Код ошибки
+    /// </summary>
+    public int StatusCode { get; set; }
+
+    /// <summary>
+    /// Сообщение об ошибке
+    /// </summary>
+    public string Message { get; set; }
+
+    /// <summary>
+    /// Id для полной трассировки в распределённой трассировке
+    /// </summary>
+    public string TraceId { get; set; }
 }

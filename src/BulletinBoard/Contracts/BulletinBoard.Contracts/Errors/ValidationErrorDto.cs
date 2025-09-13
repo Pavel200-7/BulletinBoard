@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿namespace BulletinBoard.Contracts.Errors;
 
-
-namespace BulletinBoard.Contracts.Errors
+/// <summary>
+/// Формат представления ошибок валидации
+/// </summary>
+public class ValidationErrorDto : Exception
 {
-    public class ValidationErrorDto : Exception
-    {
-        public int StatusCode { get; set; }
-        public IDictionary<string, string[]> Errors { get; set; }
-        public string TraceId { get; set; }
-    }
+    /// <summary>
+    /// Код ошибки
+    /// </summary>
+    public int StatusCode { get; set; }
+
+    /// <summary>
+    /// Список ошибок
+    /// </summary>
+    public IDictionary<string, string[]> Errors { get; set; }
+
+    /// <summary>
+    /// Id для полной трассировки в распределённой трассировке
+    /// </summary>
+    public string TraceId { get; set; }
 }

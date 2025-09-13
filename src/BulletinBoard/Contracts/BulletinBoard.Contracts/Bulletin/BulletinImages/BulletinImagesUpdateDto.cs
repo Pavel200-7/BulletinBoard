@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImages;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinImages
+/// <summary>
+/// Формат данных обновления изображения объявления
+/// </summary>
+public class BulletinImagesUpdateDto
 {
-    public class BulletinImagesUpdateDto : BulletinImagesCreateDto
-    {
-    }
+    // Требует доработки
 }

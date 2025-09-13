@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinRating;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinRating
+/// <summary>
+/// Формат данных одновления рейтинга объявления
+/// </summary>
+public class BulletinRatingUpdateDto : BulletinRatingCreateDto
 {
-    public class BulletinRatingUpdateDto : BulletinRatingCreateDto
-    {
-    }
+    // Требует доработки
 }

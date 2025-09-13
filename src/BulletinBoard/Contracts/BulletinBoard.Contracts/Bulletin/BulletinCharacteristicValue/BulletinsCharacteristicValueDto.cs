@@ -1,11 +1,22 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+
+/// <summary>
+/// Базовый формат данных возможного значений характеристики
+/// </summary>
+public class BulletinsCharacteristicValueDto
 {
-    public class BulletinsCharacteristicValueDto
-    {
-        public Guid Id { get; set; }
+    /// <summary>
+    /// Id возможного значения характеристики
+    /// </summary>
+    public Guid Id { get; set; }
 
-        public Guid ConnectedNameId { get; set; }
+    /// <summary>
+    /// Id характеристики
+    /// </summary>
+    public Guid ConnectedNameId { get; set; }
 
-        public string Value { get; set; }
-    }
+    /// <summary>
+    /// Возможное значение характеристики
+    /// </summary>
+    public string Value { get; set; }
 }

@@ -10,7 +10,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
 {
     public class BulletinImages : EntityBase
     {
-        [Key]
         public Guid Id { get; set; }
 
         public Guid BelletinId { get; set; }

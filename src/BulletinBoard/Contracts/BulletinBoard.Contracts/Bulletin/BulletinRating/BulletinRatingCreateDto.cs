@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinRating;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinRating
+/// <summary>
+/// Формат данных создания рейтинга объявления
+/// </summary>
+public class BulletinRatingCreateDto
 {
-    public class BulletinRatingCreateDto
-    {
-        public Guid BulletinId { get; set; }
-
-        public decimal Rating { get; set; }
-
-        public int VievsCount { get; set; }
-    }
+    /// <summary>
+    /// Id объявления
+    /// </summary>
+    public Guid BulletinId { get; set; }
 }

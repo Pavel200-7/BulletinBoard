@@ -1,9 +1,10 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue
-{
-    public class BulletinsCharacteristicValueFilterDto
-    {
-        public Guid ConnectedNameId { get; set; }
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 
-        public string Value { get; set; }
-    }
+/// <summary>
+/// Формат данных для фильтрации данных возможного значения характеристики по
+///     1. Требует доработки
+/// </summary>
+public class BulletinsCharacteristicValueFilterDto
+{
+    // Требует доработки
 }

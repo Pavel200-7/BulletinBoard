@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Domain.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
     {
         public Guid Id { get; set; }
 
-        public Guid BelletinId { get; set; }
-
-        public Guid CharacteristicNameId { get; set; }
-
-        public Guid CharacteristicValueId { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
 {
     public class BulletinCharacteristicValue : EntityBase
     {
-        [Key]
         public Guid Id { get; set; }
 
         public Guid ConnectedNameId { get; set; }

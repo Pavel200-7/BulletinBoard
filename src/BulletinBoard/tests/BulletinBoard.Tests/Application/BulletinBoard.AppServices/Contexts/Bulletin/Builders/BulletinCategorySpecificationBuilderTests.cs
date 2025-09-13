@@ -176,7 +176,7 @@ public class BulletinCategorySpecificationBuilderTests
 
         // Act
         var spec = _specificationBuilder
-            .WhereCategoryName(null)
+            .WhereCategoryName("")
             .Build();
 
         // Assert

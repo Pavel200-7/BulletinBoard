@@ -11,7 +11,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
 {
     public class BelletinMain : EntityBase 
     {
-        [Key]
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }

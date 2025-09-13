@@ -10,7 +10,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin
 {
     public class BulletinRating : EntityBase
     {
-        [Key]
         public Guid BulletinId { get; set; }
 
         public decimal Rating { get; set; }

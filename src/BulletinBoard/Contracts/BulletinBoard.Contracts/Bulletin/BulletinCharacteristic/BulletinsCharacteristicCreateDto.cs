@@ -1,11 +1,12 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristic
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
+
+/// <summary>
+/// Формат данных создания характеристики
+/// </summary>
+public class BulletinsCharacteristicCreateDto
 {
-    public class BulletinsCharacteristicCreateDto
-    {
-        public Guid BelletinId { get; set; }
-
-        public Guid CharacteristicNameId { get; set; }
-
-        public Guid CharacteristicValueId { get; set; }
-    }
+    /// <summary>
+    /// Наименование характеристики
+    /// </summary>
+    public string Name { get; set; }
 }

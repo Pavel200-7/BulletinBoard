@@ -1,7 +1,9 @@
 ﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 /// <summary>
-/// Формат данных для фильтрации категории по id родительской и (или) по названию
+/// Формат данных для фильтрации категории по:
+///     1. id родительской категории.
+///     2. Названию.
 /// </summary>
 public class BulletinCategoryFilterDto
 {

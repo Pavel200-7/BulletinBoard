@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinRating;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinRating
+/// <summary>
+/// Формат данных для фильтрации рейтинга объявления по
+///     1. Требует доработки
+/// </summary>
+public class BulletinRatingFilterDto
 {
-    public class BulletinRatingFilterDto
-    {
-        public Guid BulletinId { get; set; }
-
-        public decimal Rating { get; set; }
-
-        public int VievsCount { get; set; }
-    }
+    // Требует доработки
 }

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImages;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinImages
+
+/// <summary>
+/// Формат данных для фильтрации данных изображения объявления по
+///     1. Требует доработки
+/// </summary>
+public class BulletinImagesFilterDto
 {
-    public class BulletinImagesFilterDto
-    {
-
-        public Guid BelletinId { get; set; }
-
-        public bool IsMain { get; set; }
-
-        public string Name { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-
-    }
+    // Требует доработки
 }
