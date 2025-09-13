@@ -8,7 +8,7 @@ public class BelletinMainCreateDto
     /// <summary>
     /// Id пользователя - создателя
     /// </summary>
-    public Guid UserId { get; set; }
+    public Guid BulletinUserId { get; set; }
 
     /// <summary>
     /// Заголовок объявления

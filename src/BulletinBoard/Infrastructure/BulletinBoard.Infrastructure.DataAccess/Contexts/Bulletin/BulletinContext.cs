@@ -26,6 +26,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
         }
 
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
+        public DbSet<BulletinImage> BulletinImage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,8 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
             OnModelCreatingPartial(modelBuilder);
 
             new BulletinCategoryEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinCategory>());
+            new BulletinImageEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinImage>());
+
 
 
 

@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry
+
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+
+public class BulletinRatingRepository : BulletinBaseRepository, IBulletinRatingRepository
 {
-    public class BulletinRatingRepository : BulletinBaseRepository, IBulletinRatingRepository
+    public BulletinRatingRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
     {
-        public BulletinRatingRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
-        {
-        }
     }
 }

@@ -1,17 +1,22 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImages;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImage;
 
 /// <summary>
-/// Формат данных добавления изображения объявления
+/// Базовый формат данных изображения объявления
 /// </summary>
-public class BulletinImagesCreateDto
+public class BulletinImageDto
 {
+    /// <summary>
+    /// Id изображения объявления
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Id объявления
     /// </summary>
     public Guid BelletinId { get; set; }
 
     /// <summary>
-    /// Является ли изображение главным (то есть отображется ли в превью)
+    /// Является ли изображение титульным 
     /// </summary>
     public bool IsMain { get; set; }
 

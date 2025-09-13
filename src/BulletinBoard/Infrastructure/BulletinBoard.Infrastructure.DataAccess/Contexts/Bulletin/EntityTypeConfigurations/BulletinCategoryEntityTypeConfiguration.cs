@@ -1,30 +1,49 @@
 ﻿using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.EntityTypeConfigurations
+
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.EntityTypeConfigurations;
+
+public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<BulletinCategory>
 {
-    public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<BulletinCategory>
+    public void Configure(EntityTypeBuilder<BulletinCategory> builder)
     {
-        public void Configure(EntityTypeBuilder<BulletinCategory> builder)
-        {
 
-            builder.ToTable("BulletinCategory");
+        builder.ToTable("BulletinCategory");
 
-            builder.HasKey(c => c.Id);
+        builder.HasKey(c => c.Id);
 
-            builder
-                .HasMany(c => c.ChildrenCategories)
-                .WithOne(c => c.ParentCategory)
-                .HasForeignKey(c => c.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+        builder.Property(c => c.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(c => c.ParentCategoryId)
+            .IsRequired(false);
+
+        builder.Property(c => c.CategoryName)
+            .HasColumnType("varchar(50)")
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(c => c.IsLeafy)
+            .HasColumnType("bool")
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder
+            .HasMany(c => c.ChildrenCategories)
+            .WithOne(c => c.ParentCategory)
+            .HasForeignKey(c => c.ParentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Чтобы связь была явной
+        builder
+            .HasOne(c => c.ParentCategory)
+            .WithMany(c => c.ChildrenCategories)
+            .HasForeignKey(c => c.ParentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(c => c.ParentCategoryId)
+            .HasDatabaseName("IX_BulletinCategory_ParentCategoryId");
     }
 }

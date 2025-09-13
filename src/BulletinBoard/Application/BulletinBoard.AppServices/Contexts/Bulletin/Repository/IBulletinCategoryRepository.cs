@@ -21,7 +21,7 @@ public interface IBulletinCategoryRepository
     /// Получить список категорий по фильтру.
     /// </summary>
     /// <param name="specification">Расширенная спецификация для фильтрации.</param>
-    /// <returns>Коллекция базовый формат данных категории.</returns>
+    /// <returns>Коллекция данных базового формата данных категории.</returns>
     public Task<IReadOnlyCollection<BulletinCategoryDto>> FindAsync(ExtendedSpecification<BulletinCategory> specification);
 
     /// <summary>

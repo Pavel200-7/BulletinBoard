@@ -13,14 +13,12 @@ abstract public class BulletinBaseRepository
 {
     protected readonly BulletinContext _context;
     protected readonly IMapper _mapper;
-    protected readonly DbSet<BulletinCategory> _dbSet;
 
     /// <inheritdoc/>
     public BulletinBaseRepository(BulletinContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _dbSet = context.Set<BulletinCategory>();
     }
 
     /// <inheritdoc/>

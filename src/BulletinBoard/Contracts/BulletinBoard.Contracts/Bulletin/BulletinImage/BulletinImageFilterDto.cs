@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImages;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinImage;
 
 
 /// <summary>

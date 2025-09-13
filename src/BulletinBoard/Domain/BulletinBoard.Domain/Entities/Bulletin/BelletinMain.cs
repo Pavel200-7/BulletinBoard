@@ -13,7 +13,7 @@ namespace BulletinBoard.Domain.Entities.Bulletin
     {
         public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid BulletinUserId { get; set; }
 
         public string Title { get; set; }
 

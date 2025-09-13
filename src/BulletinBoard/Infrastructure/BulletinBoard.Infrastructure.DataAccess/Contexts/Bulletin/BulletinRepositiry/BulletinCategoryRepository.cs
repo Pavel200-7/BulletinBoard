@@ -6,7 +6,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
@@ -14,15 +14,18 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
 /// <inheritdoc/>
 public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCategoryRepository
 {
+    protected readonly DbSet<BulletinCategory> _dbSet;
+
     /// <inheritdoc/>
     public BulletinCategoryRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
     {
+        _dbSet = context.Set<BulletinCategory>();
     }
 
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto?> GetByIdAsync(Guid id)
     {
-        var category = await _context.BulletinCategory
+        BulletinCategory? category = await _context.BulletinCategory
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id); 
 
@@ -34,7 +37,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
     /// <inheritdoc/>
     public async Task<IReadOnlyCollection<BulletinCategoryDto>> FindAsync(ExtendedSpecification<BulletinCategory> specification)
     {
-        var query = _dbSet.AsQueryable();
+        IQueryable<BulletinCategory> query = _dbSet.AsQueryable();
 
         query = query.ApplyExtendedSpecification(specification);
 
@@ -47,7 +50,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
     public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
     {
         BulletinCategory category = _mapper.Map<BulletinCategory>(categoryDto);
-        var categoryEntry = await _context.AddAsync(category);
+        EntityEntry<BulletinCategory> categoryEntry = await _context.AddAsync(category);
         category = categoryEntry.Entity;
         BulletinCategoryDto bulletinCategoryDto = _mapper.Map<BulletinCategoryDto>(category);
 
@@ -57,7 +60,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto?> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
     {
-        var category = await _context.BulletinCategory
+        BulletinCategory? category = await _context.BulletinCategory
             .FirstOrDefaultAsync(c => c.Id == id);
 
         if (category == null) { return null; }
@@ -70,7 +73,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var category = await _context.BulletinCategory
+        BulletinCategory? category = await _context.BulletinCategory
             .FirstOrDefaultAsync(c => c.Id == id);
 
         if (category == null) return false;

@@ -13,7 +13,7 @@ public class BelletinMainDto
     /// <summary>
     /// Id пользователя - создателя
     /// </summary>
-    public Guid UserId { get; set; }
+    public Guid BulletinUserId { get; set; }
 
     /// <summary>
     /// Заголовок объявления
@@ -27,7 +27,7 @@ public class BelletinMainDto
 
     /// <summary>
     /// Id категории, к которой относится объявление
-    /// </summary>
+    /// </summary>}
     public Guid CategoryId { get; set; }
 
     /// <summary>
@@ -53,5 +53,5 @@ public class BelletinMainDto
     /// <summary>
     /// Скрато ли от просмотра по причине блокировки со стороны администрации
     /// </summary>
-    public bool Blocked { get; set; }
+    public bool Blocked { get; set; 
 }
