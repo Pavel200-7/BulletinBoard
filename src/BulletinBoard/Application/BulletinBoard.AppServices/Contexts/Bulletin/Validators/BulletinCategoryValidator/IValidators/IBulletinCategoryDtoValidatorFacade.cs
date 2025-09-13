@@ -4,9 +4,18 @@ using FluentValidation.Results;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 
+/// <summary>
+/// Класс, предоставляющий единый интерфейс для валидации разных ДТО сущности BulletinCategory
+/// </summary>
 public interface IBulletinCategoryDtoValidatorFacade
 {
+    /// <summary>
+    /// Вызов валидатора BulletinCategoryCreateDto
+    /// </summary>
     public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto);
 
+    /// <summary>
+    /// Вызов валидатора BulletinCategoryUpdateDto
+    /// </summary>
     public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto);
 }

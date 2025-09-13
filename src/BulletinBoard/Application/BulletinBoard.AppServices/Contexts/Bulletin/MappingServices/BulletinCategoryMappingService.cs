@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.MappingServices;
 
+/// <inheritdoc/>
 public class BulletinCategoryMappingService : IBulletinCategoryMappingService
 {
+    /// <inheritdoc/>
     public Task<BulletinCategoryReadAllDto> ConvertToBulletinCategoryReadAllDto(IReadOnlyCollection<BulletinCategoryDto> categories)
     {
         var root = CreateRootReadAllDtoNode();
@@ -66,12 +68,9 @@ public class BulletinCategoryMappingService : IBulletinCategoryMappingService
         };
     }
 
-
-
+    /// <inheritdoc/>
     public Task<BulletinCategoryReadSingleDto> ConvertToBulletinCategoryReadSingleDto(IReadOnlyCollection<BulletinCategoryDto> categoriesChain)
     {
-        if (!categoriesChain.Any()) { return Task.FromResult<BulletinCategoryReadSingleDto>(null); }
-
         var reversedChain = categoriesChain.Reverse().ToList();
         BulletinCategoryReadSingleDto root = MapToReadSingleDto(reversedChain[0]);
         BulletinCategoryReadSingleDto current = root;

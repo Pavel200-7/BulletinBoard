@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry
 {
-    public class BulletinsCharacteristicName : BulletinBaseRepository, IBulletinsCharacteristicName
+    public class BulletinsCharacteristicName : BulletinBaseRepository, IBulletinsCharacteristicNameRepository
     {
         public BulletinsCharacteristicName(BulletinContext context, IMapper mapper) : base(context, mapper)
         {

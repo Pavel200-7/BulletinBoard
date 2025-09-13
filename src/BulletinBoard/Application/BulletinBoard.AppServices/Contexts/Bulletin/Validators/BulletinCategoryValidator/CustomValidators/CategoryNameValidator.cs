@@ -8,13 +8,21 @@ using FluentValidation.Validators;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators;
 
+/// <summary>
+/// Класс берущий на себя задачу валидации данных по 
+/// ограничениям, проверка которых требует обращения к БД.
+/// </summary>
 public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
 {
+    /// <summary>
+    /// Название валидатора
+    /// </summary>
     public override string Name => "CategoryNameValidator";
 
     private readonly IBulletinCategoryRepository _categoryRepository;
     private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
+    /// <inheritdoc/>
     public CategoryNameValidator
         (
         IBulletinCategoryRepository categoryRepository, 
@@ -25,6 +33,9 @@ public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
         _specificationBuilder = specificationBuilder;
     }
 
+    /// <summary>
+    /// Валидация 
+    /// </summary>
     public override async Task<bool> IsValidAsync(ValidationContext<T> context, string categoryName, CancellationToken cancellation)
     {
         ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
@@ -42,6 +53,9 @@ public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
         return true;
     }
 
+    /// <summary>
+    /// Базовое сообщение об ошибке 
+    /// </summary>
     protected override string GetDefaultMessageTemplate(string errorCode)
     => "{Error}";
 }

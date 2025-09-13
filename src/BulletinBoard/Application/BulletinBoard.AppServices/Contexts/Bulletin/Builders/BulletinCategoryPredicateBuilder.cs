@@ -5,17 +5,20 @@ using BulletinBoard.Domain.Entities.Bulletin;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
+/// <inheritdoc/>
 public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificationBuilder
 {
 
     private CompositeExtendedSpecification<BulletinCategory> _specification;
 
+    /// <inheritdoc/>
     public BulletinCategorySpecificationBuilder()
     {
         _specification = new();
     }
 
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder WhereParentId(Guid? parentId)
     {
         if (parentId != null)
@@ -30,6 +33,7 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder WhereCategoryName(string categoryName)
     {
 
@@ -41,6 +45,7 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder WhereCategoryNameContains(string categoryName)
     {
 
@@ -52,12 +57,14 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder WhereIsLeafy(bool isLeafy = true)
     {
         _specification.Add(c => c.IsLeafy == isLeafy);
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByCategoryName(bool ascending = true)
     {
         if (ascending)
@@ -73,6 +80,7 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByIsLeafy(bool ascending = true)
     {
         if (ascending)
@@ -88,6 +96,7 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder Paginate(int pageNumber = 1, int pageSize = 10)
     {
         if (pageNumber < 1) pageNumber = 1;
@@ -98,6 +107,7 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         return this;
     }
 
+    /// <inheritdoc/>
     public ExtendedSpecification<BulletinCategory> Build()
     {
         return _specification;

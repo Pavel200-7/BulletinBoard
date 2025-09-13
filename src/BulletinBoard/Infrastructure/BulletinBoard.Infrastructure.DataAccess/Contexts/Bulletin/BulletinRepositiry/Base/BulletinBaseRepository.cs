@@ -4,24 +4,28 @@ using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
+
+/// <summary>
+/// Базовый класс для создания репозиториев домена Bulletin
+/// </summary>
+abstract public class BulletinBaseRepository
 {
-    abstract public class BulletinBaseRepository
+    protected readonly BulletinContext _context;
+    protected readonly IMapper _mapper;
+    protected readonly DbSet<BulletinCategory> _dbSet;
+
+    /// <inheritdoc/>
+    public BulletinBaseRepository(BulletinContext context, IMapper mapper)
     {
-        protected readonly BulletinContext _context;
-        protected readonly IMapper _mapper;
-        protected readonly DbSet<BulletinCategory> _dbSet;
+        _context = context;
+        _mapper = mapper;
+        _dbSet = context.Set<BulletinCategory>();
+    }
 
-        public BulletinBaseRepository(BulletinContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-            _dbSet = context.Set<BulletinCategory>();
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+    /// <inheritdoc/>
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

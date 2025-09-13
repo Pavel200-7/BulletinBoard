@@ -1,5 +1,12 @@
-﻿public static class SwaggerExtensions
+﻿/// <summary>
+/// Класс для настройки свагера
+/// </summary>
+public static class SwaggerExtensions
 {
+    /// <summary>
+    /// Метод для подключения документации.
+    /// </summary>
+    /// <param name="services"></param>
     public static void AddSwaggerWithXmlComments(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>

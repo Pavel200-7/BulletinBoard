@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+
 
 namespace BulletinBoard.AppServices.Specification.LogicalOperations;
 
+/// <summary>
+/// Спецификация для логического И между двумя условиями.
+/// </summary>
 public class OrSpecification<T> : Specification<T>
 {
     private readonly Specification<T> _left;
     private readonly Specification<T> _right;
 
+    /// <inheritdoc/>
     public OrSpecification(Specification<T> left, Specification<T> right)
     {
         _left = left;
         _right = right;
     }
 
+    /// <inheritdoc/>
     public override Expression<Func<T, bool>> ToExpression()
     {
         Expression<Func<T, bool>> leftExpression = _left.ToExpression();

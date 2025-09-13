@@ -11,12 +11,15 @@ using System.Threading;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
+/// <inheritdoc/>
 public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCategoryRepository
 {
+    /// <inheritdoc/>
     public BulletinCategoryRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
     {
     }
 
+    /// <inheritdoc/>
     public async Task<BulletinCategoryDto?> GetByIdAsync(Guid id)
     {
         var category = await _context.BulletinCategory
@@ -28,6 +31,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
         return _mapper.Map<BulletinCategoryDto>(category);
     }
 
+    /// <inheritdoc/>
     public async Task<IReadOnlyCollection<BulletinCategoryDto>> FindAsync(ExtendedSpecification<BulletinCategory> specification)
     {
         var query = _dbSet.AsQueryable();
@@ -39,6 +43,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
             .ToListAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
     {
         BulletinCategory category = _mapper.Map<BulletinCategory>(categoryDto);
@@ -49,7 +54,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
         return bulletinCategoryDto;
     }
 
-
+    /// <inheritdoc/>
     public async Task<BulletinCategoryDto?> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
     {
         var category = await _context.BulletinCategory
@@ -62,6 +67,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
         return _mapper.Map<BulletinCategoryDto>(category);
     }
 
+    /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
         var category = await _context.BulletinCategory

@@ -5,17 +5,28 @@ using FluentValidation.Validators;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.CustomValidators;
 
+/// <summary>
+/// Класс берущий на себя задачу валидации данных по 
+/// ограничениям, проверка которых требует обращения к БД.
+/// </summary>
 public class ParentCategoryValidator<T> : AsyncPropertyValidator<T, Guid?>
 {
+    /// <summary>
+    /// Название валидатора
+    /// </summary>
     public override string Name => "ParentCategoryValidator";
 
     private readonly IBulletinCategoryRepository _categoryRepository;
 
+    /// <inheritdoc/>
     public ParentCategoryValidator(IBulletinCategoryRepository categoryRepository)
     {
         _categoryRepository = categoryRepository;
     }
 
+    /// <summary>
+    /// Валидация 
+    /// </summary>
     public override async Task<bool> IsValidAsync(ValidationContext<T> context, Guid? parentId, CancellationToken cancellation)
     {
         // Если parentId null - validation passes
@@ -41,6 +52,9 @@ public class ParentCategoryValidator<T> : AsyncPropertyValidator<T, Guid?>
         return true;
     }
 
+    /// <summary>
+    /// Базовое сообщение об ошибке 
+    /// </summary>
     protected override string GetDefaultMessageTemplate(string errorCode)
         => "{Error}";
 }

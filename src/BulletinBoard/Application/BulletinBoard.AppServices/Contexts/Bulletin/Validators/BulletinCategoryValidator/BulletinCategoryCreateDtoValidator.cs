@@ -8,12 +8,13 @@ using FluentValidation;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 
+/// <inheritdoc/>
 public sealed class BulletinCategoryCreateDtoValidator : AbstractValidator<BulletinCategoryCreateDto>, IBulletinCategoryCreateDtoValidator
 {
     private readonly IBulletinCategoryRepository _categoryRepository;
     private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
 
-
+    /// <inheritdoc/>
     public BulletinCategoryCreateDtoValidator
         (
             IBulletinCategoryRepository categoryRepository,
