@@ -23,7 +23,7 @@ public interface IBulletinUserRepository
     /// </summary>
     /// <param name="specification">Расширенная спецификация для фильтрации.</param>
     /// <returns>Коллекция базового формата данных пользователя - владельца объявления.</returns>
-    public Task<IReadOnlyCollection<BulletinUserDto>> FindAsync(ExtendedSpecification<BulletinMain> specification);
+    public Task<IReadOnlyCollection<BulletinUserDto>> FindAsync(ExtendedSpecification<BulletinUser> specification);
 
     /// <summary>
     /// Добавить нового пользователя - создателя объявления.
