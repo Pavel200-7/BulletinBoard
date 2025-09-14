@@ -3,7 +3,7 @@
 /// <summary>
 /// Формат данных создания характеристики
 /// </summary>
-public class BulletinsCharacteristicCreateDto
+public class BulletinCharacteristicCreateDto
 {
     /// <summary>
     /// Наименование характеристики

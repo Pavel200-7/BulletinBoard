@@ -12,7 +12,7 @@ public interface IBulletinImageRepository
     /// <summary>
     /// Получить данные изображения по идентификатору.
     /// </summary>
-    /// <param name="id">Id категории.</param>
+    /// <param name="id">Id изображения.</param>
     /// <returns>Базовый формат данных изображения объявления.</returns>
     public Task<BulletinImageDto?> GetByIdAsync(Guid id);
 
@@ -41,7 +41,7 @@ public interface IBulletinImageRepository
     /// <summary>
     /// Удалить изображение по идентификатору.
     /// </summary>
-    /// <param name="id">Id категории.</param>
+    /// <param name="id">Id изображения.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
 

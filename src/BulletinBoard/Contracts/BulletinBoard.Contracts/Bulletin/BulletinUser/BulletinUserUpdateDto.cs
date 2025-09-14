@@ -1,7 +1,7 @@
 ﻿namespace BulletinBoard.Contracts.Bulletin.BulletinUser;
 
 /// <summary>
-/// Формат данных обновсления пользователя - владельца объявления
+/// Формат данных обновления пользователя - владельца объявления
 /// </summary>
 public class BulletinUserUpdateDto
 {

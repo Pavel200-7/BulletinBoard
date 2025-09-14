@@ -28,5 +28,5 @@ public class BulletinCharacteristicValue : EntityBase
     /// где была использована данная сущность.
     /// Использоваться оно не будет, но лучше указать его наличие явно.
     /// </summary>
-    public List<BulletinCharacteristicСomparison> CharacteristicСomparisons { get; set; }
+    public List<BulletinCharacteristicComparison> CharacteristicСomparisons { get; set; }
 }

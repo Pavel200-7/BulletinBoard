@@ -1,9 +1,9 @@
 ﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
 
 /// <summary>
-/// Базовый формат характеристики
+/// Базовый формат данных характеристики
 /// </summary>
-public class BulletinsCharacteristicDto
+public class BulletinCharacteristicDto
 {
     /// <summary>
     /// Id характеристики

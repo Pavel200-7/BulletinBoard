@@ -33,7 +33,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         public DbSet<BulletinCharacteristicValue> BulletinCharacteristicValue { get; set; }
 
-        public DbSet<BulletinCharacteristicСomparison> BulletinCharacteristicСomparison { get; set; }
+        public DbSet<BulletinCharacteristicComparison> BulletinCharacteristicСomparison { get; set; }
 
         public DbSet<BulletinImage> BulletinImage { get; set; }
 
@@ -55,7 +55,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
             new BulletinCharacteristicValueEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinCharacteristicValue>());
 
-            new BulletinCharacteristicСomparisonEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinCharacteristicСomparison>());
+            new BulletinCharacteristicComparisonEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinCharacteristicComparison>());
 
             new BulletinImageEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinImage>());
 

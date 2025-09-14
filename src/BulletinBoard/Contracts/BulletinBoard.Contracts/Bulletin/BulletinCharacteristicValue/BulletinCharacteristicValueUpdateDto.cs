@@ -3,7 +3,7 @@
 /// <summary>
 /// Формат данных обновления данных возможного значения характеристики
 /// </summary>
-public class BulletinsCharacteristicValueUpdateDto
+public class BulletinCharacteristicValueUpdateDto
 {
     /// <summary>
     /// Возможное значение характеристики

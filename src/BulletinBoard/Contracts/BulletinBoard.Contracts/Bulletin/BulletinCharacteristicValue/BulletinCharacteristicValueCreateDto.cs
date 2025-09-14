@@ -1,15 +1,10 @@
 ﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 
 /// <summary>
-/// Базовый формат данных возможного значений характеристики
+/// Формат данных создания данных возможного значения характеристики
 /// </summary>
-public class BulletinsCharacteristicValueDto
+public class BulletinCharacteristicValueCreateDto
 {
-    /// <summary>
-    /// Id возможного значения характеристики
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// Id характеристики
     /// </summary>

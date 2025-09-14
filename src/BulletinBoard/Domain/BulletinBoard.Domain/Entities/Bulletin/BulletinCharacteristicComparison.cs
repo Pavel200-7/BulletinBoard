@@ -7,7 +7,7 @@ namespace BulletinBoard.Domain.Entities.Bulletin;
 /// <summary>
 /// Сущность для сопоставления объявления и всех его характеристик
 /// </summary>
-public class BulletinCharacteristicСomparison : EntityBase
+public class BulletinCharacteristicComparison : EntityBase
 {
     /// <summary>
     /// Id объявления

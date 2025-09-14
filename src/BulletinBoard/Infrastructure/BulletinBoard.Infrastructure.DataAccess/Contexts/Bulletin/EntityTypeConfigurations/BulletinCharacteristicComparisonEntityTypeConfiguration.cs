@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.EntityTypeConfigurations;
 
-public class BulletinCharacteristicСomparisonEntityTypeConfiguration : IEntityTypeConfiguration<BulletinCharacteristicСomparison>
+public class BulletinCharacteristicComparisonEntityTypeConfiguration : IEntityTypeConfiguration<BulletinCharacteristicComparison>
 {
-    public void Configure(EntityTypeBuilder<BulletinCharacteristicСomparison> builder)
+    public void Configure(EntityTypeBuilder<BulletinCharacteristicComparison> builder)
     {
-        builder.ToTable("BulletinCharacteristicСomparison");
+        builder.ToTable("BulletinCharacteristicComparison");
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Id)
@@ -47,16 +47,16 @@ public class BulletinCharacteristicСomparisonEntityTypeConfiguration : IEntityT
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(c => c.BulletinId)
-        .HasDatabaseName("IX_BulletinCharacteristicСomparison_BulletinId");
+        .HasDatabaseName("IX_BulletinCharacteristicComparison_BulletinId");
 
         builder.HasIndex(c => c.CharacteristicId)
-            .HasDatabaseName("IX_BulletinCharacteristicСomparison_CharacteristicId");
+            .HasDatabaseName("IX_BulletinCharacteristicComparison_CharacteristicId");
 
         builder.HasIndex(c => c.CharacteristicValueId)
-            .HasDatabaseName("IX_BulletinCharacteristicСomparison_CharacteristicValueId");
+            .HasDatabaseName("IX_BulletinCharacteristicComparison_CharacteristicValueId");
 
         builder.HasIndex(c => new { c.BulletinId, c.CharacteristicId })
-            .HasDatabaseName("IX_BulletinCharacteristicСomparison_BulletinId_CharacteristicId")
+            .HasDatabaseName("IX_BulletinCharacteristicComparison_BulletinId_CharacteristicId")
             .IsUnique();
     }
 }

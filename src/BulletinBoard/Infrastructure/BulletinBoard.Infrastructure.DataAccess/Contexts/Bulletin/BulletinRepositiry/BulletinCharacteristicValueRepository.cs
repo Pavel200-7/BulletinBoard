@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
-public class BulletinCharacteristicValueRepository : BulletinBaseRepository, IBulletinsCharacteristicValueRepository
+public class BulletinCharacteristicValueRepository : BulletinBaseRepository, IBulletinCharacteristicValueRepository
 {
     protected readonly DbSet<BulletinCharacteristicValue> _dbSet;
 

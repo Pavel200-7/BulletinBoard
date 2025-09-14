@@ -3,7 +3,7 @@
 /// <summary>
 /// Базовый формат данных сопоставления характеристики с объявлением
 /// </summary>
-public class BulletinsCharacteristicСomparisonDto
+public class BulletinCharacteristicComparisonDto
 {
     /// <summary>
     /// Id сопоставления объявления и характеристики

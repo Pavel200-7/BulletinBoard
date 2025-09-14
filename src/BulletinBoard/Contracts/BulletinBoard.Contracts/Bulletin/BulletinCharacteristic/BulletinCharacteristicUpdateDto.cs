@@ -3,7 +3,7 @@
 /// <summary>
 /// Формат данных обновления характеристики
 /// </summary>
-public class BulletinsCharacteristicUpdateDto 
+public class BulletinCharacteristicUpdateDto 
 {
     /// <summary>
     /// Наименование характеристики

@@ -4,7 +4,7 @@
 /// Формат данных для фильтрации данных сопоставления характеристики с объявлением по
 ///     1. Требует доработки
 /// </summary>
-public class BulletinsCharacteristicСomparisonFilterDto
+public class BulletinCharacteristicComparisonFilterDto
 {
     // Требует доработки
 }

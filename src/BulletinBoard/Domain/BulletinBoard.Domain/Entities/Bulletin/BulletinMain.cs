@@ -66,7 +66,7 @@ public class BulletinMain : EntityBase
     /// <summary>
     /// Навигационное свойство для доступа к списку характеристик объявления
     /// </summary>
-    public List<BulletinCharacteristicСomparison> Characteristics { get; set; }
+    public List<BulletinCharacteristicComparison> Characteristics { get; set; }
 
     /// <summary>
     /// Навигационное свойство для доступа к рейтингу
