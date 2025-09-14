@@ -27,7 +27,7 @@ public class BulletinCategoryRepository : BulletinBaseRepository, IBulletinCateg
     {
         BulletinCategory? category = await _context.BulletinCategory
             .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == id); 
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (category == null) return null;
 

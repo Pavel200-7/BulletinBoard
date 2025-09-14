@@ -4,7 +4,7 @@
 /// Формат данных для фильтрации объявления по
 ///     1. Требует доработки
 /// </summary>
-public class BelletinMainFilterDto
+public class BulletinMainFilterDto
 {
     // Требует доработки
 }

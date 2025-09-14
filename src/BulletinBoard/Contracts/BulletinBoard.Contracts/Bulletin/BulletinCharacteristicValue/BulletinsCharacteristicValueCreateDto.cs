@@ -8,7 +8,7 @@ public class BulletinsCharacteristicValueCreateDto
     /// <summary>
     /// Id характеристики
     /// </summary>
-    public Guid ConnectedNameId { get; set; }
+    public Guid CharacteristicId { get; set; }
 
     /// <summary>
     /// Возможное значение характеристики

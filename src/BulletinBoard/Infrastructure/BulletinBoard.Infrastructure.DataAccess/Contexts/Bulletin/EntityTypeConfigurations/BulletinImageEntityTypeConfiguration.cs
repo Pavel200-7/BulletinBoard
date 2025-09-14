@@ -9,19 +9,23 @@ public class BulletinImageEntityTypeConfiguration : IEntityTypeConfiguration<Bul
 {
     public void Configure(EntityTypeBuilder<BulletinImage> builder)
     {
-
         builder.ToTable("BulletinImage");
-
         builder.HasKey(i => i.Id);
 
         builder.Property(i => i.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Property(i => i.BelletinId)
             .IsRequired();
 
+        builder.Property(i => i.BulletinId)
+            .IsRequired();
+
+        builder
+           .HasOne(i => i.Bulletin)
+           .WithMany(b => b.Images)
+           .HasForeignKey(i => i.BulletinId)
+           .OnDelete(DeleteBehavior.Cascade);
+
         builder.Property(i => i.IsMain)
-            .HasColumnType("bool")
+            .HasColumnType("boolean")
             .IsRequired()
             .HasDefaultValue(false);
 
@@ -34,12 +38,7 @@ public class BulletinImageEntityTypeConfiguration : IEntityTypeConfiguration<Bul
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();
 
-        builder.Property(i => i.Path)
-            .HasColumnType("varchar(500)") 
-            .HasMaxLength(500)
-            .IsRequired();
-
-        builder.HasIndex(i => i.BelletinId)
+        builder.HasIndex(i => i.BulletinId)
             .HasDatabaseName("IX_BulletinImage_BelletinId");
     }
 }

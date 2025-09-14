@@ -14,4 +14,9 @@ public class BulletinsCharacteristicDto
     /// Наименование характеристики
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Id Категории объявления
+    /// </summary>
+    public Guid CategoryId { get; set; }
 }

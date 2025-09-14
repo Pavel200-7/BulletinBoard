@@ -6,14 +6,16 @@
 public class BulletinImageDto
 {
     /// <summary>
-    /// Id изображения объявления
+    /// Id изображения.
+    /// Является копией id изображения из другого домена,
+    /// который предназначен для храния изображений в BLOB полях БД.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
     /// Id объявления
     /// </summary>
-    public Guid BelletinId { get; set; }
+    public Guid BulletinId { get; set; }
 
     /// <summary>
     /// Является ли изображение титульным 
@@ -29,9 +31,4 @@ public class BulletinImageDto
     /// Время создания
     /// </summary>
     public DateTime CreatedAt { get; set; }
-
-    /// <summary>
-    /// Некоторый путь к изображению
-    /// </summary>
-    public string Path { get; set; }
 }

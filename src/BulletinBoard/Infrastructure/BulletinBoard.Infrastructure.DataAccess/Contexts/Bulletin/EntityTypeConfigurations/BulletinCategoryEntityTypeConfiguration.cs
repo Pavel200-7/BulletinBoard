@@ -9,9 +9,7 @@ public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<BulletinCategory> builder)
     {
-
         builder.ToTable("BulletinCategory");
-
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Id)
@@ -26,7 +24,7 @@ public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<
             .IsRequired();
 
         builder.Property(c => c.IsLeafy)
-            .HasColumnType("bool")
+            .HasColumnType("boolean")
             .IsRequired()
             .HasDefaultValue(false);
 
@@ -43,7 +41,24 @@ public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasForeignKey(c => c.ParentCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder
+            .HasMany(c => c.Characteristics)
+            .WithOne(c => c.Category)
+            .HasForeignKey(c => c.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .HasMany(c => c.Bulletins)
+            .WithOne(c => c.Category)
+            .HasForeignKey(c => c.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
         builder.HasIndex(c => c.ParentCategoryId)
             .HasDatabaseName("IX_BulletinCategory_ParentCategoryId");
+
+        builder.HasIndex(c => new { c.ParentCategoryId, c.CategoryName })
+            .HasDatabaseName("IX_BulletinCategory_ParentId_Name")
+            .IsUnique();
     }
 }

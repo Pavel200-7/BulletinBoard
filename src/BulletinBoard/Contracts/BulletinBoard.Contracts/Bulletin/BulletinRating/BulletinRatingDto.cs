@@ -18,5 +18,5 @@ public class BulletinRatingDto
     /// <summary>
     /// Количество просмотров объявления
     /// </summary>
-    public int VievsCount { get; set; }
+    public int ViewsCount { get; set; }
 }

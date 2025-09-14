@@ -1,22 +1,14 @@
-﻿using BulletinBoard.Domain.Base;
-
-
-namespace BulletinBoard.Domain.Entities.Bulletin;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinUser;
 
 /// <summary>
-/// Сущность пользователя - владельца объявления
+/// Формат данных обновсления пользователя - владельца объявления
 /// </summary>
-public class BulletinUser : EntityBase
+public class BulletinUserUpdateDto
 {
     /// <summary>
     /// Полное имя
     /// </summary>
     public string FullName { get; set; }
-
-    /// <summary>
-    /// Был ли заблокирован
-    /// </summary>
-    public bool Blocked { get; set; }
 
     /// <summary>
     /// Широта (местоположение)
@@ -32,9 +24,4 @@ public class BulletinUser : EntityBase
     /// Адрес (наименование местоположения)
     /// </summary>
     public string? FormattedAddress { get; set; }
-
-    /// <summary>
-    /// Навигационное свойство для доступа к списку объявлений
-    /// </summary>
-    public List<BulletinMain> Bulletins { get; set; }
 }

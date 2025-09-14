@@ -13,12 +13,12 @@ public class BulletinsCharacteristicСomparisonDto
     /// <summary>
     /// Id объявления
     /// </summary>
-    public Guid BelletinId { get; set; }
+    public Guid BulletinId { get; set; }
 
     /// <summary>
     /// Id характеристики
     /// </summary>
-    public Guid CharacteristicNameId { get; set; }
+    public Guid CharacteristicId { get; set; }
 
     /// <summary>
     /// Id одного из возможных значений характеристики

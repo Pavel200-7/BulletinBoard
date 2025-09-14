@@ -26,7 +26,7 @@ public class BulletinImageSpecificationBuilder : IBulletinImageSpecificationBuil
     {
         if (belletinId.HasValue)
         {
-            _specification.Add(x => x.BelletinId == belletinId.Value);
+            _specification.Add(x => x.BulletinId == belletinId.Value);
         }
         return this;
     }

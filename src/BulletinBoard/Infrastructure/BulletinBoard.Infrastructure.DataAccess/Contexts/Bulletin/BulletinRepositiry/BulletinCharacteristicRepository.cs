@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
-public class BulletinRatingRepository : BulletinBaseRepository, IBulletinRatingRepository
+public class BulletinCharacteristicRepository : BulletinBaseRepository, IBulletinsCharacteristicNameRepository
 {
-    protected readonly DbSet<BulletinRating> _dbSet;
+    protected readonly DbSet<BulletinCharacteristic> _dbSet;
 
-    public BulletinRatingRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
+    public BulletinCharacteristicRepository(BulletinContext context, IMapper mapper) : base(context, mapper)
     {
-        _dbSet = context.Set<BulletinRating>();
+        _dbSet = context.Set<BulletinCharacteristic>();
     }
 }

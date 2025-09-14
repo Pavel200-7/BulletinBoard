@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BulletinBoard.Domain.Base;
 
-namespace BulletinBoard.Domain.Base
+/// <summary>
+/// Базовая сущность для всех доменов
+/// </summary>
+public class EntityBase
 {
-    public class EntityBase
-    {
-        //public Guid Id { get; set; }
-    }
+    /// <summary>
+    /// Id сущности
+    /// </summary>
+    public Guid Id { get; set; }
+
 }

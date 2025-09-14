@@ -1,20 +1,41 @@
 ﻿using BulletinBoard.Domain.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.Domain.Entities.Bulletin
+
+namespace BulletinBoard.Domain.Entities.Bulletin;
+
+
+/// <summary>
+/// Сущность для сопоставления объявления и всех его характеристик
+/// </summary>
+public class BulletinCharacteristicСomparison : EntityBase
 {
-    public class BulletinCharacteristicСomparison : EntityBase
-    {
-        public Guid Id { get; set; }
+    /// <summary>
+    /// Id объявления
+    /// </summary>
+    public Guid BulletinId { get; set; }
 
-        public Guid BelletinId { get; set; }
+    /// <summary>
+    /// Id характеристики
+    /// </summary>
+    public Guid CharacteristicId { get; set; }
 
-        public Guid CharacteristicNameId { get; set; }
+    /// <summary>
+    /// Id одного из возможных значений характеристики
+    /// </summary>
+    public Guid CharacteristicValueId { get; set; }
 
-        public Guid CharacteristicValueId { get; set; }
-    }
+    /// <summary>
+    /// Навигационное свойство для доступа к объявлению
+    /// </summary>
+    public BulletinMain Bulletin { get; set; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к характеристике
+    /// </summary>
+    public BulletinCharacteristic Characteristic { get; set; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к значению характеристики
+    /// </summary>
+    public BulletinCharacteristicValue CharacteristicValue {  set; get; }
 }

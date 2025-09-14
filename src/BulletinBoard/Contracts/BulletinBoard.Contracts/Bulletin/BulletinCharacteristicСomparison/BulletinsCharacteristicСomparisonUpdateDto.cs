@@ -8,7 +8,7 @@ public class BulletinsCharacteristicСomparisonUpdateDto
     /// <summary>
     /// Id характеристики
     /// </summary>
-    public Guid CharacteristicNameId { get; set; }
+    public Guid CharacteristicId { get; set; }
 
     /// <summary>
     /// Id одного из возможных значений характеристики

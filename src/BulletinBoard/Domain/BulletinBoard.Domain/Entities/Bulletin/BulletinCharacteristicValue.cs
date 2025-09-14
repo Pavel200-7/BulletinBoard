@@ -1,19 +1,32 @@
 ﻿using BulletinBoard.Domain.Base;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.Domain.Entities.Bulletin
+
+namespace BulletinBoard.Domain.Entities.Bulletin;
+
+/// <summary>
+/// Сущность, содержащая одно из возможных значений характеристики объявления
+/// </summary>
+public class BulletinCharacteristicValue : EntityBase
 {
-    public class BulletinCharacteristicValue : EntityBase
-    {
-        public Guid Id { get; set; }
+    /// <summary>
+    /// Id характеристики
+    /// </summary>
+    public Guid CharacteristicId { get; set; }
 
-        public Guid ConnectedNameId { get; set; }
+    /// <summary>
+    /// Возможное значение характеристики
+    /// </summary>
+    public string Value { get; set; }
 
-        public string Value { get; set; }
-    }
+    /// <summary>
+    /// Навигационное свойство для доступа к связанной характеристике
+    /// </summary>
+    public BulletinCharacteristic Characteristic { get; set; }
+
+    /// <summary>
+    /// Навигационное свойства для доступа ко всем записям сопоставления характеристики и объявления,
+    /// где была использована данная сущность.
+    /// Использоваться оно не будет, но лучше указать его наличие явно.
+    /// </summary>
+    public List<BulletinCharacteristicСomparison> CharacteristicСomparisons { get; set; }
 }

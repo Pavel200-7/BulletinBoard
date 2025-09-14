@@ -1,10 +1,15 @@
 ﻿namespace BulletinBoard.Contracts.Bulletin.BelletinMain;
 
 /// <summary>
-/// Формат данных обновления данных объявления
+/// Формат данных создания объявления
 /// </summary>
-public class BelletinMainUpdateDto
+public class BulletinMainCreateDto
 {
+    /// <summary>
+    /// Id пользователя - создателя
+    /// </summary>
+    public Guid BulletinUserId { get; set; }
+
     /// <summary>
     /// Заголовок объявления
     /// </summary>
@@ -24,4 +29,9 @@ public class BelletinMainUpdateDto
     /// Цена товара или услуги, указанного в объявлении
     /// </summary>
     public decimal Price { get; set; }
+
+    /// <summary>
+    /// Время создания
+    /// </summary>
+    public DateTime? CreatedAt { get; set; }
 }

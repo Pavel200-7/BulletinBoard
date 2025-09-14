@@ -1,19 +1,30 @@
 ﻿using BulletinBoard.Domain.Base;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.Domain.Entities.Bulletin
+
+namespace BulletinBoard.Domain.Entities.Bulletin;
+
+/// <summary>
+/// Сущность рейтинга объявления
+/// </summary>
+public class BulletinRating : EntityBase
 {
-    public class BulletinRating : EntityBase
-    {
-        public Guid BulletinId { get; set; }
+    /// <summary>
+    /// Id объявления
+    /// </summary>
+    public Guid BulletinId { get; set; }
 
-        public decimal Rating { get; set; }
+    /// <summary>
+    /// Рейтинг
+    /// </summary>
+    public decimal Rating { get; set; }
 
-        public int VievsCount { get; set; }
-    }
+    /// <summary>
+    /// Количество просмотров объявления
+    /// </summary>
+    public int ViewsCount { get; set; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к объявлению
+    /// </summary>
+    public BulletinMain Bulletin { get; set; }
 }
