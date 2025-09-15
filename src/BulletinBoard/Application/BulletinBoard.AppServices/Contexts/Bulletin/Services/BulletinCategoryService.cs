@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -8,6 +8,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
+using System.Collections.Generic;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -42,7 +43,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
 
         if (outputCategoryDto is null)
         {
-            string errorMessage = $"The note with id {id} is not found.";
+            string errorMessage = $"The category with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -65,7 +66,9 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
             .Build();
 
-        return await _categoryRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCategoryDto> categoryDtoCollectrion = await _categoryRepository.FindAsync(specification);
+
+        return categoryDtoCollectrion;
     }
 
     /// <inheritdoc/>
@@ -91,7 +94,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             var currentCategory = await _categoryRepository.GetByIdAsync(searchingCategoryId.Value);
             if (currentCategory is null)
             {
-                string errorMessage = $"The note with id {searchingCategoryId} is not found.";
+                string errorMessage = $"The category with id {searchingCategoryId} is not found.";
                 throw new NotFoundException(errorMessage);
             }
 
@@ -134,7 +137,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
 
         if (outputCategoryDto is null)
         {
-            string errorMessage = $"The note with id {id} is not found.";
+            string errorMessage = $"The category with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 

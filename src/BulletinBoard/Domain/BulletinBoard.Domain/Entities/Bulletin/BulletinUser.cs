@@ -34,7 +34,13 @@ public class BulletinUser : EntityBase
     public string? FormattedAddress { get; set; }
 
     /// <summary>
+    /// Номер телефона
+    /// </summary>
+    public string Phone { get; set; }
+
+    /// <summary>
     /// Навигационное свойство для доступа к списку объявлений
     /// </summary>
     public List<BulletinMain> Bulletins { get; set; }
+
 }

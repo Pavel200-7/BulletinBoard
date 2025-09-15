@@ -37,6 +37,11 @@ public class BulletinUserEntityTypeConfiguration : IEntityTypeConfiguration<Bull
             .HasMaxLength(255)
             .IsRequired(false);
 
+        builder.Property(u => u.Phone)
+            .HasColumnType("varchar(20)")
+            .HasMaxLength(20)
+            .IsRequired(false);
+
         builder
             .HasMany(u => u.Bulletins)
             .WithOne(b => b.User)

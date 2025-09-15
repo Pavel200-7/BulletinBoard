@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 using System;
@@ -7,20 +8,8 @@ using System.Linq.Expressions;
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
 /// <inheritdoc/>
-public class BulletinImageSpecificationBuilder : IBulletinImageSpecificationBuilder
+public class BulletinImageSpecificationBuilder : SpecificationBuilderBase<BulletinImage>, IBulletinImageSpecificationBuilder
 {
-    private readonly CompositeExtendedSpecification<BulletinImage> _specification;
-    private Expression<Func<BulletinImage, object>>? _orderByExpression;
-    private bool _orderByAscending = true;
-
-    /// <summary>
-    /// Инициализирует новый экземпляр строителя спецификаций.
-    /// </summary>
-    public BulletinImageSpecificationBuilder()
-    {
-        _specification = new CompositeExtendedSpecification<BulletinImage>();
-    }
-
     /// <inheritdoc/>
     public IBulletinImageSpecificationBuilder WhereBelletinId(Guid? belletinId)
     {
@@ -101,24 +90,5 @@ public class BulletinImageSpecificationBuilder : IBulletinImageSpecificationBuil
         _orderByExpression = x => x.CreatedAt;
         _orderByAscending = ascending;
         return this;
-    }
-
-    /// <inheritdoc/>
-    public ExtendedSpecification<BulletinImage> Build()
-    {
-        // Применяем сортировку
-        if (_orderByExpression != null)
-        {
-            if (_orderByAscending)
-            {
-                _specification.OrderBy = _orderByExpression;
-            }
-            else
-            {
-                _specification.OrderByDescending = _orderByExpression;
-            }
-        }
-
-        return _specification;
     }
 }

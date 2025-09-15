@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
 
 /// <summary>
 /// Класс для преобразования ДТО BulletinCategory

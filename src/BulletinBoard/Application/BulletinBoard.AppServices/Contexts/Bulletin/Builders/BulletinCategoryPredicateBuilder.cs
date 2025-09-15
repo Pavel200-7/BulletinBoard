@@ -1,23 +1,16 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
 using BulletinBoard.AppServices.Specification;
+using BulletinBoard.AppServices.Specification.LogicalOperations;
 using BulletinBoard.Domain.Entities.Bulletin;
+using System.Linq.Expressions;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
 /// <inheritdoc/>
-public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificationBuilder
+public class BulletinCategorySpecificationBuilder : SpecificationBuilderBase<BulletinCategory>, IBulletinCategorySpecificationBuilder
 {
-
-    private CompositeExtendedSpecification<BulletinCategory> _specification;
-
-    /// <inheritdoc/>
-    public BulletinCategorySpecificationBuilder()
-    {
-        _specification = new();
-    }
-
-
     /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder WhereParentId(Guid? parentId)
     {
@@ -67,32 +60,16 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
     /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByCategoryName(bool ascending = true)
     {
-        if (ascending)
-        {
-            _specification.OrderBy = x => x.CategoryName;
-            _specification.OrderByDescending = null;
-        }
-        else
-        {
-            _specification.OrderByDescending = x => x.CategoryName;
-            _specification.OrderBy = null;
-        }
+        _orderByExpression = x => x.CategoryName;
+        _orderByAscending = ascending;
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByIsLeafy(bool ascending = true)
     {
-        if (ascending)
-        {
-            _specification.OrderBy = x => x.IsLeafy;
-            _specification.OrderByDescending = null;
-        }
-        else
-        {
-            _specification.OrderByDescending = x => x.IsLeafy;
-            _specification.OrderBy = null;
-        }
+        _orderByExpression = x => x.IsLeafy;
+        _orderByAscending = ascending;
         return this;
     }
 
@@ -106,11 +83,4 @@ public class BulletinCategorySpecificationBuilder : IBulletinCategorySpecificati
         _specification.Take = pageSize;
         return this;
     }
-
-    /// <inheritdoc/>
-    public ExtendedSpecification<BulletinCategory> Build()
-    {
-        return _specification;
-    }
-
 }

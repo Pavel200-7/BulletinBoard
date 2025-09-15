@@ -84,8 +84,8 @@ public interface IBulletinImageSpecificationBuilder
     public IBulletinImageSpecificationBuilder OrderByCreatedAt(bool ascending = true);
 
     /// <summary>
-    /// Создать расширенную спецификацию, преобразуемую в sql запрос в репозитории.
+    /// Создать расширенную спецификацию на основе добавленных условий.
     /// </summary>
-    /// <returns>Готовая спецификация.</returns>
+    /// <returns>Готовая спецификация для использования в репозитории.</returns>
     public ExtendedSpecification<BulletinImage> Build();
 }

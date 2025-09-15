@@ -34,4 +34,9 @@ public class BulletinUserCreateDto
     /// Адрес (наименование местоположения)
     /// </summary>
     public string? FormattedAddress { get; set; }
+
+    /// <summary>
+    /// Номер телефона
+    /// </summary>
+    public string Phone { get; set; }
 }

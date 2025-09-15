@@ -1,4 +1,4 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using System;
 using System.Collections;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.MappingServices;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices;
 
 /// <inheritdoc/>
 public class BulletinCategoryMappingService : IBulletinCategoryMappingService

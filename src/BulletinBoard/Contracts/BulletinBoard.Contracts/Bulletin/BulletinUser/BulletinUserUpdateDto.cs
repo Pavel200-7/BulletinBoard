@@ -11,6 +11,11 @@ public class BulletinUserUpdateDto
     public string FullName { get; set; }
 
     /// <summary>
+    /// Был ли заблокирован
+    /// </summary>
+    public bool Blocked { get; set; }
+
+    /// <summary>
     /// Широта (местоположение)
     /// </summary>
     public double Latitude { get; set; }
@@ -24,4 +29,9 @@ public class BulletinUserUpdateDto
     /// Адрес (наименование местоположения)
     /// </summary>
     public string? FormattedAddress { get; set; }
+
+    /// <summary>
+    /// Номер телефона
+    /// </summary>
+    public string Phone { get; set; }
 }

@@ -12,7 +12,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// Класс берущий на себя задачу валидации данных по 
 /// ограничениям, проверка которых требует обращения к БД.
 /// </summary>
-public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string>
+public class CategoryNameValidator<T> : AsyncPropertyValidator<T, string> 
 {
     /// <summary>
     /// Название валидатора

@@ -62,8 +62,8 @@ public interface IBulletinCategorySpecificationBuilder
     public IBulletinCategorySpecificationBuilder Paginate(int pageNumber, int pageSize);
 
     /// <summary>
-    /// Создать расширенную спецификацию, преобразуемую в sql запрос в репозитории.
+    /// Создать расширенную спецификацию на основе добавленных условий.
     /// </summary>
-    /// <returns>Готовая спецификация.</returns>
+    /// <returns>Готовая спецификация для использования в репозитории.</returns>
     public ExtendedSpecification<BulletinCategory> Build();
 }

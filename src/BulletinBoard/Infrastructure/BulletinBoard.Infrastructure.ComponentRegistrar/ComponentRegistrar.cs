@@ -1,7 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
-using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.MappingServices.IMappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -9,6 +10,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryVal
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,19 +27,21 @@ public static class ComponentRegistrar
         // Bulletin
         // BulletinServices
         services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
+        services.AddScoped<IBulletinUserService, BulletinUserService>();
+
 
         // BulletinMappingServices
         services.AddScoped<IBulletinCategoryMappingService, BulletinCategoryMappingService>();
 
         // BulletinSpecificationBuilders
         services.AddScoped<IBulletinCategorySpecificationBuilder, BulletinCategorySpecificationBuilder>();
+        services.AddScoped<IBulletinUserSpecificationBuilder, BulletinUserSpecificationBuilder>();
+
 
         // BulletinValidators
         services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
         services.AddScoped<IBulletinCategoryUpdateDtoValidator, BulletinCategoryUpdateDtoValidator>();
         services.AddScoped<IBulletinCategoryDtoValidatorFacade, BulletinCategoryDtoValidatorFacade>();
-
-
 
         return services;
     }
@@ -46,6 +50,14 @@ public static class ComponentRegistrar
     {
         // BulletinRepositories
         services.AddScoped<IBulletinCategoryRepository, BulletinCategoryRepository>();
+        services.AddScoped<IBulletinCharacteristicComparisonRepository, BulletinCharacteristicComparisonRepository>();
+        services.AddScoped<IBulletinCharacteristicRepository, BulletinCharacteristicRepository>();
+        services.AddScoped<IBulletinCharacteristicValueRepository, BulletinCharacteristicValueRepository>();
+        services.AddScoped<IBulletinImageRepository, BulletinImageRepository>();
+        services.AddScoped<IBulletinMainRepository, BulletinMainRepository>();
+        services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
+        services.AddScoped<IBulletinUserRepository, BulletinUserRepository>();
+
 
        
         // Репозитории следующего домена
