@@ -78,5 +78,4 @@ public interface IBulletinUserService
     /// <param name="id">Id пользователя.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
-
 }

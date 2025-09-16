@@ -29,9 +29,4 @@ public class BulletinMainCreateDto
     /// Цена товара или услуги, указанного в объявлении
     /// </summary>
     public decimal Price { get; set; }
-
-    /// <summary>
-    /// Время создания
-    /// </summary>
-    public DateTime? CreatedAt { get; set; }
 }

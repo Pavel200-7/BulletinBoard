@@ -8,6 +8,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
@@ -28,6 +30,9 @@ public static class ComponentRegistrar
         // BulletinServices
         services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
         services.AddScoped<IBulletinUserService, BulletinUserService>();
+        services.AddScoped<IBulletinMainService, BulletinMainService>();
+
+        
 
 
         // BulletinMappingServices
@@ -36,12 +41,20 @@ public static class ComponentRegistrar
         // BulletinSpecificationBuilders
         services.AddScoped<IBulletinCategorySpecificationBuilder, BulletinCategorySpecificationBuilder>();
         services.AddScoped<IBulletinUserSpecificationBuilder, BulletinUserSpecificationBuilder>();
+        services.AddScoped<IBulletinMainSpecificationBuilder, BulletinMainSpecificationBuilder>();
+
 
 
         // BulletinValidators
+        // BulletinCategory
         services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
         services.AddScoped<IBulletinCategoryUpdateDtoValidator, BulletinCategoryUpdateDtoValidator>();
         services.AddScoped<IBulletinCategoryDtoValidatorFacade, BulletinCategoryDtoValidatorFacade>();
+        // BulletinMain
+        services.AddScoped<IBulletinMainCreateDtoValidator, BulletinMainCreateDtoValidator>();
+        services.AddScoped<IBulletinMainUpdateDtoValidator, BulletinMainUpdateDtoValidator>();
+        services.AddScoped<IBulletinMainDtoValidatorFacade, BulletinMainDtoValidatorFacade>();
+
 
         return services;
     }

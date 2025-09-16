@@ -8,6 +8,9 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// <summary>
 /// Класс берущий на себя задачу валидации данных по 
 /// ограничениям, проверка которых требует обращения к БД.
+/// Проверяет, 
+///     1. Есть ли категория с таким id.
+///     2. Является ли категория листовой.
 /// </summary>
 public class ParentCategoryValidator<T> : AsyncPropertyValidator<T, Guid?>
 {

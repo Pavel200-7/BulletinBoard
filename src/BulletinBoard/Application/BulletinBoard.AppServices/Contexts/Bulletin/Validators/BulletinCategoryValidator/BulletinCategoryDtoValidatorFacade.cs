@@ -8,8 +8,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// <inheritdoc/>
 public sealed class BulletinCategoryDtoValidatorFacade : IBulletinCategoryDtoValidatorFacade
 {
-    private readonly IBulletinCategoryCreateDtoValidator _bulletinCategoryCreateDtoValidator;
-    private readonly IBulletinCategoryUpdateDtoValidator _bulletinCategoryUpdateDtoValidator;
+    private readonly IBulletinCategoryCreateDtoValidator _createDtoValidator;
+    private readonly IBulletinCategoryUpdateDtoValidator _updateDtoValidator;
 
     /// <inheritdoc/>
     public BulletinCategoryDtoValidatorFacade
@@ -18,19 +18,19 @@ public sealed class BulletinCategoryDtoValidatorFacade : IBulletinCategoryDtoVal
             IBulletinCategoryUpdateDtoValidator bulletinCategoryUpdateDtoValidator
         )
     {
-        _bulletinCategoryCreateDtoValidator = bulletinCategoryCreateDtoValidator;
-        _bulletinCategoryUpdateDtoValidator = bulletinCategoryUpdateDtoValidator;
+        _createDtoValidator = bulletinCategoryCreateDtoValidator;
+        _updateDtoValidator = bulletinCategoryUpdateDtoValidator;
     }
 
     /// <inheritdoc/>
     public async Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto)
     {
-        return await _bulletinCategoryCreateDtoValidator.ValidateAsync(entityDto);
+        return await _createDtoValidator.ValidateAsync(entityDto);
     }
 
     /// <inheritdoc/>
     public async Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto)
     {
-        return await _bulletinCategoryUpdateDtoValidator.ValidateAsync(entityDto);
+        return await _updateDtoValidator.ValidateAsync(entityDto);
     }
 }

@@ -16,11 +16,6 @@ public class BulletinMainUpdateDto
     public string Description { get; set; }
 
     /// <summary>
-    /// Id категории, к которой относится объявление
-    /// </summary>
-    public Guid CategoryId { get; set; }
-
-    /// <summary>
     /// Цена товара или услуги, указанного в объявлении
     /// </summary>
     public decimal Price { get; set; }
