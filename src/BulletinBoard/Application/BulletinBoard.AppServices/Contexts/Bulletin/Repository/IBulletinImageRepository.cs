@@ -44,9 +44,4 @@ public interface IBulletinImageRepository
     /// <param name="id">Id изображения.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
-
-    /// <summary>
-    /// Сохранить изменения.
-    /// </summary>
-    public Task SaveChangesAsync();
 }

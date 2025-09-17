@@ -1,11 +1,7 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using FluentValidation.Results;
 
@@ -39,7 +35,6 @@ public class BulletinMainService : IBulletinMainService
         }
 
         BulletinMainDto outputBulletinDto = await _bulletinRepository.CreateAsync(bulletinDto);
-        await _bulletinRepository.SaveChangesAsync();
 
         return outputBulletinDto;
     }
@@ -61,8 +56,6 @@ public class BulletinMainService : IBulletinMainService
             throw new NotFoundException(errorMessage);
         }
 
-        await _bulletinRepository.SaveChangesAsync();
-
         return outputBulletinDto;
 
     }
@@ -77,8 +70,6 @@ public class BulletinMainService : IBulletinMainService
             string errorMessage = $"The bulletin with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
-
-        await _bulletinRepository.SaveChangesAsync();
 
         return isOnDeleting;
     }

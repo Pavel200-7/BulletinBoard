@@ -78,26 +78,6 @@ public class BulletinCategoryServiceTests
     }
 
     [Fact]
-    public async Task CreateAsync_ValidDto_CallsSaveChanges()
-    {
-        // Arrange
-        var inputDto = new BulletinCategoryCreateDto { ParentCategoryId = null, CategoryName = "Test Category", IsLeafy = true };
-        var outputDto = new BulletinCategoryDto { Id = Guid.NewGuid(), ParentCategoryId = null, CategoryName = "Test Category", IsLeafy = true };
-
-        _mockValidator.Setup(v => v.ValidateAsync(inputDto))
-                     .ReturnsAsync(new ValidationResult());
-
-        _mockRepo.Setup(r => r.CreateAsync(inputDto))
-                .ReturnsAsync(outputDto);
-
-        // Act
-        await _service.CreateAsync(inputDto);
-
-        // Assert - проверяем, что SaveChanges был вызван
-        _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
-    }
-
-    [Fact]
     public async Task CreateAsync_RepositoryThrowsException_ExceptionIsPropagated()
     {
         // Arrange
@@ -179,26 +159,6 @@ public class BulletinCategoryServiceTests
         //    _service.UpdateAsync(id, inputDto));
     }
 
-    [Fact]
-    public async Task UpdateAsync_ValidDto_CallsSaveChanges()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var inputDto = new BulletinCategoryUpdateDto { ParentCategoryId = null, CategoryName = "Test Category"};
-        var outputDto = new BulletinCategoryDto { Id = Guid.NewGuid(), ParentCategoryId = null, CategoryName = "Test Category", IsLeafy = true };
-
-        _mockValidator.Setup(v => v.ValidateAsync(inputDto))
-                     .ReturnsAsync(new ValidationResult());
-
-        _mockRepo.Setup(r => r.UpdateAsync(id, inputDto))
-                .ReturnsAsync(outputDto);
-
-        // Act
-        await _service.UpdateAsync(id, inputDto);
-
-        // Assert 
-        _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
-    }
 
     [Fact]
     public async Task UpdateAsync_RepositoryThrowsException_ExceptionIsPropagated()
@@ -248,22 +208,6 @@ public class BulletinCategoryServiceTests
         //Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() =>
             _service.DeleteAsync(id));
-    }
-
-    [Fact]
-    public async Task DeleteAsync_CallsSaveChanfes()
-    {
-        var id = Guid.NewGuid();
-        var expected = true;
-
-        _mockRepo.Setup(r => r.DeleteAsync(id))
-            .ReturnsAsync(expected);
-
-        //Act
-        var result = await _service.DeleteAsync(id);
-
-        //Assert
-        _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once());
     }
 
     [Fact]

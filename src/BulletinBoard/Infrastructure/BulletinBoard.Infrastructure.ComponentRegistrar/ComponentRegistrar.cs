@@ -14,6 +14,7 @@ using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
+using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,6 +62,9 @@ public static class ComponentRegistrar
 
     public static IServiceCollection RegisterAppRepositories(this IServiceCollection services)
     {
+        // Базовый глупый репозиторий.
+        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
         // BulletinRepositories
         services.AddScoped<IBulletinCategoryRepository, BulletinCategoryRepository>();
         services.AddScoped<IBulletinCharacteristicComparisonRepository, BulletinCharacteristicComparisonRepository>();

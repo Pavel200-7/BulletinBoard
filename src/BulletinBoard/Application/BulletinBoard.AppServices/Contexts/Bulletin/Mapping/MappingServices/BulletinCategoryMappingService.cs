@@ -1,11 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices;
 

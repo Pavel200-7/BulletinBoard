@@ -8,7 +8,6 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
-using System.Collections.Generic;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -119,7 +118,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         }
 
         BulletinCategoryDto outputCategoryDto = await _categoryRepository.CreateAsync(categoryDto);
-        await _categoryRepository.SaveChangesAsync();
 
         return outputCategoryDto;
     }
@@ -141,8 +139,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new NotFoundException(errorMessage);
         }
 
-        await _categoryRepository.SaveChangesAsync();
-
         return outputCategoryDto;
     }
 
@@ -156,8 +152,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             string errorMessage = $"The note with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
-
-        await _categoryRepository.SaveChangesAsync();
 
         return isOnDeleting;
     }

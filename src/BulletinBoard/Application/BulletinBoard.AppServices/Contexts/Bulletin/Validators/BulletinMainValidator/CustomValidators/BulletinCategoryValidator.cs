@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
 
-
+/// <inheritdoc/>
 public class BulletinCategoryValidator<T> : AsyncPropertyValidator<T, Guid>
 {
     /// <summary>

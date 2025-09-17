@@ -45,9 +45,4 @@ public interface IBulletinCharacteristicValueRepository
     /// <param name="id">Id данных возможного значения характеристики.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
-
-    /// <summary>
-    /// Сохранить изменения.
-    /// </summary>
-    public Task SaveChangesAsync();
 }

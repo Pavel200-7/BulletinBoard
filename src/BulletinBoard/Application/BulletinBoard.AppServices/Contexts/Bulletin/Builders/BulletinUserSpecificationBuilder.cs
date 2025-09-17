@@ -12,6 +12,7 @@ using System.Xml.Linq;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 
+/// <inheritdoc/>
 public class BulletinUserSpecificationBuilder : SpecificationBuilderBase<BulletinUser>, IBulletinUserSpecificationBuilder
 {
     /// <inheritdoc/>

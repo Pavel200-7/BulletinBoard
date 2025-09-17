@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
+/// <inheritdoc/>
 [ApiController]
 [Route("api/[controller]")]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
@@ -12,6 +13,7 @@ public class BulletinMainController : ControllerBase
 {
     private readonly IBulletinMainService _bulletinService;
 
+    /// <inheritdoc/>
     public BulletinMainController(IBulletinMainService bulletinService)
     {
         _bulletinService = bulletinService;

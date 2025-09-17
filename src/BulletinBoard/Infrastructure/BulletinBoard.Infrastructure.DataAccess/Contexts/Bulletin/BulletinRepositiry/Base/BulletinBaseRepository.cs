@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Specification;
-using BulletinBoard.Domain.Entities.Bulletin;
+using BulletinBoard.AppServices.Specification.Extensions;
+using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -9,21 +10,62 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepo
 /// <summary>
 /// Базовый класс для создания репозиториев домена Bulletin
 /// </summary>
-abstract public class BulletinBaseRepository
+public abstract class BaseRepository<TEntity, TDto, TCreateDto, TUpdateDto, TContext>
+    where TEntity : class
+    where TDto : class
+    where TCreateDto : class
+    where TUpdateDto : class
+    where TContext : DbContext
 {
-    protected readonly BulletinContext _context;
+    protected readonly IRepository<TEntity, TContext> _repository;
     protected readonly IMapper _mapper;
 
-    /// <inheritdoc/>
-    public BulletinBaseRepository(BulletinContext context, IMapper mapper)
+    protected BaseRepository(IRepository<TEntity, TContext> repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
-    /// <inheritdoc/>
-    public async Task SaveChangesAsync()
+    public virtual async Task<TDto?> GetByIdAsync(Guid id)
     {
-        await _context.SaveChangesAsync();
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+            return null;
+        return _mapper.Map<TDto>(entity);
+    }
+
+    public virtual async Task<IReadOnlyCollection<TDto>> FindAsync(ExtendedSpecification<TEntity> specification)
+    {
+        var query = _repository.GetAll().AsQueryable();
+        query = query.ApplyExtendedSpecification(specification);
+        return await query.Select(e => _mapper.Map<TDto>(e)).ToListAsync();
+    }
+
+    public virtual async Task<TDto> CreateAsync(TCreateDto dto)
+    {
+        var entity = _mapper.Map<TEntity>(dto);
+        entity = await _repository.AddAsync(entity);
+        return _mapper.Map<TDto>(entity);
+    }
+
+    public virtual async Task<TDto?> UpdateAsync(Guid id, TUpdateDto dto)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+            return null;
+
+        _mapper.Map(dto, entity);
+        await _repository.UpdateAsync(entity);
+        return _mapper.Map<TDto>(entity);
+    }
+
+    public virtual async Task<bool> DeleteAsync(Guid id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null)
+            return false;
+
+        await _repository.DeleteAsync(id);
+        return true;
     }
 }
