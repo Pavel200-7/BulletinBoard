@@ -1,8 +1,8 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 
 /// <inheritdoc/>
 public class BulletinCategoryMappingService : IBulletinCategoryMappingService

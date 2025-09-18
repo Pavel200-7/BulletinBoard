@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Specification;
@@ -16,21 +15,18 @@ public class BulletinUserService : IBulletinUserService
     private readonly IBulletinUserRepository _userRepository;
     private readonly IBulletinUserSpecificationBuilder _specificationBuilder;
 
-    private readonly IMapper _mapper;
-    //private readonly IBulletinUserSpecificationBuilder _specificationBuilder;
 
     /// <inheritdoc/>
     public BulletinUserService
         (
             IBulletinUserRepository bulletinCategoryRepository,
-            IBulletinUserSpecificationBuilder specificationBuilder,
-            IMapper mapper
+            IBulletinUserSpecificationBuilder specificationBuilder
         )
     {
         _userRepository = bulletinCategoryRepository;
         _specificationBuilder = specificationBuilder;
-        _mapper = mapper;
     }
+
     /// <inheritdoc/>
     public async Task<BulletinUserDto> GetByIdAsync(Guid id)
     {
@@ -122,7 +118,7 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangeNameAsync(Guid id, string name)
     {
-        BulletinUserDto? userDto = await _userRepository.GetByIdAsync(id);
+        BulletinUserDto? userDto = await _userRepository.ChangeNameAsync(id, name);
 
         if (userDto is null)
         {
@@ -130,26 +126,19 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        userDto.FullName = name;
-        BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
-        await _userRepository.UpdateAsync(id, userUpdateDto);
         return userDto;
     }
 
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto)
     {
-        BulletinUserDto? userDto = await _userRepository.GetByIdAsync(id);
+        BulletinUserDto? userDto = await _userRepository.ChangeAdressAsync(id, userLocationDto);
 
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
-
-        userDto = _mapper.Map<BulletinUserDto>(userLocationDto);
-        BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
-        await _userRepository.UpdateAsync(id, userUpdateDto);
 
         return userDto;
     }
@@ -157,17 +146,13 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone)
     {
-        BulletinUserDto? userDto = await _userRepository.GetByIdAsync(id);
+        BulletinUserDto? userDto = await _userRepository.ChangePhoneAsync(id, phone);
 
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
-
-        userDto.Phone = phone;
-        BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
-        await _userRepository.UpdateAsync(id, userUpdateDto);
 
         return userDto;
     }
@@ -175,7 +160,8 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> BlockUserAsync(Guid id)
     {
-        BulletinUserDto? userDto = await _userRepository.GetByIdAsync(id);
+        BulletinUserDto? userDto;
+        userDto = await _userRepository.GetByIdAsync(id);
 
         if (userDto is null)
         {
@@ -183,17 +169,16 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        userDto.Blocked = true;
-        BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
-        await _userRepository.UpdateAsync(id, userUpdateDto);
+        userDto = await _userRepository.SetUserBlockStatusAsync(id, true);
 
-        return userDto;
+        return userDto!;
     }
 
     /// <inheritdoc/>
     public async Task<BulletinUserDto> UnBlockUserAsync(Guid id)
     {
-        BulletinUserDto? userDto = await _userRepository.GetByIdAsync(id);
+        BulletinUserDto? userDto;
+        userDto = await _userRepository.GetByIdAsync(id);
 
         if (userDto is null)
         {
@@ -201,11 +186,10 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        userDto.Blocked = false;
-        BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
-        await _userRepository.UpdateAsync(id, userUpdateDto);
+        userDto = await _userRepository.SetUserBlockStatusAsync(id, false);
 
-        return userDto;
+
+        return userDto!;
     }
 
     /// <inheritdoc/>

@@ -1,14 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
-using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 

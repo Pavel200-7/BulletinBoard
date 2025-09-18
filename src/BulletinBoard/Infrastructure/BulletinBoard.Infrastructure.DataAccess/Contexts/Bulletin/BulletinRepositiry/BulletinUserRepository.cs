@@ -3,7 +3,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
 using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
-
+using System.Numerics;
+using System.Xml.Linq;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 
@@ -23,4 +24,44 @@ public class BulletinUserRepository :
         : base(repository, mapper)
     {
     }
+
+    public async Task<BulletinUserDto?> SetUserBlockStatusAsync(Guid id, bool blockStatus)
+    {
+        BulletinUser? user = await _repository.GetByIdAsync(id);
+        if (user is null) { return null; }
+        user.Blocked = blockStatus;
+        await _repository.UpdateAsync(user);
+        return _mapper.Map<BulletinUserDto>(user);
+    }
+
+    public async Task<BulletinUserDto?> ChangeNameAsync(Guid id, string name)
+    {
+        BulletinUser? user = await _repository.GetByIdAsync(id);
+        if (user is null) { return null; }
+        user.FullName = name;
+        await _repository.UpdateAsync(user);
+        return _mapper.Map<BulletinUserDto>(user);
+    }
+
+    public async Task<BulletinUserDto?> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto)
+    {
+        BulletinUser? user = await _repository.GetByIdAsync(id);
+        if (user is null) { return null; }
+        user = _mapper.Map<BulletinUser>(userLocationDto);
+        await _repository.UpdateAsync(user);
+        return _mapper.Map<BulletinUserDto>(user);
+    }
+
+    
+
+    public async Task<BulletinUserDto?> ChangePhoneAsync(Guid id, string phone)
+    {
+        BulletinUser? user = await _repository.GetByIdAsync(id);
+        if (user is null) { return null; }
+        user.Phone = phone;
+        await _repository.UpdateAsync(user);
+        return _mapper.Map<BulletinUserDto>(user);
+    }
+
+    
 }

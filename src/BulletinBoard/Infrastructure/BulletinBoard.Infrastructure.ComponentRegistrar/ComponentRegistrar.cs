@@ -1,8 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -84,9 +84,9 @@ public static class ComponentRegistrar
 
     public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
     {
-        services.AddAutoMapper(
-            cnf => { },
-            typeof(BulletinMappingProfile)
+        services.AddAutoMapper
+            (
+                typeof(BulletinMappingProfile)
             // Другие профайлеры
             );
 

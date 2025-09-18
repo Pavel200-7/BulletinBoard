@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.MappingServices.IMappingServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;

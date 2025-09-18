@@ -23,7 +23,7 @@ public interface IBaseBulletinRepository
     /// Получить сущность по идентификатору.
     /// </summary>
     /// <param name="id">Id сущности.</param>
-    /// <returns>Базовый формат данных сущности.</returns>
+    /// <returns>Базовый формат данных сущности или null если его нет.</returns>
     public Task<TDto?> GetByIdAsync(Guid id);
 
     /// <summary>
@@ -45,7 +45,7 @@ public interface IBaseBulletinRepository
     /// </summary>
     /// <param name="id">Id сущности для обновления.</param>
     /// <param name="categoryDto">Данные для обновления сущности.</param>
-    /// <returns>Базовый формат данных сущности.</returns>
+    /// <returns>Базовый формат данных сущности или null если его нет.</returns>
     public Task<TDto?> UpdateAsync(Guid id, TUpdateDto categoryDto);
 
     /// <summary>
