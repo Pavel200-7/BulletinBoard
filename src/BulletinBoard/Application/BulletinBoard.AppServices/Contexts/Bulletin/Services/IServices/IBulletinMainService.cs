@@ -1,5 +1,5 @@
-﻿
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
+﻿using BulletinBoard.Contracts.Bulletin.BelletinMain;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 

@@ -53,7 +53,7 @@ public class BulletinUserSpecificationBuilder : SpecificationBuilderBase<Bulleti
     {
         if (!string.IsNullOrEmpty(formattedAddress))
         {
-            _specification.Add(u => u.FormattedAddress.ToLower().Contains(formattedAddress.ToLower()));
+            _specification.Add(u => u.FormattedAddress != null && u.FormattedAddress.ToLower().Contains(formattedAddress.ToLower()));
         }
 
         return this;

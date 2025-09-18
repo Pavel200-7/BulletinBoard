@@ -38,7 +38,7 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        return outputUserDto!;
+        return outputUserDto;
     }
 
     /// <inheritdoc/>
@@ -103,9 +103,9 @@ public class BulletinUserService : IBulletinUserService
         ExtendedSpecification<BulletinUser> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinUserDto> userDtoCollectrion = await _userRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinUserDto> userDtoCollection = await _userRepository.FindAsync(specification);
 
-        return userDtoCollectrion;
+        return userDtoCollection;
     }
 
     /// <inheritdoc/>

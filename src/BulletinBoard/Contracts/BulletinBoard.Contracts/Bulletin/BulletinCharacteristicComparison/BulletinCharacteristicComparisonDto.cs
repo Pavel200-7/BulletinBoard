@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
 
 /// <summary>
 /// Базовый формат данных сопоставления характеристики с объявлением

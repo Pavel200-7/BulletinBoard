@@ -1,10 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinUser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinUser;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 

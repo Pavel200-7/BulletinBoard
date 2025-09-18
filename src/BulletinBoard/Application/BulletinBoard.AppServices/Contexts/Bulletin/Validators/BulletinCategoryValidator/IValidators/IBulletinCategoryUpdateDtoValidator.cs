@@ -12,7 +12,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// CategoryName:
 ///     1. Не пустая строка и не null.
 ///     2. Имеет длинну он 3 до 50.
-///     3. Может хранить только русские, английские буквы нижнего, верхнего и пробелы.
+///     3. Может хранить только русские, английские буквы нижнего, верхнего регистра и пробелы.
 ///     4. Является уникальным.
 /// </summary>
 public interface IBulletinCategoryUpdateDtoValidator 

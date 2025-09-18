@@ -2,7 +2,6 @@
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository;

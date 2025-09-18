@@ -46,7 +46,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new NotFoundException(errorMessage);
         }
 
-        return outputCategoryDto!;
+        return outputCategoryDto;
     }
 
     /// <inheritdoc/>
@@ -65,9 +65,9 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinCategoryDto> categoryDtoCollectrion = await _categoryRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCategoryDto> categoryDtoCollection = await _categoryRepository.FindAsync(specification);
 
-        return categoryDtoCollectrion;
+        return categoryDtoCollection;
     }
 
     /// <inheritdoc/>

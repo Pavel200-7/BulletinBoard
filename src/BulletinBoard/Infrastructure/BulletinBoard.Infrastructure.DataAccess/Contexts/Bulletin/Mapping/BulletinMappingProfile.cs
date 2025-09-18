@@ -2,7 +2,7 @@
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;

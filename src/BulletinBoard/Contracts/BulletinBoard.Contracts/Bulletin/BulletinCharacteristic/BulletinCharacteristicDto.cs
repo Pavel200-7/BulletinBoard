@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicName;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 
 /// <summary>
 /// Базовый формат данных характеристики
