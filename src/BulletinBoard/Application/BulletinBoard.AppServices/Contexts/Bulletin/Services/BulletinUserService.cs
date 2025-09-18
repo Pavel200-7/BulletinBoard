@@ -116,8 +116,6 @@ public class BulletinUserService : IBulletinUserService
     public async Task<BulletinUserDto> CreateAsync(BulletinUserCreateDto userDto)
     {
         BulletinUserDto outputUserDto = await _userRepository.CreateAsync(userDto);
-        //await _userRepository.SaveChangesAsync();
-
         return outputUserDto;
     }
 
@@ -135,8 +133,6 @@ public class BulletinUserService : IBulletinUserService
         userDto.FullName = name;
         BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
         await _userRepository.UpdateAsync(id, userUpdateDto);
-        //await _userRepository.SaveChangesAsync();
-
         return userDto;
     }
 
@@ -154,7 +150,6 @@ public class BulletinUserService : IBulletinUserService
         userDto = _mapper.Map<BulletinUserDto>(userLocationDto);
         BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
         await _userRepository.UpdateAsync(id, userUpdateDto);
-        //await _userRepository.SaveChangesAsync();
 
         return userDto;
     }
@@ -173,7 +168,6 @@ public class BulletinUserService : IBulletinUserService
         userDto.Phone = phone;
         BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
         await _userRepository.UpdateAsync(id, userUpdateDto);
-        //await _userRepository.SaveChangesAsync();
 
         return userDto;
     }
@@ -192,7 +186,6 @@ public class BulletinUserService : IBulletinUserService
         userDto.Blocked = true;
         BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
         await _userRepository.UpdateAsync(id, userUpdateDto);
-        //await _userRepository.SaveChangesAsync();
 
         return userDto;
     }
@@ -211,7 +204,6 @@ public class BulletinUserService : IBulletinUserService
         userDto.Blocked = false;
         BulletinUserUpdateDto userUpdateDto = _mapper.Map<BulletinUserUpdateDto>(userDto);
         await _userRepository.UpdateAsync(id, userUpdateDto);
-        //await _userRepository.SaveChangesAsync();
 
         return userDto;
     }
@@ -226,8 +218,6 @@ public class BulletinUserService : IBulletinUserService
             string errorMessage = $"The note with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
-
-        //await _userRepository.SaveChangesAsync();
 
         return isOnDeleting;
     }

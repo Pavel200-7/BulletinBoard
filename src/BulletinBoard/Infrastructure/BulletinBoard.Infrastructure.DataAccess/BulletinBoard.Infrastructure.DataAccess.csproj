@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contexts\Bulletin\BulletinRepositiry\Base\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

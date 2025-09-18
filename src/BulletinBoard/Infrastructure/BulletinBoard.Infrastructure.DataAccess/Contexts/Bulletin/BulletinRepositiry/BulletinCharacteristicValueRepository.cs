@@ -2,7 +2,6 @@
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Domain.Entities.Bulletin;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 
 

@@ -1,16 +1,22 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.AppServices.Specification.Extensions;
-using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry.Base;
+namespace BulletinBoard.Infrastructure.DataAccess.Repositories;
 
 /// <summary>
 /// Базовый класс для создания репозиториев домена Bulletin
 /// </summary>
-public abstract class BaseRepository<TEntity, TDto, TCreateDto, TUpdateDto, TContext>
+public abstract class BaseRepository
+    <
+    TEntity, 
+    TDto, 
+    TCreateDto, 
+    TUpdateDto, 
+    TContext
+    >
     where TEntity : class
     where TDto : class
     where TCreateDto : class
