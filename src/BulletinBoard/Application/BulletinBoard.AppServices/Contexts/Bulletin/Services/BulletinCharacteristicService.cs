@@ -49,20 +49,20 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetAsync(BulletinCharacteristicFilterDto сharacteristicDto)
+    public async Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetAsync(BulletinCharacteristicFilterDto сharacteristicFilterDto)
     {
-        if (сharacteristicDto.IsUsedName)
+        if (сharacteristicFilterDto.IsUsedName)
         {
-            _specificationBuilder.WhereName(сharacteristicDto.Name);
+            _specificationBuilder.WhereName(сharacteristicFilterDto.Name);
         }
-        else if (сharacteristicDto.IsUsedNameContains)
+        else if (сharacteristicFilterDto.IsUsedNameContains)
         {
-            _specificationBuilder.WhereNameContains(сharacteristicDto.Name);
+            _specificationBuilder.WhereNameContains(сharacteristicFilterDto.Name);
         }
 
-        if (сharacteristicDto.IsUsedCategory)
+        if (сharacteristicFilterDto.IsUsedCategory)
         {
-            _specificationBuilder.WhereCategoryId(сharacteristicDto.CategoryId);
+            _specificationBuilder.WhereCategoryId(сharacteristicFilterDto.CategoryId);
         }
 
         ExtendedSpecification<BulletinCharacteristic> specification = _specificationBuilder
@@ -138,5 +138,19 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
         }
 
         return isOnDeleting;
+    }
+
+    /// <inheritdoc/>
+
+    public async Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetByCategoryFilter(Guid categoryId)
+    {
+        ExtendedSpecification<BulletinCharacteristic> specification = _specificationBuilder
+            .WhereCategoryId(categoryId)
+            .OrderByName(true)
+            .Build();
+
+        IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _characteristicRepository.FindAsync(specification);
+
+        return characteristicDtoCollection;
     }
 }

@@ -50,16 +50,16 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryDto)
+    public async Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryFilterDto)
     {
-        if (categoryDto.IsUsedParentCategoryId)
+        if (categoryFilterDto.IsUsedParentCategoryId)
         {
-            _specificationBuilder.WhereParentId(categoryDto.ParentCategoryId);
+            _specificationBuilder.WhereParentId(categoryFilterDto.ParentCategoryId);
         }
 
-        if (categoryDto.IsUsedCategoryName)
+        if (categoryFilterDto.IsUsedCategoryName)
         {
-            _specificationBuilder.WhereCategoryName(categoryDto.CategoryName);
+            _specificationBuilder.WhereCategoryName(categoryFilterDto.CategoryName);
         }
 
         ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
@@ -69,44 +69,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
 
         return categoryDtoCollection;
     }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCategoryReadAllDto> GetAllAsync()
-    {
-        ExtendedSpecification<BulletinCategory> specificationWithouFilter = _specificationBuilder
-            .Build();
-
-        IReadOnlyCollection<BulletinCategoryDto> allCategories = await _categoryRepository.FindAsync(specificationWithouFilter);
-        BulletinCategoryReadAllDto categoriesReadAllDto = await _mapper.ConvertToBulletinCategoryReadAllDto(allCategories);
-
-        return categoriesReadAllDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id)
-    {
-        List<BulletinCategoryDto> CategoriesList = new List<BulletinCategoryDto>();
-        Guid? searchingCategoryId = id;
-
-        while (searchingCategoryId != null)
-        {
-            var currentCategory = await _categoryRepository.GetByIdAsync(searchingCategoryId.Value);
-            if (currentCategory is null)
-            {
-                string errorMessage = $"The category with id {searchingCategoryId} is not found.";
-                throw new NotFoundException(errorMessage);
-            }
-
-            CategoriesList.Add(currentCategory);
-            searchingCategoryId = currentCategory.ParentCategoryId;
-        }
-
-        IReadOnlyCollection<BulletinCategoryDto> allCategories = CategoriesList.AsReadOnly();
-        BulletinCategoryReadSingleDto categoriesReadSingleDto = await _mapper.ConvertToBulletinCategoryReadSingleDto(allCategories);
-
-        return categoriesReadSingleDto;
-    }
-
 
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
@@ -154,5 +116,42 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         }
 
         return isOnDeleting;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinCategoryReadAllDto> GetAllAsync()
+    {
+        ExtendedSpecification<BulletinCategory> specificationWithouFilter = _specificationBuilder
+            .Build();
+
+        IReadOnlyCollection<BulletinCategoryDto> allCategories = await _categoryRepository.FindAsync(specificationWithouFilter);
+        BulletinCategoryReadAllDto categoriesReadAllDto = await _mapper.ConvertToBulletinCategoryReadAllDto(allCategories);
+
+        return categoriesReadAllDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id)
+    {
+        List<BulletinCategoryDto> CategoriesList = new List<BulletinCategoryDto>();
+        Guid? searchingCategoryId = id;
+
+        while (searchingCategoryId != null)
+        {
+            var currentCategory = await _categoryRepository.GetByIdAsync(searchingCategoryId.Value);
+            if (currentCategory is null)
+            {
+                string errorMessage = $"The category with id {searchingCategoryId} is not found.";
+                throw new NotFoundException(errorMessage);
+            }
+
+            CategoriesList.Add(currentCategory);
+            searchingCategoryId = currentCategory.ParentCategoryId;
+        }
+
+        IReadOnlyCollection<BulletinCategoryDto> allCategories = CategoriesList.AsReadOnly();
+        BulletinCategoryReadSingleDto categoriesReadSingleDto = await _mapper.ConvertToBulletinCategoryReadSingleDto(allCategories);
+
+        return categoriesReadSingleDto;
     }
 }

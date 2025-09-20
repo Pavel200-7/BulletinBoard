@@ -18,9 +18,9 @@ public interface IBulletinUserService
     /// <summary>
     /// Получить список пользователей по фильтру.
     /// </summary>
-    /// <param name="userDto">Формат данных для фильтрации пользователей.</param>
+    /// <param name="userFilterDto">Формат данных для фильтрации пользователей.</param>
     /// <returns>Коллекция базового формата данных пользователя - владельца объявления.</returns>
-    public Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userDto);
+    public Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userFilterDto);
 
     /// <summary>
     /// Добавить пользователя.
@@ -28,6 +28,13 @@ public interface IBulletinUserService
     /// <param name="userDto">Формат данных создания пользователя - владельца объявления.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
     public Task<BulletinUserDto> CreateAsync(BulletinUserCreateDto userDto);
+
+    /// <summary>
+    /// Удалить пользователя - владельца объявления.
+    /// </summary>
+    /// <param name="id">Id пользователя.</param>
+    /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
+    public Task<bool> DeleteAsync(Guid id);
 
     /// <summary>
     /// Изменить имя по id.
@@ -66,11 +73,4 @@ public interface IBulletinUserService
     /// <param name="id">Id пользователя.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
     public Task<BulletinUserDto> UnBlockUserAsync(Guid id);
-
-    /// <summary>
-    /// Удалить пользователя - владельца объявления.
-    /// </summary>
-    /// <param name="id">Id пользователя.</param>
-    /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
-    public Task<bool> DeleteAsync(Guid id);
 }

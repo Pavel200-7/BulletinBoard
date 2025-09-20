@@ -116,7 +116,7 @@ public class BulletinCategoryController : ControllerBase
     /// </remarks>
     /// <param name="id">Идентификатор категории, которую нужно удалить.</param>
     /// <returns>true если все прошло успешно.</returns>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBulletinCategory(Guid id)

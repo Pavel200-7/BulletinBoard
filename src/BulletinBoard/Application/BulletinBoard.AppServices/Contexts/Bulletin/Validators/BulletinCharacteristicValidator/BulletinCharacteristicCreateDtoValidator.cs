@@ -41,8 +41,8 @@ public class BulletinCharacteristicCreateDtoValidator : AbstractValidator<Bullet
                 .WithMessage("{PropertyName} can contain only letters, digits, and spaces")
             .MustAsync(async (dto, name, cancellation) =>
                 await BullerinCharacteristicNameValidator.IsNameUniqueForCategoryAsync(
-                    characteristicRepository,
-                    specificationBuilder,
+                    _characteristicRepository,
+                    _specificationBuilder,
                     dto.CategoryId,
                     name))
                 .WithMessage("This name is not unique for this category.");

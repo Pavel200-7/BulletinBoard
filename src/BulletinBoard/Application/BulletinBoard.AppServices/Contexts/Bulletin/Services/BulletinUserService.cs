@@ -42,60 +42,60 @@ public class BulletinUserService : IBulletinUserService
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userDto)
+    public async Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userFilterDto)
     {
-        if (userDto.IsUsedFullName)
+        if (userFilterDto.IsUsedFullName)
         {
-            _specificationBuilder.WhereFullName(userDto.FullName);
+            _specificationBuilder.WhereFullName(userFilterDto.FullName);
         } 
-        else if (userDto.IsUsedFullNameContains)
+        else if (userFilterDto.IsUsedFullNameContains)
         {
-            _specificationBuilder.WhereFullNameContains(userDto.FullName);
+            _specificationBuilder.WhereFullNameContains(userFilterDto.FullName);
         }
 
-        if (userDto.IsUsedBlocked)
+        if (userFilterDto.IsUsedBlocked)
         {
-            _specificationBuilder.WhereIsBlocked(userDto.Blocked);
+            _specificationBuilder.WhereIsBlocked(userFilterDto.Blocked);
         }
 
-        if (userDto.IsUsedCoordinates)
+        if (userFilterDto.IsUsedCoordinates)
         {
-            if (userDto.IsUsedCoordinatesEquals)
+            if (userFilterDto.IsUsedCoordinatesEquals)
             {
-                _specificationBuilder.WhereCoordinates(userDto.Latitude, userDto.Longitude);
+                _specificationBuilder.WhereCoordinates(userFilterDto.Latitude, userFilterDto.Longitude);
             }
-            else if (userDto.IsUsedCoordinatesCloser)
+            else if (userFilterDto.IsUsedCoordinatesCloser)
             {
-                _specificationBuilder.WhereCoordinatesCloser(userDto.Latitude, userDto.Longitude, userDto.Distance);
+                _specificationBuilder.WhereCoordinatesCloser(userFilterDto.Latitude, userFilterDto.Longitude, userFilterDto.Distance);
             }
-            else if (userDto.IsUsedCoordinatesFarther)
+            else if (userFilterDto.IsUsedCoordinatesFarther)
             {
-                _specificationBuilder.WhereCoordinatesFarther(userDto.Latitude, userDto.Longitude, userDto.Distance);
+                _specificationBuilder.WhereCoordinatesFarther(userFilterDto.Latitude, userFilterDto.Longitude, userFilterDto.Distance);
             }
         }
 
-        if (userDto.IsUsedFormattedAddress)
+        if (userFilterDto.IsUsedFormattedAddress)
         {
-            _specificationBuilder.WhereFormattedAddress(userDto.FormattedAddress);
+            _specificationBuilder.WhereFormattedAddress(userFilterDto.FormattedAddress);
         }
 
-        if (userDto.IsUsedPhone)
+        if (userFilterDto.IsUsedPhone)
         {
-            _specificationBuilder.WherePhone(userDto.Phone);
+            _specificationBuilder.WherePhone(userFilterDto.Phone);
         }
 
-        if (userDto.IsUsedCoordinates)
+        if (userFilterDto.IsUsedCoordinates)
         {
             switch (true)
             {
-                case true when userDto.IsUsedCoordinatesEquals == true:
-                    _specificationBuilder.WhereCoordinates(userDto.Latitude, userDto.Longitude);
+                case true when userFilterDto.IsUsedCoordinatesEquals == true:
+                    _specificationBuilder.WhereCoordinates(userFilterDto.Latitude, userFilterDto.Longitude);
                     break;
-                case true when userDto.IsUsedCoordinatesCloser == true:
-                    _specificationBuilder.WhereCoordinatesCloser(userDto.Latitude, userDto.Longitude, userDto.Distance);
+                case true when userFilterDto.IsUsedCoordinatesCloser == true:
+                    _specificationBuilder.WhereCoordinatesCloser(userFilterDto.Latitude, userFilterDto.Longitude, userFilterDto.Distance);
                     break;
-                case true when userDto.IsUsedCoordinatesFarther == true:
-                    _specificationBuilder.WhereCoordinatesFarther(userDto.Latitude, userDto.Longitude, userDto.Distance);
+                case true when userFilterDto.IsUsedCoordinatesFarther == true:
+                    _specificationBuilder.WhereCoordinatesFarther(userFilterDto.Latitude, userFilterDto.Longitude, userFilterDto.Distance);
                     break;
             }
         }
@@ -127,6 +127,20 @@ public class BulletinUserService : IBulletinUserService
         }
 
         return userDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        bool isOnDeleting = await _userRepository.DeleteAsync(id);
+
+        if (!isOnDeleting)
+        {
+            string errorMessage = $"The note with id {id} is not found.";
+            throw new NotFoundException(errorMessage);
+        }
+
+        return isOnDeleting;
     }
 
     /// <inheritdoc/>
@@ -190,19 +204,5 @@ public class BulletinUserService : IBulletinUserService
 
 
         return userDto!;
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        bool isOnDeleting = await _userRepository.DeleteAsync(id);
-
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The note with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
     }
 }

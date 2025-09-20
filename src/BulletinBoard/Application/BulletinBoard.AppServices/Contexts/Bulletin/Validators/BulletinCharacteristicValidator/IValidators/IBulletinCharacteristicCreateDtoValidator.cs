@@ -15,7 +15,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 ///     1. Категория с таким id существует.
 ///     2. Категория с таким id является листовой.
 ///     3. Не null.
-/// <summary>
+/// </summary>
 public interface IBulletinCharacteristicCreateDtoValidator
 {
     /// <summary>

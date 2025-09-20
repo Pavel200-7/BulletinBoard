@@ -1,15 +1,16 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.CustomValidators;
 
+/// <inheritdoc/>
 public class BullerinCharacteristicNameValidator
 {
+    /// <summary>
+    /// Проверяет есть ли характеристика, относящаяся 
+    /// к этой категории с таким названием.
+    /// </summary>
     public static async Task<bool> IsNameUniqueForCategoryAsync(
         IBulletinCharacteristicRepository repository,
         IBulletinCharacteristicSpecificationBuilder builder,

@@ -55,7 +55,7 @@ public class BulletinMainController : ControllerBase
     /// /// <remarks>
     /// Пример запроса:
     ///
-    ///     PUT /BulletinMain
+    ///     PUT /BulletinMain/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///     {
     ///        "title": "Название объявления",
     ///        "description": "Описание объявления",
@@ -63,6 +63,7 @@ public class BulletinMainController : ControllerBase
     ///     }
     ///
     /// </remarks> 
+    /// <param name="id">Id объявления.</param>
     /// <param name="updateDto">Данные обновления объявления.</param>
     /// <returns>Данные объявления.</returns>
     [HttpPut("{id}")]

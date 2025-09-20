@@ -18,22 +18,9 @@ public interface IBulletinCategoryService
     /// <summary>
     /// Получить список категорий по фильтру.
     /// </summary>
-    /// <param name="categoryDto">Формат данных для фильтрации категории по id родительской и (или) по названию.</param>
+    /// <param name="categoryFilterDto">Формат данных для фильтрации категории по id родительской и (или) по названию.</param>
     /// <returns>Коллекция базовый формат данных категории.</returns>
-    public Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryDto);
-
-    /// <summary>
-    /// Получить категории в формате правильной иерархии.
-    /// </summary>
-    /// <returns>Формат данных для вывода всех категорий в их правильном иерархическом виде.</returns>
-    public Task<BulletinCategoryReadAllDto> GetAllAsync();
-
-    /// <summary>
-    /// Получить карегорию в виде древовидной струкруры от самого корня.
-    /// </summary>
-    /// <param name="id">Id категории.</param>
-    /// <returns> Формат данных для вывода одной карегории в виде древовидной струкруры от самого корня.</returns>
-    public Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id);
+    public Task<IReadOnlyCollection<BulletinCategoryDto>> GetAsync(BulletinCategoryFilterDto categoryFilterDto);
 
     /// <summary>
     /// Создать новую категорию.
@@ -56,4 +43,17 @@ public interface IBulletinCategoryService
     /// <param name="id">Id категории.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
+
+    /// <summary>
+    /// Получить категории в формате правильной иерархии.
+    /// </summary>
+    /// <returns>Формат данных для вывода всех категорий в их правильном иерархическом виде.</returns>
+    public Task<BulletinCategoryReadAllDto> GetAllAsync();
+
+    /// <summary>
+    /// Получить карегорию в виде древовидной струкруры от самого корня.
+    /// </summary>
+    /// <param name="id">Id категории.</param>
+    /// <returns> Формат данных для вывода одной карегории в виде древовидной струкруры от самого корня.</returns>
+    public Task<BulletinCategoryReadSingleDto> GetSingleAsync(Guid id);
 }

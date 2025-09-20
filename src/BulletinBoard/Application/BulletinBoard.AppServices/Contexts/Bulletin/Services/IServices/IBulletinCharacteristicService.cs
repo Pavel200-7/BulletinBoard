@@ -18,9 +18,9 @@ public interface IBulletinCharacteristicService
     /// <summary>
     /// Получить список характеристики по фильтру.
     /// </summary>
-    /// <param name="сharacteristicDto">Формат данных для фильтрации хакактеристик.</param>
+    /// <param name="сharacteristicFilterDto">Формат данных для фильтрации хакактеристик.</param>
     /// <returns>Коллекция базовый формат данных характеристики.</returns>
-    public Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetAsync(BulletinCharacteristicFilterDto сharacteristicDto);
+    public Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetAsync(BulletinCharacteristicFilterDto сharacteristicFilterDto);
 
     /// <summary>
     /// Создать новую характеристику.
@@ -43,4 +43,11 @@ public interface IBulletinCharacteristicService
     /// <param name="id">Id характеристики.</param>
     /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
     public Task<bool> DeleteAsync(Guid id);
+
+    /// <summary>
+    /// Получить список характеристик по id категории, к которой они относятся.
+    /// </summary>
+    /// <param name="categoryId">id категории.</param>
+    /// <returns>Коллекция базовый формат данных характеристики.</returns>
+    public Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetByCategoryFilter(Guid categoryId);
 }

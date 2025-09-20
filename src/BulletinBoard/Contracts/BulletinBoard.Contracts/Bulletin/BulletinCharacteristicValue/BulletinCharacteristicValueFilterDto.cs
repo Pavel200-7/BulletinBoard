@@ -6,5 +6,28 @@
 /// </summary>
 public class BulletinCharacteristicValueFilterDto
 {
-    // Требует доработки
+    /// <summary>
+    /// Используется ли CharacteristicId.
+    /// </summary>
+    public bool IsUsedCharacteristicId { get; set; }
+
+    /// <summary>
+    /// Id характеристики
+    /// </summary>
+    public Guid CharacteristicId { get; set; }
+
+    /// <summary>
+    /// Используется ли Value.
+    /// </summary>
+    public bool IsUsedValue { get; set; }
+
+    /// <summary>
+    /// Используется ли отбор по частичному совпадению Value.
+    /// </summary>
+    public bool IsUsedValueContains { get; set; }
+
+    /// <summary>
+    /// Возможное значение характеристики
+    /// </summary>
+    public string Value { get; set; }
 }

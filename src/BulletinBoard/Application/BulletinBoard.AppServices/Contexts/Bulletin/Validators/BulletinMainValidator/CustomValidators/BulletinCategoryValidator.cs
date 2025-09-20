@@ -56,6 +56,4 @@ public class BulletinCategoryValidator<T> : AsyncPropertyValidator<T, Guid>
     /// </summary>
     protected override string GetDefaultMessageTemplate(string errorCode)
     => "{Error}";
-
-
 }
