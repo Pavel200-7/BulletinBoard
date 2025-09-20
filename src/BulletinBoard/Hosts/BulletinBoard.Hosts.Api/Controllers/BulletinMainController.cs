@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
-/// <inheritdoc/>
+/// <summary>
+/// Контроллер для работы с объявлениями.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
@@ -21,8 +23,23 @@ public class BulletinMainController : ControllerBase
 
 
     /// <summary>
-    /// Создание нового объявления
+    /// Создать объявление.
     /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     POST /BulletinMain
+    ///     {
+    ///        "bulletinUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///        "title": "Название объявления",
+    ///        "description": "Описание объявления",
+    ///        "categoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///        "price": 1000
+    ///     }
+    ///
+    /// </remarks> 
+    /// <param name="createDto">Данные создания объявления.</param>
+    /// <returns>Данные объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinMainDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,8 +50,21 @@ public class BulletinMainController : ControllerBase
     }
 
     /// <summary>
-    /// Обновление объявления по id
+    /// Обновление объявления по id.
     /// </summary>
+    /// /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     PUT /BulletinMain
+    ///     {
+    ///        "title": "Название объявления",
+    ///        "description": "Описание объявления",
+    ///        "price": 1000
+    ///     }
+    ///
+    /// </remarks> 
+    /// <param name="updateDto">Данные обновления объявления.</param>
+    /// <returns>Данные объявления.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinMainDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,8 +75,16 @@ public class BulletinMainController : ControllerBase
     }
 
     /// <summary>
-    /// Удаление объявления по id
+    /// Удаление объявления по id.
     /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     Delete /BulletinMain/01992529-1ec8-766f-a03d-a7ac4f0996b9
+    ///
+    /// </remarks>
+    /// <param name="id">Идентификатор объявеления, которое нужно удалить.</param>
+    /// <returns>true если все прошло успешно.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

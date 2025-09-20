@@ -138,7 +138,5 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
         }
 
         return isOnDeleting;
-
     }
-
 }

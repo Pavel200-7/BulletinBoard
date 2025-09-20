@@ -49,17 +49,22 @@ public class BulletinUserController : ControllerBase
     ///
     ///     POST /BulletinUser/search
     ///     {
-    ///         "fullName": "Иван",
+    ///         "isUsedFullName": true,
     ///         "isUsedFullNameContains": true,
-    ///         "isBlocked": false
-    ///     }
-    ///
-    ///     POST /BulletinUser/search
-    ///     {
-    ///         "latitude": 55.7558,
-    ///         "longitude": 37.6176,
-    ///         "distance": 10,
-    ///         "isUsedCoordinatesCloser": true
+    ///         "fullName": "Ивен Иванов",
+    ///         "isUsedBlocked": false,
+    ///         "blocked": false,
+    ///         "isUsedCoordinates": true,
+    ///         "latitude": 44,37,
+    ///         "longitude": 33,31,
+    ///         "isUsedCoordinatesEquals": false,
+    ///         "isUsedCoordinatesCloser": true,
+    ///         "isUsedCoordinatesFarther": false,
+    ///         "distance": 5,
+    ///         "isUsedFormattedAddress": true,
+    ///         "formattedAddress": "Севастополь...",
+    ///         "isUsedPhone": true,
+    ///         "phone": "+00000000000"
     ///     }
     ///
     /// </remarks>
@@ -84,7 +89,7 @@ public class BulletinUserController : ControllerBase
     ///         "fullName": "Иван Иванов",
     ///         "latitude": 55.7558,
     ///         "longitude": 37.6176,
-    ///         "formattedAddress": "Москва, Кремль",
+    ///         "formattedAddress": "Москва...",
     ///         "phone": "+79161234567"
     ///     }
     ///
@@ -97,7 +102,7 @@ public class BulletinUserController : ControllerBase
     public async Task<IActionResult> CreateUser([FromBody] BulletinUserCreateDto userDto)
     {
         var createdUser = await _bulletinUserService.CreateAsync(userDto);
-        return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
+        return Ok(createdUser);
     }
 
     /// <summary>
@@ -118,8 +123,8 @@ public class BulletinUserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ChangeUserName(Guid id, [FromBody] string name)
     {
-        var userDto = await _bulletinUserService.ChangeNameAsync(id, name);
-        return Ok(userDto);
+        var updetedUser = await _bulletinUserService.ChangeNameAsync(id, name);
+        return Ok(updetedUser);
     }
 
     /// <summary>
