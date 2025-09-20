@@ -45,4 +45,15 @@ public class BulletinCharacteristicSpecificationBuilder : SpecificationBuilderBa
         _orderByAscending = ascending;
         return this;
     }
+
+    /// <inheritdoc/>
+    public IBulletinCharacteristicSpecificationBuilder Paginate(int pageNumber, int pageSize)
+    {
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageSize < 1) pageSize = 10;
+
+        _specification.Skip = (pageNumber - 1) * pageSize;
+        _specification.Take = pageSize;
+        return this;
+    }
 }

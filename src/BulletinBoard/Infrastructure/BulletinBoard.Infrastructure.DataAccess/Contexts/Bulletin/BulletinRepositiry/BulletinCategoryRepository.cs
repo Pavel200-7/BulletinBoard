@@ -23,6 +23,6 @@ public class BulletinCategoryRepository :
         : base(repository, mapper)
     {
 
-
     }
+
 }

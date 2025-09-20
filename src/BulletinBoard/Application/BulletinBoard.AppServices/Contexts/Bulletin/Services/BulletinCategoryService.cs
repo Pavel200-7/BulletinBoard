@@ -107,6 +107,12 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
+        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
+
         bool isOnDeleting = await _categoryRepository.DeleteAsync(id);
 
         if (!isOnDeleting)

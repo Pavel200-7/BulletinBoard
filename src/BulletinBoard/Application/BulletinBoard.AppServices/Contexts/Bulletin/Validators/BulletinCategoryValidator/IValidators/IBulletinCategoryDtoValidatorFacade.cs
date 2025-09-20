@@ -18,4 +18,11 @@ public interface IBulletinCategoryDtoValidatorFacade
     /// Вызов валидатора BulletinCategoryUpdateDto
     /// </summary>
     public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto);
+
+    /// <summary>
+    /// Вызов валидатора самой категории перед ее удалением.
+    /// </summary>
+    /// <param name="entityId">id категории</param>
+    /// <returns></returns>
+    public Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId);
 }

@@ -10,16 +10,20 @@ public sealed class BulletinCategoryDtoValidatorFacade : IBulletinCategoryDtoVal
 {
     private readonly IBulletinCategoryCreateDtoValidator _createDtoValidator;
     private readonly IBulletinCategoryUpdateDtoValidator _updateDtoValidator;
+    private readonly IBulletinCategoryDeleteValidator _deleteValidator;
+
 
     /// <inheritdoc/>
     public BulletinCategoryDtoValidatorFacade
         (
-            IBulletinCategoryCreateDtoValidator bulletinCategoryCreateDtoValidator, 
-            IBulletinCategoryUpdateDtoValidator bulletinCategoryUpdateDtoValidator
+        IBulletinCategoryCreateDtoValidator bulletinCategoryCreateDtoValidator, 
+        IBulletinCategoryUpdateDtoValidator bulletinCategoryUpdateDtoValidator,
+        IBulletinCategoryDeleteValidator deleteValidator
         )
     {
         _createDtoValidator = bulletinCategoryCreateDtoValidator;
         _updateDtoValidator = bulletinCategoryUpdateDtoValidator;
+        _deleteValidator = deleteValidator;
     }
 
     /// <inheritdoc/>
@@ -32,5 +36,11 @@ public sealed class BulletinCategoryDtoValidatorFacade : IBulletinCategoryDtoVal
     public async Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto)
     {
         return await _updateDtoValidator.ValidateAsync(entityDto);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId)
+    {
+        return await _deleteValidator.ValidateAsync(entityId);
     }
 }

@@ -60,6 +60,7 @@ public static class ComponentRegistrar
         // BulletinCategory
         services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
         services.AddScoped<IBulletinCategoryUpdateDtoValidator, BulletinCategoryUpdateDtoValidator>();
+        services.AddScoped<IBulletinCategoryDeleteValidator, BulletinCategoryDeleteValidator>();
         services.AddScoped<IBulletinCategoryDtoValidatorFacade, BulletinCategoryDtoValidatorFacade>();
         // BulletinMain
         services.AddScoped<IBulletinMainCreateDtoValidator, BulletinMainCreateDtoValidator>();
