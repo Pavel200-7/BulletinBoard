@@ -16,16 +16,19 @@ public class BulletinCharacteristicDtoValidatorFacade : IBulletinCharacteristicD
 {
     private readonly IBulletinCharacteristicCreateDtoValidator _createDtoValidator;
     private readonly IBulletinCharacteristicUpdateDtoValidator _updateDtoValidator;
+    private readonly IBulletinCharacteristicDeleteValidator _deleteValidator;
 
     /// <inheritdoc/>
     public BulletinCharacteristicDtoValidatorFacade
         (
             IBulletinCharacteristicCreateDtoValidator bulletinCharacteristicCreateDto,
-            IBulletinCharacteristicUpdateDtoValidator bulletinCharacteristicUpdateDto
+            IBulletinCharacteristicUpdateDtoValidator bulletinCharacteristicUpdateDto,
+            IBulletinCharacteristicDeleteValidator deleteValidator
         )
     {
         _createDtoValidator = bulletinCharacteristicCreateDto;
         _updateDtoValidator = bulletinCharacteristicUpdateDto;
+        _deleteValidator = deleteValidator;
     }
 
     /// <inheritdoc/>
@@ -38,5 +41,11 @@ public class BulletinCharacteristicDtoValidatorFacade : IBulletinCharacteristicD
     public async Task<ValidationResult> ValidateAsync(BulletinCharacteristicUpdateDtoForValidating entityDto)
     {
         return await _updateDtoValidator.ValidateAsync(entityDto);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId)
+    {
+        return await _deleteValidator.ValidateAsync(entityId);
     }
 }
