@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.CustomValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.ForValidating;
 using FluentValidation;

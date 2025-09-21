@@ -13,7 +13,7 @@ public class BulletinMainDto
     /// <summary>
     /// Id пользователя - создателя
     /// </summary>
-    public Guid BulletinUserId { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// Заголовок объявления

@@ -15,7 +15,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 /// <inheritdoc/>
 public sealed class BulletinCategoryService : IBulletinCategoryService 
 {
-    private readonly IBulletinCategoryRepository _categoryRepository;
+    private readonly IBulletinCategoryRepository _repository;
     private readonly IBulletinCategoryDtoValidatorFacade _validator;
     private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
     private readonly IBulletinCategoryMappingService _mapper;
@@ -23,14 +23,14 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public BulletinCategoryService
         (
-        IBulletinCategoryRepository bulletinCategoryRepository, 
-        IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade,
+        IBulletinCategoryRepository repository, 
+        IBulletinCategoryDtoValidatorFacade validator,
         IBulletinCategorySpecificationBuilder specificationBuilder,
         IBulletinCategoryMappingService mapper
         ) 
     {
-        _categoryRepository = bulletinCategoryRepository;
-        _validator = bulletinCategoryDtoValidatorFacade;
+        _repository = repository;
+        _validator = validator;
         _specificationBuilder = specificationBuilder;
         _mapper = mapper;
     }
@@ -38,8 +38,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto> GetByIdAsync(Guid id)
     {
-        BulletinCategoryDto? outputCategoryDto = await _categoryRepository.GetByIdAsync(id);
-
+        BulletinCategoryDto? outputCategoryDto = await _repository.GetByIdAsync(id);
         if (outputCategoryDto is null)
         {
             string errorMessage = $"The category with id {id} is not found.";
@@ -65,7 +64,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         ExtendedSpecification<BulletinCategory> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinCategoryDto> categoryDtoCollection = await _categoryRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCategoryDto> categoryDtoCollection = await _repository.FindAsync(specification);
 
         return categoryDtoCollection;
     }
@@ -79,7 +78,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCategoryDto outputCategoryDto = await _categoryRepository.CreateAsync(categoryDto);
+        BulletinCategoryDto outputCategoryDto = await _repository.CreateAsync(categoryDto);
 
         return outputCategoryDto;
     }
@@ -93,8 +92,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCategoryDto? outputCategoryDto = await _categoryRepository.UpdateAsync(id, categoryDto);
-
+        BulletinCategoryDto? outputCategoryDto = await _repository.UpdateAsync(id, categoryDto);
         if (outputCategoryDto is null)
         {
             string errorMessage = $"The category with id {id} is not found.";
@@ -113,10 +111,10 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        bool isOnDeleting = await _categoryRepository.DeleteAsync(id);
+        bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {
-            string errorMessage = $"The note with id {id} is not found.";
+            string errorMessage = $"The category with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -129,7 +127,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         ExtendedSpecification<BulletinCategory> specificationWithouFilter = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinCategoryDto> allCategories = await _categoryRepository.FindAsync(specificationWithouFilter);
+        IReadOnlyCollection<BulletinCategoryDto> allCategories = await _repository.FindAsync(specificationWithouFilter);
         BulletinCategoryReadAllDto categoriesReadAllDto = await _mapper.ConvertToBulletinCategoryReadAllDto(allCategories);
 
         return categoriesReadAllDto;
@@ -143,7 +141,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
 
         while (searchingCategoryId != null)
         {
-            var currentCategory = await _categoryRepository.GetByIdAsync(searchingCategoryId.Value);
+            var currentCategory = await _repository.GetByIdAsync(searchingCategoryId.Value);
             if (currentCategory is null)
             {
                 string errorMessage = $"The category with id {searchingCategoryId} is not found.";

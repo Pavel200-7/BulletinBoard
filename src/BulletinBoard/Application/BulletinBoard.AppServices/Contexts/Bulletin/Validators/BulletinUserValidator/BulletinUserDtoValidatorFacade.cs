@@ -15,16 +15,16 @@ public class BulletinUserDtoValidatorFacade : BaseValidatorFacade
     <
     BulletinUserCreateDto,
     BulletinUserUpdateDto,
-    BulletinUserCreateDtoValidator,
-    BulletinUserUpdateDtoValidator,
+    IBulletinUserCreateDtoValidator,
+    IBulletinUserUpdateDtoValidator,
     IBulletinUserDeleteValidator
     >, IBulletinUserDtoValidatorFacade
 {
     /// <inheritdoc/>
     public BulletinUserDtoValidatorFacade
         (
-        BulletinUserCreateDtoValidator bulletinCategoryCreateDtoValidator, 
-        BulletinUserUpdateDtoValidator bulletinCategoryUpdateDtoValidator, 
+        IBulletinUserCreateDtoValidator bulletinCategoryCreateDtoValidator,
+        IBulletinUserUpdateDtoValidator bulletinCategoryUpdateDtoValidator, 
         IBulletinUserDeleteValidator deleteValidator
         ) : base(bulletinCategoryCreateDtoValidator, bulletinCategoryUpdateDtoValidator, deleteValidator)
     {

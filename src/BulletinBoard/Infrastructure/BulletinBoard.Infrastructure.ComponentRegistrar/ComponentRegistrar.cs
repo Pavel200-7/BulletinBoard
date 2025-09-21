@@ -8,6 +8,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator;
@@ -35,6 +37,7 @@ public static class ComponentRegistrar
         // Bulletin - домен работы с объявлениями
         // BulletinServices
         services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
+        services.AddScoped<IBulletinCharacteristicComparisonService, BulletinCharacteristicComparisonService>();
         services.AddScoped<IBulletinCharacteristicService, BulletinCharacteristicService>();
         services.AddScoped<IBulletinCharacteristicValueService, BulletinCharacteristicValueService>();
         services.AddScoped<IBulletinMainService, BulletinMainService>();
@@ -62,6 +65,11 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinCategoryUpdateDtoValidator, BulletinCategoryUpdateDtoValidator>();
         services.AddScoped<IBulletinCategoryDeleteValidator, BulletinCategoryDeleteValidator>();
         services.AddScoped<IBulletinCategoryDtoValidatorFacade, BulletinCategoryDtoValidatorFacade>();
+        // BulletinCharacteristicComparison
+        services.AddScoped<IBulletinCharacteristicComparisonCreateDtoValidator, BulletinCharacteristicComparisonCreateDtoValidator>();
+        services.AddScoped<IBulletinCharacteristicComparisonUpdateDtoValidator, BulletinCharacteristicComparisonUpdateDtoValidator>();
+        services.AddScoped<IBulletinCharacteristicComparisonDeleteValidator, BulletinCharacteristicComparisonDeleteValidator>();
+        services.AddScoped<IBulletinCharacteristicComparisonDtoValidatorFacade, BulletinCharacteristicComparisonDtoValidatorFacade>();
         // BulletinCharacteristic
         services.AddScoped<IBulletinCharacteristicCreateDtoValidator, BulletinCharacteristicCreateDtoValidator>();
         services.AddScoped<IBulletinCharacteristicUpdateDtoValidator, BulletinCharacteristicUpdateDtoValidator>();

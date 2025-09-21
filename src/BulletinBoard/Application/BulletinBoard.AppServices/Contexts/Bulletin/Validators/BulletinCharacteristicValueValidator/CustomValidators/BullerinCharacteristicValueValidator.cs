@@ -3,7 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.CustomValidator;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.CustomValidators;
 
 /// <inheritdoc/>
 public class BullerinCharacteristicValueValidator

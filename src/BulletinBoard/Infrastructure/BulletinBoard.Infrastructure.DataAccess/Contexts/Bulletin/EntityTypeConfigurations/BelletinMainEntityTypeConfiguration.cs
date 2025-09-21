@@ -10,7 +10,7 @@ public class BulletinMainEntityTypeConfiguration : IEntityTypeConfiguration<Bull
     public void Configure(EntityTypeBuilder<BulletinMain> builder)
     {
         builder.ToTable("BulletinMain");
-        builder.HasKey(c => c.Id);
+        builder.HasKey(b => b.Id);
 
         builder.Property(b => b.Id)
             .ValueGeneratedOnAdd();

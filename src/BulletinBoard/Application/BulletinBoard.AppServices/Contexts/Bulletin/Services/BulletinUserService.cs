@@ -14,7 +14,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 /// <inheritdoc/>
 public class BulletinUserService : IBulletinUserService
 {
-    private readonly IBulletinUserRepository _userRepository;
+    private readonly IBulletinUserRepository _repository;
     private readonly IBulletinUserSpecificationBuilder _specificationBuilder;
     private readonly IBulletinUserDtoValidatorFacade _validator;   
 
@@ -22,12 +22,12 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public BulletinUserService
         (
-        IBulletinUserRepository bulletinCategoryRepository,
+        IBulletinUserRepository repository,
         IBulletinUserSpecificationBuilder specificationBuilder,
         IBulletinUserDtoValidatorFacade validator
         )
     {
-        _userRepository = bulletinCategoryRepository;
+        _repository = repository;
         _specificationBuilder = specificationBuilder;
         _validator = validator;
     }
@@ -35,8 +35,7 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> GetByIdAsync(Guid id)
     {
-        BulletinUserDto? outputUserDto = await _userRepository.GetByIdAsync(id);
-
+        BulletinUserDto? outputUserDto = await _repository.GetByIdAsync(id);
         if (outputUserDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
@@ -108,7 +107,7 @@ public class BulletinUserService : IBulletinUserService
         ExtendedSpecification<BulletinUser> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinUserDto> userDtoCollection = await _userRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinUserDto> userDtoCollection = await _repository.FindAsync(specification);
 
         return userDtoCollection;
     }
@@ -116,14 +115,14 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> CreateAsync(BulletinUserCreateDto userDto)
     {
-        BulletinUserDto outputUserDto = await _userRepository.CreateAsync(userDto);
+        BulletinUserDto outputUserDto = await _repository.CreateAsync(userDto);
         return outputUserDto;
     }
 
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangeNameAsync(Guid id, string name)
     {
-        BulletinUserDto? userDto = await _userRepository.ChangeNameAsync(id, name);
+        BulletinUserDto? userDto = await _repository.ChangeNameAsync(id, name);
 
         if (userDto is null)
         {
@@ -143,11 +142,11 @@ public class BulletinUserService : IBulletinUserService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        bool isOnDeleting = await _userRepository.DeleteAsync(id);
+        bool isOnDeleting = await _repository.DeleteAsync(id);
 
         if (!isOnDeleting)
         {
-            string errorMessage = $"The note with id {id} is not found.";
+            string errorMessage = $"The user with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -157,8 +156,7 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto)
     {
-        BulletinUserDto? userDto = await _userRepository.ChangeAdressAsync(id, userLocationDto);
-
+        BulletinUserDto? userDto = await _repository.ChangeAdressAsync(id, userLocationDto);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
@@ -171,8 +169,7 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone)
     {
-        BulletinUserDto? userDto = await _userRepository.ChangePhoneAsync(id, phone);
-
+        BulletinUserDto? userDto = await _repository.ChangePhoneAsync(id, phone);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
@@ -186,15 +183,14 @@ public class BulletinUserService : IBulletinUserService
     public async Task<BulletinUserDto> BlockUserAsync(Guid id)
     {
         BulletinUserDto? userDto;
-        userDto = await _userRepository.GetByIdAsync(id);
-
+        userDto = await _repository.GetByIdAsync(id);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
-        userDto = await _userRepository.SetUserBlockStatusAsync(id, true);
+        userDto = await _repository.SetUserBlockStatusAsync(id, true);
 
         return userDto!;
     }
@@ -203,16 +199,14 @@ public class BulletinUserService : IBulletinUserService
     public async Task<BulletinUserDto> UnBlockUserAsync(Guid id)
     {
         BulletinUserDto? userDto;
-        userDto = await _userRepository.GetByIdAsync(id);
-
+        userDto = await _repository.GetByIdAsync(id);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
-        userDto = await _userRepository.SetUserBlockStatusAsync(id, false);
-
+        userDto = await _repository.SetUserBlockStatusAsync(id, false);
 
         return userDto!;
     }

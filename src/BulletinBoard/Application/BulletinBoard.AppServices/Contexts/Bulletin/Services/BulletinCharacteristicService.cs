@@ -15,7 +15,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 /// <inheritdoc/>
 public class BulletinCharacteristicService : IBulletinCharacteristicService
 {
-    private readonly IBulletinCharacteristicRepository _characteristicRepository;
+    private readonly IBulletinCharacteristicRepository _repository;
     private readonly IBulletinCharacteristicDtoValidatorFacade _validator;
     private readonly IBulletinCharacteristicSpecificationBuilder _specificationBuilder;
 
@@ -27,7 +27,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
         IBulletinCharacteristicSpecificationBuilder specificationBuilder
         )
     {
-        _characteristicRepository = bulletinCharacteristicRepository;
+        _repository = bulletinCharacteristicRepository;
         _validator = bulletinCharacteristicDtoValidatorFacade;
         _specificationBuilder = specificationBuilder;
     }
@@ -36,8 +36,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicDto> GetByIdAsync(Guid id)
     {
-        BulletinCharacteristicDto? outputCharacteristicDto = await _characteristicRepository.GetByIdAsync(id);
-
+        BulletinCharacteristicDto? outputCharacteristicDto = await _repository.GetByIdAsync(id);
         if (outputCharacteristicDto is null)
         {
             string errorMessage = $"The characteristic with id {id} is not found.";
@@ -67,7 +66,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
         ExtendedSpecification<BulletinCharacteristic> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _characteristicRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _repository.FindAsync(specification);
 
         return characteristicDtoCollection;
     }
@@ -81,7 +80,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCharacteristicDto outputCharacteristicDto = await _characteristicRepository.CreateAsync(сharacteristicDto);
+        BulletinCharacteristicDto outputCharacteristicDto = await _repository.CreateAsync(сharacteristicDto);
 
         return outputCharacteristicDto;
     }
@@ -96,7 +95,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCharacteristicDto? outputCharacteristicDto = await _characteristicRepository.UpdateAsync(id, сharacteristicDto);
+        BulletinCharacteristicDto? outputCharacteristicDto = await _repository.UpdateAsync(id, сharacteristicDto);
 
         // Эти 4 строки не обязательны если есть GetDtoForValidatingUpdateDtoThrowNotFound.
         if (outputCharacteristicDto is null)
@@ -111,7 +110,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     private async Task<BulletinCharacteristicUpdateDtoForValidating> GetDtoForValidatingUpdateDtoThrowNotFound(Guid id, BulletinCharacteristicUpdateDto сharacteristicDto)
     {
-        BulletinCharacteristicDto? characteristicBaseDto = await _characteristicRepository.GetByIdAsync(id);
+        BulletinCharacteristicDto? characteristicBaseDto = await _repository.GetByIdAsync(id);
         if (characteristicBaseDto is null)
         {
             string errorMessage = $"The characteristic with id {id} is not found.";
@@ -134,10 +133,10 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        bool isOnDeleting = await _characteristicRepository.DeleteAsync(id);
+        bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {
-            string errorMessage = $"The bulletin with id {id} is not found.";
+            string errorMessage = $"The characteristic with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -153,7 +152,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
             .OrderByName(true)
             .Build();
 
-        IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _characteristicRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _repository.FindAsync(specification);
 
         return characteristicDtoCollection;
     }

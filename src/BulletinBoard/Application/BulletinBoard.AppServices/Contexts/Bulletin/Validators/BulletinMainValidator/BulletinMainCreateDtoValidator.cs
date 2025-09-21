@@ -31,19 +31,21 @@ public class BulletinMainCreateDtoValidator : AbstractValidator<BulletinMainCrea
         _mainSpecificationBuilder = mainSpecificationBuilder;
         _categoryRepository = bulletinCategory;
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.BulletinUserId)
+        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.UserId)
             .SetAsyncValidator(new UserIdValidator<BulletinMainCreateDto>(_userRepository));
 
         RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.Title)
             .NotEmpty()
             .Length(3, 100)
-            .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
+            .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
+                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation")
             .SetAsyncValidator(new BulletinTitleValudator<BulletinMainCreateDto>(_bulletinRepository, _mainSpecificationBuilder));
 
         RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.Description)
             .NotEmpty()
             .Length(3, 1000)
-            .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces");
+            .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
+                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation");
 
         RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.CategoryId)
             .NotEmpty()

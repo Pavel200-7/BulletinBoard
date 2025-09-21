@@ -1,4 +1,6 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
@@ -11,19 +13,23 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 /// <inheritdoc/>
 public class BulletinMainService : IBulletinMainService
 {
-    private readonly IBulletinMainRepository _bulletinRepository;
+    private readonly IBulletinMainRepository _repository;
     private readonly IBulletinMainDtoValidatorFacade _validator;
+    private readonly IBulletinMainSpecificationBuilder _specificationBuilder;
+
 
     /// <inheritdoc/>
 
     public BulletinMainService
         (
-        IBulletinMainRepository bulletinRepository,
-        IBulletinMainDtoValidatorFacade validator
+        IBulletinMainRepository repository,
+        IBulletinMainDtoValidatorFacade validator,
+        IBulletinMainSpecificationBuilder specificationBuilder
         )
     {
-        _bulletinRepository = bulletinRepository;
+        _repository = repository;
         _validator = validator;
+        _specificationBuilder = specificationBuilder;
     }
 
     /// <inheritdoc/>
@@ -35,7 +41,7 @@ public class BulletinMainService : IBulletinMainService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinMainDto outputBulletinDto = await _bulletinRepository.CreateAsync(bulletinDto);
+        BulletinMainDto outputBulletinDto = await _repository.CreateAsync(bulletinDto);
         return outputBulletinDto;
     }
 
@@ -48,11 +54,11 @@ public class BulletinMainService : IBulletinMainService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinMainDto? outputBulletinDto = await _bulletinRepository.UpdateAsync(id, bulletinDto);
+        BulletinMainDto? outputBulletinDto = await _repository.UpdateAsync(id, bulletinDto);
 
         if (outputBulletinDto is null)
         {
-            string errorMessage = $"The category with id {id} is not found.";
+            string errorMessage = $"The bulletin with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -69,7 +75,7 @@ public class BulletinMainService : IBulletinMainService
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        bool isOnDeleting = await _bulletinRepository.DeleteAsync(id);
+        bool isOnDeleting = await _repository.DeleteAsync(id);
 
         if (!isOnDeleting)
         {

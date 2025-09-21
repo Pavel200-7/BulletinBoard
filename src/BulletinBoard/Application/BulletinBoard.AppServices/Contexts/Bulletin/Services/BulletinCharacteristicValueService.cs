@@ -15,19 +15,19 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 /// <inheritdoc/>
 public class BulletinCharacteristicValueService : IBulletinCharacteristicValueService
 {
-    private readonly IBulletinCharacteristicValueRepository _characteristicValueRepository;
+    private readonly IBulletinCharacteristicValueRepository _repository;
     private readonly IBulletinCharacteristicValueDtoValidatorFacade _validator;
     private readonly IBulletinCharacteristicValueSpecificationBuilder _specificationBuilder;
 
     /// <inheritdoc/>
     public BulletinCharacteristicValueService
         (
-        IBulletinCharacteristicValueRepository characteristicValueRepository,
+        IBulletinCharacteristicValueRepository repository,
         IBulletinCharacteristicValueDtoValidatorFacade validator,
         IBulletinCharacteristicValueSpecificationBuilder specificationBuilder
         )
     {
-        _characteristicValueRepository = characteristicValueRepository;
+        _repository = repository;
         _validator = validator;
         _specificationBuilder = specificationBuilder;
     }
@@ -35,8 +35,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicValueDto> GetByIdAsync(Guid id)
     {
-        BulletinCharacteristicValueDto? characteristicValueDto = await _characteristicValueRepository.GetByIdAsync(id);
-
+        BulletinCharacteristicValueDto? characteristicValueDto = await _repository.GetByIdAsync(id);
         if (characteristicValueDto is null)
         {
             string errorMessage = $"The characteristic value with id {id} is not found.";
@@ -66,7 +65,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
         ExtendedSpecification<BulletinCharacteristicValue> specification = _specificationBuilder
             .Build();
 
-        IReadOnlyCollection<BulletinCharacteristicValueDto> characteristicValueCollection = await _characteristicValueRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCharacteristicValueDto> characteristicValueCollection = await _repository.FindAsync(specification);
 
         return characteristicValueCollection;
     }
@@ -80,7 +79,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCharacteristicValueDto outputCharacteristicValueDto = await _characteristicValueRepository.CreateAsync(сharacteristicValueDto);
+        BulletinCharacteristicValueDto outputCharacteristicValueDto = await _repository.CreateAsync(сharacteristicValueDto);
 
         return outputCharacteristicValueDto;
     }
@@ -95,8 +94,8 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        BulletinCharacteristicValueDto? outputCharacteristicValueDto = await _characteristicValueRepository.UpdateAsync(id, сharacteristicValueDto);
-
+        BulletinCharacteristicValueDto? outputCharacteristicValueDto = await _repository.UpdateAsync(id, сharacteristicValueDto);
+        
         // Эти 4 строки не обязательны если есть GetDtoForValidatingUpdateDtoThrowNotFound.
         if (outputCharacteristicValueDto is null)
         {
@@ -110,7 +109,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
 
     private async Task<BulletinCharacteristicValueUpdateDtoForValidating> GetDtoForValidatingUpdateDtoThrowNotFound(Guid id, BulletinCharacteristicValueUpdateDto сharacteristicValueDto)
     {
-        BulletinCharacteristicValueDto? characteristicValueBaseDto = await _characteristicValueRepository.GetByIdAsync(id);
+        BulletinCharacteristicValueDto? characteristicValueBaseDto = await _repository.GetByIdAsync(id);
         if (characteristicValueBaseDto is null)
         {
             string errorMessage = $"The characteristic value with id {id} is not found.";
@@ -133,7 +132,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
             throw new ValidationExeption(validationResult.ToDictionary());
         }
 
-        bool isOnDeleting = await _characteristicValueRepository.DeleteAsync(id);
+        bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {
             string errorMessage = $"The characteristic value with id {id} is not found.";
@@ -151,7 +150,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
             .OrderByValue(true)
             .Build();
 
-        IReadOnlyCollection<BulletinCharacteristicValueDto> characteristicValueDtoCollection = await _characteristicValueRepository.FindAsync(specification);
+        IReadOnlyCollection<BulletinCharacteristicValueDto> characteristicValueDtoCollection = await _repository.FindAsync(specification);
 
         return characteristicValueDtoCollection;
     }
