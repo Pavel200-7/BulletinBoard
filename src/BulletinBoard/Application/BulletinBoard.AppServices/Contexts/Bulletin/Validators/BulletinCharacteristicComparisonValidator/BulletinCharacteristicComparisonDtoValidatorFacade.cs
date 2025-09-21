@@ -3,6 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryVal
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator;
@@ -11,7 +12,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 public class BulletinCharacteristicComparisonDtoValidatorFacade : BaseValidatorFacade
     <
     BulletinCharacteristicComparisonCreateDto,
-    BulletinCharacteristicComparisonUpdateDto,
+    BulletinCharacteristicComparisonUpdateDtoForValidating,
     IBulletinCharacteristicComparisonCreateDtoValidator,
     IBulletinCharacteristicComparisonUpdateDtoValidator,
     IBulletinCharacteristicComparisonDeleteValidator

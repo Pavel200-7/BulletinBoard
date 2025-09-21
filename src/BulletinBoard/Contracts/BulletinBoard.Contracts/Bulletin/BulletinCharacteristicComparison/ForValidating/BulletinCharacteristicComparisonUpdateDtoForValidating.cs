@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating
+namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
+
+/// <summary>
+/// ДТО для валидации изменения.
+/// </summary>
+public class BulletinCharacteristicComparisonUpdateDtoForValidating : BulletinCharacteristicComparisonCreateDto
 {
-    internal class Class1
-    {
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
@@ -10,6 +11,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 ///     1. Значение характеристики существует.
 ///     2. Значение характеристики соответствует характеристике.
 /// </summary>
-public interface IBulletinCharacteristicComparisonUpdateDtoValidator : IDtoValidator<BulletinCharacteristicComparisonUpdateDto>
+public interface IBulletinCharacteristicComparisonUpdateDtoValidator : IDtoValidator<BulletinCharacteristicComparisonUpdateDtoForValidating>
 {
 }
