@@ -1,6 +1,4 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using FluentValidation;
 using FluentValidation.Results;
 
 
@@ -20,17 +18,17 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator;
 /// <typeparam name="TUpdateDto"></typeparam>
 public abstract class BaseValidatorFacade
     <
+    TCreateDto,
+    TUpdateDto,
     TCreateDtoValidator, 
     TUpdateDtoValidator, 
-    TDeleteValidator,
-    TCreateDto,
-    TUpdateDto
-    > 
-    where TCreateDtoValidator : IValidator<TCreateDto> 
-    where TUpdateDtoValidator : IValidator<TUpdateDto>
-    where TDeleteValidator : IDeleteValidator
+    TDeleteValidator
+    >
     where TCreateDto : class
     where TUpdateDto : class
+    where TCreateDtoValidator : class, IDtoValidator<TCreateDto>
+    where TUpdateDtoValidator : class, IDtoValidator<TUpdateDto>
+    where TDeleteValidator : IDeleteValidator
 {
     private readonly TCreateDtoValidator _createDtoValidator;
     private readonly TUpdateDtoValidator _updateDtoValidator;

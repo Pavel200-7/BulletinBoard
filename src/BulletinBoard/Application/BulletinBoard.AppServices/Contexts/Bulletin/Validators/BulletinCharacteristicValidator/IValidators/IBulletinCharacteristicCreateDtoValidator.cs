@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
@@ -16,13 +16,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 ///     2. Категория с таким id является листовой.
 ///     3. Не null.
 /// </summary>
-public interface IBulletinCharacteristicCreateDtoValidator
+public interface IBulletinCharacteristicCreateDtoValidator : IDtoValidator<BulletinCharacteristicCreateDto>
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityDto">Формат данных создания характеристики.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(BulletinCharacteristicCreateDto entityDto, CancellationToken cancellation = default);
 }

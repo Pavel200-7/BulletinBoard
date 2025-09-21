@@ -45,7 +45,7 @@ public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasMany(c => c.Characteristics)
             .WithOne(c => c.Category)
             .HasForeignKey(c => c.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasMany(c => c.Bulletins)

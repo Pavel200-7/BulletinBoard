@@ -1,24 +1,24 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Specification;
+﻿using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Domain.Base;
 using System.Linq.Expressions;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 
 /// <summary>
 /// Базовык класс для всех строителей спецификации.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public abstract class SpecificationBuilderBase<T>
+/// <typeparam name="TEntity">Сущность.</typeparam>
+public abstract class SpecificationBuilderBase<TEntity> : ISpecificationBuilder<TEntity> where TEntity : EntityBase
 {
     /// <summary>
     /// Расширенная спецификация.
     /// </summary>
-    protected CompositeExtendedSpecification<T> _specification;
+    protected CompositeExtendedSpecification<TEntity> _specification;
 
     /// <summary>
     /// Выражение сортировки.
     /// </summary>
-    protected Expression<Func<T, object>>? _orderByExpression;
+    protected Expression<Func<TEntity, object>>? _orderByExpression;
 
     /// <summary>
     /// Порядок сортировки (возрастание/убывание).
@@ -30,14 +30,30 @@ public abstract class SpecificationBuilderBase<T>
     /// </summary>
     public SpecificationBuilderBase()
     {
-        _specification = new CompositeExtendedSpecification<T>();
+        _specification = new CompositeExtendedSpecification<TEntity>();
+    }
+
+    /// <summary>
+    /// Добавить пагинацию.
+    /// </summary>
+    /// <param name="pageNumber">Номер страницы.</param>
+    /// <param name="pageSize">Количество элементов.</param>
+    /// <returns></returns>
+    public ISpecificationBuilder<TEntity> Paginate(int pageNumber = 1, int pageSize = 10)
+    {
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageSize < 1) pageSize = 10;
+
+        _specification.Skip = (pageNumber - 1) * pageSize;
+        _specification.Take = pageSize;
+        return this;
     }
 
     /// <summary>
     /// Создать расширенную спецификацию на основе добавленных условий.
     /// </summary>
     /// <returns>Готовая спецификация для использования в репозитории.</returns>
-    public ExtendedSpecification<T> Build()
+    public ExtendedSpecification<TEntity> Build()
     {
         if (_orderByExpression != null)
         {
@@ -53,5 +69,4 @@ public abstract class SpecificationBuilderBase<T>
 
         return _specification;
     }
-
 }

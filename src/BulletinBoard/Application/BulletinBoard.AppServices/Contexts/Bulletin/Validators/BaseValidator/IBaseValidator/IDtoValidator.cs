@@ -6,7 +6,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.I
 /// <summary>
 ///  Интерфейс валидатора.
 /// </summary>
-public interface IDtoValidator<TDto> where TDto : class
+public interface IDtoValidator<TDto> where TDto : class 
 {
     /// <summary>
     /// Стандартизированный метод валидации.

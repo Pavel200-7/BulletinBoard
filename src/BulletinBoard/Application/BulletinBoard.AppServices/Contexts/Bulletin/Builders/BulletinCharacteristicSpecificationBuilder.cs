@@ -1,5 +1,5 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -43,17 +43,6 @@ public class BulletinCharacteristicSpecificationBuilder : SpecificationBuilderBa
     {
         _orderByExpression = u => u.Name;
         _orderByAscending = ascending;
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinCharacteristicSpecificationBuilder Paginate(int pageNumber, int pageSize)
-    {
-        if (pageNumber < 1) pageNumber = 1;
-        if (pageSize < 1) pageSize = 10;
-
-        _specification.Skip = (pageNumber - 1) * pageSize;
-        _specification.Take = pageSize;
         return this;
     }
 }

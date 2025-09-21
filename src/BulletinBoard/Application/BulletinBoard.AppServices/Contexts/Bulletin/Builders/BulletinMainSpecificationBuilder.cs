@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 using System.Linq.Expressions;
@@ -156,17 +156,6 @@ public class BulletinMainSpecificationBuilder : SpecificationBuilderBase<Bulleti
     {
         _orderByExpression = b => b.Title;
         _orderByAscending = ascending;
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinMainSpecificationBuilder Paginate(int pageNumber, int pageSize)
-    {
-        if (pageNumber < 1) pageNumber = 1;
-        if (pageSize < 1) pageSize = 10;
-
-        _specification.Skip = (pageNumber - 1) * pageSize;
-        _specification.Take = pageSize;
         return this;
     }
 }

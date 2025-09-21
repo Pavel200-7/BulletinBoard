@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -10,13 +10,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 ///     2. Bulletin Main (объявления).
 ///     3. BulletinCharacteristic (характеристики объявлений)
 /// </summary>
-public interface IBulletinCategoryDeleteValidator
+public interface IBulletinCategoryDeleteValidator : IDeleteValidator
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityId">id категории на удаление.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(Guid entityId, CancellationToken cancellation = default);
 }

@@ -70,7 +70,7 @@ public class BulletinMainEntityTypeConfiguration : IEntityTypeConfiguration<Bull
             .HasMany(b => b.Characteristics)
             .WithOne(c => c.Bulletin)
             .HasForeignKey(b => b.BulletinId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
            .HasMany(b => b.Images)

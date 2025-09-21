@@ -1,25 +1,20 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator;
+
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator;
 
 /// <inheritdoc/>
-public class BulletinCharacteristicDeleteValidator : AbstractValidator<Guid>, IBulletinCharacteristicDeleteValidator
+public class BulletinCharacteristicValueDeleteValidator : AbstractValidator<Guid>, IBulletinCharacteristicValueDeleteValidator
 {
     private readonly IBulletinCharacteristicComparisonRepository _characteristicComparisonRepository;
     private readonly IBulletinCharacteristicComparisonSpecificationBuilder _characteristicComparisonSpecificationBuilder;
 
     /// <inheritdoc/>
-    public BulletinCharacteristicDeleteValidator
+    public BulletinCharacteristicValueDeleteValidator
         (
         IBulletinCharacteristicComparisonRepository characteristicComparisonRepository,
         IBulletinCharacteristicComparisonSpecificationBuilder characteristicComparisonSpecificationBuilder
@@ -29,21 +24,21 @@ public class BulletinCharacteristicDeleteValidator : AbstractValidator<Guid>, IB
         _characteristicComparisonSpecificationBuilder = characteristicComparisonSpecificationBuilder;
 
         RuleFor(id => id)
-            .MustAsync(async (id, idField, validationContext, cancellationToken) => 
-            { 
+            .MustAsync(async (id, idField, validationContext, cancellationToken) =>
+            {
                 if (await IsHaveDependentCharacteristicComporations(id)) { return false; }
                 return true;
-            }).WithMessage("This characteristic can not be deleted because is has dependent characteristics comporations (bulletins)");
+            }).WithMessage("This characteristic value can not be deleted because is has dependent characteristics comporations (bulletins)");
     }
 
     /// <summary>
     /// Есть ли зависящии связи характеристик (объявеления).
     /// </summary>
     /// <returns></returns>
-    private async Task<bool> IsHaveDependentCharacteristicComporations(Guid characteristicId)
+    private async Task<bool> IsHaveDependentCharacteristicComporations(Guid characteristicValueId)
     {
         var specification = _characteristicComparisonSpecificationBuilder
-            .WhereCharacteristicId(characteristicId)
+            .WhereCharacteristicValueId(characteristicValueId)
             .Paginate(1, 1)
             .Build();
         IReadOnlyCollection<BulletinCharacteristicComparisonDto> dependentCharacteristicComparisons = await _characteristicComparisonRepository.FindAsync(specification);

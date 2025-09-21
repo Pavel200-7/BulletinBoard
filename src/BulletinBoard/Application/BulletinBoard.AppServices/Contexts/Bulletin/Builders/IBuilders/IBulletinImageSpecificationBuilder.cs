@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 
@@ -9,7 +10,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 /// (которые содержат не только фильтрацию, но и сортировку по одному полю и пагинацию)
 /// для для отбора сущностей BulletinImage в методах соответствующего репозитория.
 /// </summary>
-public interface IBulletinImageSpecificationBuilder
+public interface IBulletinImageSpecificationBuilder : ISpecificationBuilder<BulletinImage>
 {
     /// <summary>
     /// Добавить отбор по полю BelletinId.
@@ -82,10 +83,4 @@ public interface IBulletinImageSpecificationBuilder
     /// <param name="ascending">Добавлять ли сотрировку (true, false).</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     public IBulletinImageSpecificationBuilder OrderByCreatedAt(bool ascending = true);
-
-    /// <summary>
-    /// Создать расширенную спецификацию на основе добавленных условий.
-    /// </summary>
-    /// <returns>Готовая спецификация для использования в репозитории.</returns>
-    public ExtendedSpecification<BulletinImage> Build();
 }

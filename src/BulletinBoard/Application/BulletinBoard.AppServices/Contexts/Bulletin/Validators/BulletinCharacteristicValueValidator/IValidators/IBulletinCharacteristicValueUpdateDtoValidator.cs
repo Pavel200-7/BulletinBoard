@@ -1,6 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.ForValidating;
-using FluentValidation.Results;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
@@ -13,13 +12,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 ///     3. Может хранить только русские, английские буквы нижнего, верхнего регистра и пробелы и цифры.
 ///     4. Является уникальным для выбранной характеристики.
 /// </summary>
-public interface IBulletinCharacteristicValueUpdateDtoValidator
+public interface IBulletinCharacteristicValueUpdateDtoValidator : IDtoValidator<BulletinCharacteristicValueUpdateDtoForValidating>
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityDto">Формат данных создания объявления.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(BulletinCharacteristicValueUpdateDtoForValidating entityDto, CancellationToken cancellation = default);
 }

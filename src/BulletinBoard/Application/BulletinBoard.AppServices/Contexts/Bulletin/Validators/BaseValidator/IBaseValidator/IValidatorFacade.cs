@@ -7,6 +7,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.I
 /// Класс, предоставляющий единый интерфейс для валидации сущности в ее разных формах.
 /// </summary>
 public interface IValidatorFacade<TCreateDto, TUpdateDto>
+    where TCreateDto : class
+    where TUpdateDto : class
 {
     /// <summary>
     /// Валидировать ДТО создания сущности.

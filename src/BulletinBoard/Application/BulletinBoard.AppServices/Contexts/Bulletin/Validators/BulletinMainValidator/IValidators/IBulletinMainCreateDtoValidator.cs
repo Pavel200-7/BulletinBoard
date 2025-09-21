@@ -1,5 +1,6 @@
-﻿using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 
@@ -24,13 +25,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainVal
 ///     1. Соответствует типу данных decimal.
 ///     2. Не является отрицательным.
 /// </summary>
-public interface IBulletinMainCreateDtoValidator
+public interface IBulletinMainCreateDtoValidator : IDtoValidator<BulletinMainCreateDto>
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityDto">Формат данных создания объявления.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(BulletinMainCreateDto entityDto, CancellationToken cancellation = default);
 }

@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -15,13 +15,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 ///     3. Может хранить только русские, английские буквы нижнего, верхнего регистра и пробелы.
 ///     4. Является уникальным.
 /// </summary>
-public interface IBulletinCategoryUpdateDtoValidator 
+public interface IBulletinCategoryUpdateDtoValidator : IDtoValidator<BulletinCategoryUpdateDto>
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityDto">Формат данных изменения категории.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto, CancellationToken cancellation = default);
 }

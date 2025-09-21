@@ -11,7 +11,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 /// <inheritdoc/>
 public class BulletinCharacteristicValueUpdateDtoValidator : AbstractValidator<BulletinCharacteristicValueUpdateDtoForValidating>, IBulletinCharacteristicValueUpdateDtoValidator
 {
-    private readonly IBulletinCharacteristicRepository _characteristicRepository;
     private readonly IBulletinCharacteristicValueRepository _characteristicValueRepository;
     private readonly IBulletinCharacteristicValueSpecificationBuilder _characteristicValueSpecificationBuilder;
 
@@ -23,10 +22,8 @@ public class BulletinCharacteristicValueUpdateDtoValidator : AbstractValidator<B
         IBulletinCharacteristicValueSpecificationBuilder characteristicValueSpecificationBuilder
         )
     {
-        _characteristicRepository = characteristicRepository;
         _characteristicValueRepository = characteristicValueRepository;
         _characteristicValueSpecificationBuilder = characteristicValueSpecificationBuilder;
-
 
         RuleFor(bulletinCharacteristicValueUpdateDto => bulletinCharacteristicValueUpdateDto.Value)
             .NotEmpty()

@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -17,13 +17,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// IsLeafy:
 ///     1. Не пустая строка и не null.
 /// </summary>
-public interface IBulletinCategoryCreateDtoValidator
+public interface IBulletinCategoryCreateDtoValidator : IDtoValidator<BulletinCategoryCreateDto>
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityDto">Формат данных создания категории.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto, CancellationToken cancellation = default);
 }

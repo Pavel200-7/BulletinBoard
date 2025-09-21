@@ -43,21 +43,21 @@ public class BulletinCategoryDeleteValidator : AbstractValidator<Guid>, IBulleti
         _bulletinSpecificationBuilder = bulletinSpecificationBuilder;
 
         RuleFor(id => id)
-            .MustAsync(async (id, idPole, validationContext, cancellationToken) =>
+            .MustAsync(async (id, idField, validationContext, cancellationToken) =>
             {
                 if (await IsHaveChildrenCategories(id)) { return false; }
                 return true;
-            }).WithMessage("This category cannot be deleted because it has child categories.")
-            .MustAsync(async (id, idPole, validationContext, cancellationToken) =>
+            }).WithMessage("This category can not be deleted because it has child categories.")
+            .MustAsync(async (id, idField, validationContext, cancellationToken) =>
              {
                  if (await IsHaveDependentCharacteristic(id)) { return false; }
                  return true;
-             }).WithMessage("This category cannot be deleted because it has dependent characteristics.")
-             .MustAsync(async (id, idPole, validationContext, cancellationToken) =>
+             }).WithMessage("This category can not be deleted because it has dependent characteristics.")
+             .MustAsync(async (id, idField, validationContext, cancellationToken) =>
              {
                  if (await IsHaveDependentBulletins(id)) { return false; }
                  return true;
-             }).WithMessage("This category cannot be deleted because it has dependent bulletins.");
+             }).WithMessage("This category can not be deleted because it has dependent bulletins.");
     }
 
     /// <summary>

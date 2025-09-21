@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
@@ -6,16 +6,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharact
 /// <summary>
 /// Данный валидатор принимает id удаляемой сущности BulletinCharacteristic 
 /// и проверяет, есть ли зависимые от нее записи сущностей:
-///     1. BulletinCharacteristicValue (дочерние категории).
-///     2. BulletinCharacteristicComparison (связи характеристик и объявлений).
+///     1. BulletinCharacteristicComparison (связи характеристик и объявлений).
 /// </summary>
-public interface IBulletinCharacteristicDeleteValidator
+public interface IBulletinCharacteristicDeleteValidator : IDeleteValidator
 {
-    /// <summary>
-    /// Стандартизированный метод валидации.
-    /// </summary>
-    /// <param name="entityId">id характеристики на удаление.</param>
-    /// <param name="cancellation">Токен отмены, ставится автоматически.</param>
-    /// <returns>Результат валидации.</returns>
-    public Task<ValidationResult> ValidateAsync(Guid entityId, CancellationToken cancellation = default);
 }

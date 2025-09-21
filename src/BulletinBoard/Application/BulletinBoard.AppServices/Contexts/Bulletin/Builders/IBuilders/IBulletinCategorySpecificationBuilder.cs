@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Specification;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -9,7 +10,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 /// (которые содержат не только фильтрацию, но и сортировку по одному полю и пагинацию)
 /// для для отбора сущностей BulletinCategory в методах соответствующего репозитория.
 /// </summary>
-public interface IBulletinCategorySpecificationBuilder
+public interface IBulletinCategorySpecificationBuilder : ISpecificationBuilder<BulletinCategory>
 {
     /// <summary>
     /// Добавить отбор по полю ParentCategoryId.
@@ -52,18 +53,4 @@ public interface IBulletinCategorySpecificationBuilder
     /// <param name="ascending">Добавлять ли сотрировку (true, false).</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     public IBulletinCategorySpecificationBuilder OrderByIsLeafy(bool ascending = true);
-
-    /// <summary>
-    /// Добавить Пагинацию.
-    /// </summary>
-    /// <param name="pageNumber">Номер страницы.</param>
-    /// <param name="pageSize">Размер страницы.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinCategorySpecificationBuilder Paginate(int pageNumber, int pageSize);
-
-    /// <summary>
-    /// Создать расширенную спецификацию на основе добавленных условий.
-    /// </summary>
-    /// <returns>Готовая спецификация для использования в репозитории.</returns>
-    public ExtendedSpecification<BulletinCategory> Build();
 }

@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Specification;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
@@ -8,7 +9,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 /// для отбора сущностей BulletinMain в методах соответствующего репозитория.
 /// Спецификации содержат фильтрацию, сортировку и пагинацию.
 /// </summary>
-public interface IBulletinMainSpecificationBuilder
+public interface IBulletinMainSpecificationBuilder : ISpecificationBuilder<BulletinMain>
 {
     /// <summary>
     /// Добавить отбор по полю UserId.
@@ -121,18 +122,4 @@ public interface IBulletinMainSpecificationBuilder
     /// <param name="ascending">Направление сортировки (true - по возрастанию, false - по убыванию).</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     public IBulletinMainSpecificationBuilder OrderByTitle(bool ascending = true);
-
-    /// <summary>
-    /// Добавить пагинацию.
-    /// </summary>
-    /// <param name="pageNumber">Номер страницы.</param>
-    /// <param name="pageSize">Размер страницы.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinMainSpecificationBuilder Paginate(int pageNumber, int pageSize);
-
-    /// <summary>
-    /// Создать расширенную спецификацию на основе добавленных условий.
-    /// </summary>
-    /// <returns>Готовая спецификация для использования в репозитории.</returns>
-    public ExtendedSpecification<BulletinMain> Build();
 }

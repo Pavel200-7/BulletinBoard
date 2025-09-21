@@ -1,5 +1,5 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.SpecificationBuilderBase;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 

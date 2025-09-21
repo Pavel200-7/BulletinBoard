@@ -1,35 +1,31 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.ForValidating;
 using FluentValidation.Results;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 
 /// <inheritdoc/>
-public class BulletinMainDtoValidatorFacade : IBulletinMainDtoValidatorFacade
+public class BulletinMainDtoValidatorFacade : BaseValidatorFacade
+    <
+    BulletinMainCreateDto,
+    BulletinMainUpdateDto,
+    IBulletinMainCreateDtoValidator,
+    IBulletinMainUpdateDtoValidator,
+    IBulletinMainDeleteValidator
+    >, IBulletinMainDtoValidatorFacade
 {
-    private readonly IBulletinMainCreateDtoValidator _createDtoValidator;
-    private readonly IBulletinMainUpdateDtoValidator _updateDtoValidator;
 
     /// <inheritdoc/>
     public BulletinMainDtoValidatorFacade
         (
-            IBulletinMainCreateDtoValidator createDtoValidator,
-            IBulletinMainUpdateDtoValidator updateDtoValidator
-        )
+        IBulletinMainCreateDtoValidator createDtoValidator,
+        IBulletinMainUpdateDtoValidator updateDtoValidator,
+        IBulletinMainDeleteValidator deleteValidator
+        ) : base(createDtoValidator, updateDtoValidator, deleteValidator)
     {
-        _createDtoValidator = createDtoValidator;
-        _updateDtoValidator = updateDtoValidator;
-    }
-
-    /// <inheritdoc/>
-    public async Task<ValidationResult> ValidateAsync(BulletinMainCreateDto entityDto)
-    {
-        return await _createDtoValidator.ValidateAsync(entityDto);
-    }
-
-    /// <inheritdoc/>
-    public async Task<ValidationResult> ValidateAsync(BulletinMainUpdateDto entityDto)
-    {
-        return await _updateDtoValidator.ValidateAsync(entityDto);
     }
 }

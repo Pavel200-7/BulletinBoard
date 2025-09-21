@@ -1,20 +1,11 @@
-﻿using FluentValidation.Results;
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
+﻿using BulletinBoard.Contracts.Bulletin.BelletinMain;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 
 /// <summary>
 /// Класс, предоставляющий единый интерфейс для валидации разных ДТО сущности BulletinMain
 /// </summary>
-public interface IBulletinMainDtoValidatorFacade
+public interface IBulletinMainDtoValidatorFacade : IValidatorFacade<BulletinMainCreateDto, BulletinMainUpdateDto>
 {
-    /// <summary>
-    /// Вызов валидатора BulletinMainCreateDto
-    /// </summary>
-    public Task<ValidationResult> ValidateAsync(BulletinMainCreateDto entityDto);
-
-    /// <summary>
-    /// Вызов валидатора BulletinMainUpdateDto
-    /// </summary>
-    public Task<ValidationResult> ValidateAsync(BulletinMainUpdateDto entityDto);
 }

@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Specification;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -8,7 +9,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 /// Строитель (builder) для создания расширенных спецификаций 
 /// для отбора сущностей BulletinCharacteristicValue.
 /// </summary>
-public interface IBulletinCharacteristicValueSpecificationBuilder
+public interface IBulletinCharacteristicValueSpecificationBuilder : ISpecificationBuilder<BulletinCharacteristicValue>
 {
     /// <summary>
     /// Добавить отбор по Id характеристики.
@@ -37,11 +38,4 @@ public interface IBulletinCharacteristicValueSpecificationBuilder
     /// <param name="ascending">Направление сортировки (true - по возрастанию).</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     IBulletinCharacteristicValueSpecificationBuilder OrderByValue(bool ascending = true);
-
-    /// <summary>
-    /// Создать расширенную спецификацию на основе добавленных условий.
-    /// </summary>
-    /// <returns>Готовая спецификация для использования в репозитории.</returns>
-    ExtendedSpecification<BulletinCharacteristicValue> Build();
-
 }

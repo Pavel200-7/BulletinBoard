@@ -27,13 +27,13 @@ public class BulletinCharacteristicEntityTypeConfiguration : IEntityTypeConfigur
             .HasOne(c => c.Category)
             .WithMany(c => c.Characteristics)
             .HasForeignKey(c => c.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasMany(c => c.CharacteristicValues)
             .WithOne(c => c.Characteristic)
             .HasForeignKey(c => c.CharacteristicId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasMany(c => c.CharacteristicСomparisons)

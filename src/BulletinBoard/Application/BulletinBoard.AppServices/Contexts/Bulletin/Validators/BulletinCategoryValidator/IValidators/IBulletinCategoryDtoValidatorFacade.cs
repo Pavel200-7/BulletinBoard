@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using FluentValidation.Results;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -7,22 +7,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 /// <summary>
 /// Класс, предоставляющий единый интерфейс для валидации разных ДТО сущности BulletinCategory
 /// </summary>
-public interface IBulletinCategoryDtoValidatorFacade
+public interface IBulletinCategoryDtoValidatorFacade : IValidatorFacade<BulletinCategoryCreateDto, BulletinCategoryUpdateDto>
 {
-    /// <summary>
-    /// Вызов валидатора BulletinCategoryCreateDto
-    /// </summary>
-    public Task<ValidationResult> ValidateAsync(BulletinCategoryCreateDto entityDto);
-
-    /// <summary>
-    /// Вызов валидатора BulletinCategoryUpdateDto
-    /// </summary>
-    public Task<ValidationResult> ValidateAsync(BulletinCategoryUpdateDto entityDto);
-
-    /// <summary>
-    /// Вызов валидатора категории перед ее удалением.
-    /// </summary>
-    /// <param name="entityId">id категории</param>
-    /// <returns></returns>
-    public Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId);
 }
