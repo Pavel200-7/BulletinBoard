@@ -1,5 +1,4 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;

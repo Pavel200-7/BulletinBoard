@@ -14,6 +14,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteris
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
@@ -50,6 +52,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinCharacteristicValueSpecificationBuilder, BulletinCharacteristicValueSpecificationBuilder>();
         services.AddScoped<IBulletinImageSpecificationBuilder, BulletinImageSpecificationBuilder>();
         services.AddScoped<IBulletinMainSpecificationBuilder, BulletinMainSpecificationBuilder>();
+        services.AddScoped<IBulletinRatingSpecificationBuilder, BulletinRatingSpecificationBuilder>();
         services.AddScoped<IBulletinUserSpecificationBuilder, BulletinUserSpecificationBuilder>();
 
 
@@ -74,6 +77,11 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainUpdateDtoValidator, BulletinMainUpdateDtoValidator>();
         services.AddScoped<IBulletinMainDeleteValidator, BulletinMainDeleteValidator>();
         services.AddScoped<IBulletinMainDtoValidatorFacade, BulletinMainDtoValidatorFacade>();
+        // BulletinUser
+        services.AddScoped<IBulletinUserCreateDtoValidator, BulletinUserCreateDtoValidator>();
+        services.AddScoped<IBulletinUserUpdateDtoValidator, BulletinUserUpdateDtoValidator>();
+        services.AddScoped<IBulletinUserDeleteValidator, BulletinUserDeleteValidator>();
+        services.AddScoped<IBulletinUserDtoValidatorFacade, BulletinUserDtoValidatorFacade>();
 
         return services;
     }

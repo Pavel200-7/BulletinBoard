@@ -10,7 +10,6 @@ using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
 
 
-
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
@@ -23,9 +22,9 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     public BulletinCharacteristicService
         (
-            IBulletinCharacteristicRepository bulletinCharacteristicRepository,
-            IBulletinCharacteristicDtoValidatorFacade bulletinCharacteristicDtoValidatorFacade,
-            IBulletinCharacteristicSpecificationBuilder specificationBuilder
+        IBulletinCharacteristicRepository bulletinCharacteristicRepository,
+        IBulletinCharacteristicDtoValidatorFacade bulletinCharacteristicDtoValidatorFacade,
+        IBulletinCharacteristicSpecificationBuilder specificationBuilder
         )
     {
         _characteristicRepository = bulletinCharacteristicRepository;
@@ -129,8 +128,13 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        bool isOnDeleting = await _characteristicRepository.DeleteAsync(id);
+        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
 
+        bool isOnDeleting = await _characteristicRepository.DeleteAsync(id);
         if (!isOnDeleting)
         {
             string errorMessage = $"The bulletin with id {id} is not found.";

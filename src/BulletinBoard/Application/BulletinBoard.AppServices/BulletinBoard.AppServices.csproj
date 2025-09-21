@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contexts\Bulletin\Validators\BulletinUserValidator\" />
+    <Folder Include="Contexts\Bulletin\Validators\BulletinUserValidator\CustomValidators\" />
   </ItemGroup>
 
 </Project>

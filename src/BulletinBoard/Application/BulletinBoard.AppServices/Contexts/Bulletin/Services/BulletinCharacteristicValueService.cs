@@ -3,13 +3,11 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.ForValidating;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
-
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -24,9 +22,9 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     /// <inheritdoc/>
     public BulletinCharacteristicValueService
         (
-            IBulletinCharacteristicValueRepository characteristicValueRepository,
-            IBulletinCharacteristicValueDtoValidatorFacade validator,
-            IBulletinCharacteristicValueSpecificationBuilder specificationBuilder
+        IBulletinCharacteristicValueRepository characteristicValueRepository,
+        IBulletinCharacteristicValueDtoValidatorFacade validator,
+        IBulletinCharacteristicValueSpecificationBuilder specificationBuilder
         )
     {
         _characteristicValueRepository = characteristicValueRepository;
@@ -129,8 +127,13 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        bool isOnDeleting = await _characteristicValueRepository.DeleteAsync(id);
+        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
 
+        bool isOnDeleting = await _characteristicValueRepository.DeleteAsync(id);
         if (!isOnDeleting)
         {
             string errorMessage = $"The characteristic value with id {id} is not found.";

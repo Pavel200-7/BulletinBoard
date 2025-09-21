@@ -2,12 +2,13 @@
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Domain.Entities.Bulletin;
 
+
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 
 /// <summary>
 /// Репозиторий для доступа к сущности BulletinsCharacteristicValue
 /// </summary>
-public interface IBulletinCharacteristicValueRepository : IBaseBulletinRepository
+public interface IBulletinCharacteristicValueRepository : IBaseRepository
     <
     BulletinCharacteristicValue,
     BulletinCharacteristicValueDto,

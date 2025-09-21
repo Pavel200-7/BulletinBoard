@@ -1,10 +1,12 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
+using FluentValidation.Results;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -14,17 +16,20 @@ public class BulletinUserService : IBulletinUserService
 {
     private readonly IBulletinUserRepository _userRepository;
     private readonly IBulletinUserSpecificationBuilder _specificationBuilder;
+    private readonly IBulletinUserDtoValidatorFacade _validator;   
 
 
     /// <inheritdoc/>
     public BulletinUserService
         (
-            IBulletinUserRepository bulletinCategoryRepository,
-            IBulletinUserSpecificationBuilder specificationBuilder
+        IBulletinUserRepository bulletinCategoryRepository,
+        IBulletinUserSpecificationBuilder specificationBuilder,
+        IBulletinUserDtoValidatorFacade validator
         )
     {
         _userRepository = bulletinCategoryRepository;
         _specificationBuilder = specificationBuilder;
+        _validator = validator;
     }
 
     /// <inheritdoc/>
@@ -132,6 +137,12 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
+        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
+
         bool isOnDeleting = await _userRepository.DeleteAsync(id);
 
         if (!isOnDeleting)

@@ -23,10 +23,10 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public BulletinCategoryService
         (
-            IBulletinCategoryRepository bulletinCategoryRepository, 
-            IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade,
-            IBulletinCategorySpecificationBuilder specificationBuilder,
-            IBulletinCategoryMappingService mapper
+        IBulletinCategoryRepository bulletinCategoryRepository, 
+        IBulletinCategoryDtoValidatorFacade bulletinCategoryDtoValidatorFacade,
+        IBulletinCategorySpecificationBuilder specificationBuilder,
+        IBulletinCategoryMappingService mapper
         ) 
     {
         _categoryRepository = bulletinCategoryRepository;
@@ -114,7 +114,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         }
 
         bool isOnDeleting = await _categoryRepository.DeleteAsync(id);
-
         if (!isOnDeleting)
         {
             string errorMessage = $"The note with id {id} is not found.";

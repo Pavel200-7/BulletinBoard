@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Domain.Base;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository.IBaseRepository;
@@ -7,14 +8,14 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository.IBaseRepository
 /// Интерфейс, включающий в себя базовые операции с сущностью,
 /// которые повторяются для всех сущностей.
 /// </summary>
-public interface IBaseBulletinRepository
+public interface IBaseRepository
     <
     TEntity,
     TDto,
     TCreateDto,
     TUpdateDto
     >
-    where TEntity : class
+    where TEntity : EntityBase
     where TDto : class
     where TCreateDto : class
     where TUpdateDto : class

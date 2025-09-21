@@ -16,7 +16,8 @@ public class BulletinMainService : IBulletinMainService
 
     /// <inheritdoc/>
 
-    public BulletinMainService(
+    public BulletinMainService
+        (
         IBulletinMainRepository bulletinRepository,
         IBulletinMainDtoValidatorFacade validator
         )
@@ -35,7 +36,6 @@ public class BulletinMainService : IBulletinMainService
         }
 
         BulletinMainDto outputBulletinDto = await _bulletinRepository.CreateAsync(bulletinDto);
-
         return outputBulletinDto;
     }
 
@@ -63,6 +63,12 @@ public class BulletinMainService : IBulletinMainService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
+        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
+
         bool isOnDeleting = await _bulletinRepository.DeleteAsync(id);
 
         if (!isOnDeleting)
