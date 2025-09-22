@@ -7,6 +7,7 @@ using BulletinBoard.Infrastructure.DataAccess.Repositories;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
+
 /// <inheritdoc/>
 public class BulletinCategoryRepository : 
     BaseRepository
@@ -22,7 +23,7 @@ public class BulletinCategoryRepository :
     public BulletinCategoryRepository(IRepository<BulletinCategory, BulletinContext> repository, IMapper mapper)
         : base(repository, mapper)
     {
-
+        // Умный репозиторий с CRUD из базового класса.
     }
 
 }

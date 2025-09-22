@@ -3,6 +3,13 @@
 
 namespace BulletinBoard.Infrastructure.DataAccess.Repositories;
 
+/// <summary>
+/// Сам глупый репозиторий.
+/// Реализует соответствующий интерфейс.
+/// Его реализация (определяемая generic полями) используется умными репозиториями.
+/// </summary>
+/// <typeparam name="TEntity"></typeparam>
+/// <typeparam name="TContext"></typeparam>
 public class Repository<TEntity, TContext> : IRepository<TEntity, TContext> where TEntity : class where TContext : DbContext
 {
     protected readonly TContext DbContext;

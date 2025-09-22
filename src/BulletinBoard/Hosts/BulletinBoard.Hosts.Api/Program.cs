@@ -20,6 +20,7 @@ builder.Services.RegistrarAppContexsts(builder.Configuration);
 builder.Services.RegisterAppServices();
 builder.Services.RegisterAppRepositories();
 builder.Services.RegistrarAppMappers();
+// Проводит миграцию при каждом запуске
 builder.Services.RegistrarAppInitializers();
 
 

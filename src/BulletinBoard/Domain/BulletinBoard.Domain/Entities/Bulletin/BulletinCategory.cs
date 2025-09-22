@@ -32,15 +32,4 @@ public class BulletinCategory : EntityBase
     /// Навигационное свойство для доступа к списку дочерних элементов
     /// </summary>
     public List<BulletinCategory> ChildrenCategories { get; set; }
-
-    /// <summary>
-    /// Навигационное свойство для доступа к объявлениям,
-    /// относящимся к этой категории
-    /// </summary>
-    public List<BulletinMain> Bulletins { get; set; }    
-
-    /// <summary>
-    /// Навигационное свойство для доступа к списку характеристик, пригодных для данной категории.
-    /// </summary>
-    public List<BulletinCharacteristic> Characteristics { get; set; }
 }

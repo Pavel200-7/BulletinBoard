@@ -1,12 +1,5 @@
 ﻿using AutoMapper;
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
-using BulletinBoard.Contracts.Bulletin.BulletinImage;
-using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinUser;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -27,42 +20,7 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinCategoryDto, BulletinCategory>().ReverseMap();
         CreateMap<BulletinCategoryUpdateDto, BulletinCategory>().ReverseMap();
 
-        // BulletinCharacteristic
-        CreateMap<BulletinCharacteristicCreateDto, BulletinCharacteristic>().ReverseMap();
-        CreateMap<BulletinCharacteristicDto, BulletinCharacteristic>().ReverseMap();
-        CreateMap<BulletinCharacteristicUpdateDto, BulletinCharacteristic>().ReverseMap();
-
-        // BulletinCharacteristicComparison
-        CreateMap<BulletinCharacteristicComparisonCreateDto, BulletinCharacteristicComparison>().ReverseMap();
-        CreateMap<BulletinCharacteristicComparisonDto, BulletinCharacteristicComparison>().ReverseMap();
-        CreateMap<BulletinCharacteristicComparisonUpdateDto, BulletinCharacteristicComparison>().ReverseMap();
-
-        // BulletinCharacteristicValue
-        CreateMap<BulletinCharacteristicValueCreateDto, BulletinCharacteristicValue>().ReverseMap();
-        CreateMap<BulletinCharacteristicValueDto, BulletinCharacteristicValue>().ReverseMap();
-        CreateMap<BulletinCharacteristicValueUpdateDto, BulletinCharacteristicValue>().ReverseMap();
-
-        // BulletinImage
-        CreateMap<BulletinImageCreateDto, BulletinImage>().ReverseMap();
-        CreateMap<BulletinImageDto, BulletinImage>().ReverseMap();
-        CreateMap<BulletinImageUpdateDto, BulletinImage>().ReverseMap();
-
-        // BulletinMain
-        CreateMap<BulletinMainCreateDto, BulletinMain>().ReverseMap();
-        CreateMap<BulletinMainDto, BulletinMain>().ReverseMap();
-        CreateMap<BulletinMainUpdateDto, BulletinMain>().ReverseMap();
-
-        // BulletinRating
-        CreateMap<BulletinRatingCreateDto, BulletinRating>().ReverseMap();
-        CreateMap<BulletinRatingDto, BulletinRating>().ReverseMap();
-        CreateMap<BulletinRatingUpdateDto, BulletinRating>().ReverseMap();
-
-        // BulletinUser
-        CreateMap<BulletinUserCreateDto, BulletinUser>().ReverseMap();
-        CreateMap<BulletinUserDto, BulletinUser>().ReverseMap();
-        CreateMap<BulletinUserUpdateDto, BulletinUser>().ReverseMap();
-        CreateMap<BulletinUserCreateDto, BulletinUserDto>().ReverseMap();
-        CreateMap<BulletinUserUpdateDto, BulletinUserDto>().ReverseMap();
+     
 
         //Другие маппинги
     }

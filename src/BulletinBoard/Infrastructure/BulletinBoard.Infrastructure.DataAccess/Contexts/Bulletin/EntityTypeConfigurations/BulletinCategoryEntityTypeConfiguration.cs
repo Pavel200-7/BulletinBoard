@@ -7,6 +7,10 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.EntityTypeCo
 
 public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<BulletinCategory>
 {
+    /// <summary>
+    /// Тут настраивается сущность для миграции.
+    /// </summary>
+    /// <param name="builder"></param>
     public void Configure(EntityTypeBuilder<BulletinCategory> builder)
     {
         builder.ToTable("BulletinCategory");
@@ -39,18 +43,6 @@ public class BulletinCategoryEntityTypeConfiguration : IEntityTypeConfiguration<
             .HasOne(c => c.ParentCategory)
             .WithMany(c => c.ChildrenCategories)
             .HasForeignKey(c => c.ParentCategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder
-            .HasMany(c => c.Characteristics)
-            .WithOne(c => c.Category)
-            .HasForeignKey(c => c.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasMany(c => c.Bulletins)
-            .WithOne(c => c.Category)
-            .HasForeignKey(c => c.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
 

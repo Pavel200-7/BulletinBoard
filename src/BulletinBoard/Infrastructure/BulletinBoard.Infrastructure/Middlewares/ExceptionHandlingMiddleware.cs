@@ -12,6 +12,9 @@ using BulletinBoard.Contracts.Errors.Exeptions;
 
 namespace BulletinBoard.Infrastructure.Middlewares
 {
+    /// <summary>
+    /// Обработка ошибок
+    /// </summary>
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;

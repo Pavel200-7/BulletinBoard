@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace BulletinBoard.Infrastructure.DataAccess.Repositories;
 
 /// <summary>
-/// Базовый класс для создания репозиториев домена Bulletin
+/// Базовый класс для умных репозиториев.
+/// Содержит CRUD, поверх корогоро добавляются сложные запросы
 /// </summary>
 public abstract class BaseRepository
     <
@@ -40,10 +41,19 @@ public abstract class BaseRepository
         return _mapper.Map<TDto>(entity);
     }
 
+    /// <summary>
+    /// Использует спецификацию для отбора,
+    /// сортировки и пагинации.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <returns></returns>
     public virtual async Task<IReadOnlyCollection<TDto>> FindAsync(ExtendedSpecification<TEntity> specification)
     {
+        // Получение обертки - "Всех записей" для наложения запроса.
         var query = _repository.GetAll().AsQueryable();
+        // Наложение запроса.
         query = query.ApplyExtendedSpecification(specification);
+        // Применение запроса.
         return await query.Select(e => _mapper.Map<TDto>(e)).ToListAsync();
     }
 
