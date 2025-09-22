@@ -157,4 +157,5 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
 
         return categoriesReadSingleDto;
     }
+    //
 }
