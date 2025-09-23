@@ -72,26 +72,15 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(categoryDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateThrowValidationExeptionAsync(categoryDto);
         BulletinCategoryDto outputCategoryDto = await _repository.CreateAsync(categoryDto);
-
         return outputCategoryDto;
     }
 
     /// <inheritdoc/>
     public async Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(categoryDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateThrowValidationExeptionAsync(categoryDto);
         BulletinCategoryDto? outputCategoryDto = await _repository.UpdateAsync(id, categoryDto);
         if (outputCategoryDto is null)
         {
@@ -105,12 +94,7 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {

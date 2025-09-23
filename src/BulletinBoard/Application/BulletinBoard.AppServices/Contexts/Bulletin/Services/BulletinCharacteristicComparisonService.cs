@@ -49,26 +49,16 @@ public class BulletinCharacteristicComparisonService : IBulletinCharacteristicCo
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicComparisonDto> CreateAsync(BulletinCharacteristicComparisonCreateDto сharacteristicComparisonDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicComparisonDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
-        BulletinCharacteristicComparisonDto outputcharacteristicComparisonDto = await _repository.CreateAsync(сharacteristicComparisonDto);
-
-        return outputcharacteristicComparisonDto;
+        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicComparisonDto);
+        BulletinCharacteristicComparisonDto outputCharacteristicComparisonDto = await _repository.CreateAsync(сharacteristicComparisonDto);
+        return outputCharacteristicComparisonDto;
     }
 
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicComparisonDto> UpdateAsync(Guid id, BulletinCharacteristicComparisonUpdateDto сharacteristicComparisonDto)
     {
-        var сharacteristicComparisonDtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicComparisonDto);
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicComparisonDtoForValidating);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
+        var dtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicComparisonDto);
+        await _validator.ValidateThrowValidationExeptionAsync(dtoForValidating);
 
         BulletinCharacteristicComparisonDto? outputcharacteristicComparisonDto = await _repository.UpdateAsync(id, сharacteristicComparisonDto);
         if (outputcharacteristicComparisonDto is null)
@@ -101,12 +91,7 @@ public class BulletinCharacteristicComparisonService : IBulletinCharacteristicCo
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {

@@ -136,14 +136,8 @@ public class BulletinUserService : IBulletinUserService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
-
         if (!isOnDeleting)
         {
             string errorMessage = $"The user with id {id} is not found.";

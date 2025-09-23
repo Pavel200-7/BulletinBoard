@@ -26,4 +26,21 @@ public interface IValidatorFacade<TCreateDto, TUpdateDto>
     /// <param name="entityId">id сущности.</param>
     /// <returns></returns>
     public Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId);
+
+    /// <summary>
+    /// Валидировать ДТО создания сущности и выбрасывает исключение при ошибке валидации.
+    /// </summary>
+    public Task ValidateThrowValidationExeptionAsync(TCreateDto entityDto);
+
+    /// <summary>
+    /// Валидировать ДТО обновления сущности и выбрасывает исключение при ошибке валидации.
+    /// </summary>
+    public Task ValidateThrowValidationExeptionAsync(TUpdateDto entityDto);
+
+    /// <summary>
+    /// Валидировать сущность по id до ее удаления и выбрасывает исключение при ошибке валидации.
+    /// </summary>
+    /// <param name="entityId">id сущности.</param>
+    /// <returns></returns>
+    public Task ValidateBeforeDeletingThrowValidationExeptionAsync(Guid entityId);
 }

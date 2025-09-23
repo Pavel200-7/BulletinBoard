@@ -73,14 +73,8 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicValueDto> CreateAsync(BulletinCharacteristicValueCreateDto сharacteristicValueDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicValueDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicValueDto);
         BulletinCharacteristicValueDto outputCharacteristicValueDto = await _repository.CreateAsync(сharacteristicValueDto);
-
         return outputCharacteristicValueDto;
     }
 
@@ -88,14 +82,9 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     public async Task<BulletinCharacteristicValueDto> UpdateAsync(Guid id, BulletinCharacteristicValueUpdateDto сharacteristicValueDto)
     {
         var сharacteristicValueDtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicValueDto);
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicValueDtoForValidating);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
+        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicValueDtoForValidating);
 
         BulletinCharacteristicValueDto? outputCharacteristicValueDto = await _repository.UpdateAsync(id, сharacteristicValueDto);
-        
         // Эти 4 строки не обязательны если есть GetDtoForValidatingUpdateDtoThrowNotFound.
         if (outputCharacteristicValueDto is null)
         {
@@ -126,12 +115,7 @@ public class BulletinCharacteristicValueService : IBulletinCharacteristicValueSe
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {

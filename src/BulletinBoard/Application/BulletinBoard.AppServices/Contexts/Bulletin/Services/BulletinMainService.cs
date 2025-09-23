@@ -35,12 +35,7 @@ public class BulletinMainService : IBulletinMainService
     /// <inheritdoc/>
     public async Task<BulletinMainDto> CreateAsync(BulletinMainCreateDto bulletinDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(bulletinDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateThrowValidationExeptionAsync(bulletinDto);
         BulletinMainDto outputBulletinDto = await _repository.CreateAsync(bulletinDto);
         return outputBulletinDto;
     }
@@ -48,14 +43,9 @@ public class BulletinMainService : IBulletinMainService
     /// <inheritdoc/>
     public async Task<BulletinMainDto> UpdateAsync(Guid id, BulletinMainUpdateDto bulletinDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(bulletinDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
+        await _validator.ValidateThrowValidationExeptionAsync(bulletinDto);
 
         BulletinMainDto? outputBulletinDto = await _repository.UpdateAsync(id, bulletinDto);
-
         if (outputBulletinDto is null)
         {
             string errorMessage = $"The bulletin with id {id} is not found.";
@@ -69,14 +59,8 @@ public class BulletinMainService : IBulletinMainService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
-
         if (!isOnDeleting)
         {
             string errorMessage = $"The bulletin with id {id} is not found.";

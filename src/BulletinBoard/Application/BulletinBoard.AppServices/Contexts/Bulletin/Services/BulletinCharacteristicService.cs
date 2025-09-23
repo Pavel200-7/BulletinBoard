@@ -74,14 +74,8 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     public async Task<BulletinCharacteristicDto> CreateAsync(BulletinCharacteristicCreateDto сharacteristicDto)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicDto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicDto);
         BulletinCharacteristicDto outputCharacteristicDto = await _repository.CreateAsync(сharacteristicDto);
-
         return outputCharacteristicDto;
     }
 
@@ -89,11 +83,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     public async Task<BulletinCharacteristicDto> UpdateAsync(Guid id, BulletinCharacteristicUpdateDto сharacteristicDto)
     {
         var сharacteristicDtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicDto);
-        ValidationResult validationResult = await _validator.ValidateAsync(сharacteristicDtoForValidating);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
+        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicDtoForValidating);
 
         BulletinCharacteristicDto? outputCharacteristicDto = await _repository.UpdateAsync(id, сharacteristicDto);
 
@@ -127,12 +117,7 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
     /// <inheritdoc/>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        ValidationResult validationResult = await _validator.ValidateBeforeDeletingAsync(id);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationExeption(validationResult.ToDictionary());
-        }
-
+        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id);
         if (!isOnDeleting)
         {

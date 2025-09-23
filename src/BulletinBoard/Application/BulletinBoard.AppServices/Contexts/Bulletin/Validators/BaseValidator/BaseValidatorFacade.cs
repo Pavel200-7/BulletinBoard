@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Errors.Exeptions;
 using FluentValidation.Results;
 
 
@@ -64,5 +65,40 @@ public abstract class BaseValidatorFacade
     public async Task<ValidationResult> ValidateBeforeDeletingAsync(Guid entityId)
     {
         return await _deleteValidator.ValidateAsync(entityId);
+    }
+
+    /// <inheritdoc/>
+    public async Task ValidateThrowValidationExeptionAsync(TCreateDto entityDto)
+    {
+        var validationResult = await _createDtoValidator.ValidateAsync(entityDto);
+        CheckValidationResult(validationResult);
+    }
+
+    /// <summary>
+    /// Валидировать ДТО обновления сущности и выбрасывает исключение при ошибке валидации.
+    /// </summary>
+    public async Task ValidateThrowValidationExeptionAsync(TUpdateDto entityDto)
+    {
+        var validationResult = await _updateDtoValidator.ValidateAsync(entityDto);
+        CheckValidationResult(validationResult);
+    }
+
+    /// <summary>
+    /// Валидировать сущность по id до ее удаления и выбрасывает исключение при ошибке валидации.
+    /// </summary>
+    /// <param name="entityId">id сущности.</param>
+    /// <returns></returns>
+    public async Task ValidateBeforeDeletingThrowValidationExeptionAsync(Guid entityId)
+    {
+        var validationResult = await _deleteValidator.ValidateAsync(entityId);
+        CheckValidationResult(validationResult);
+    }
+
+    private void CheckValidationResult(ValidationResult validationResult) 
+    {
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationExeption(validationResult.ToDictionary());
+        }
     }
 }
