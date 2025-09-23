@@ -2,7 +2,7 @@
 using BulletinBoard.Domain.Base;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository.IBaseRepository;
+namespace BulletinBoard.AppServices.Repository;
 
 /// <summary>
 /// Интерфейс, включающий в себя базовые операции с сущностью,

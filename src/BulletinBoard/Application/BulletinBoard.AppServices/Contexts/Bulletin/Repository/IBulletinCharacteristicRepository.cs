@@ -1,4 +1,4 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository.IBaseRepository;
+﻿using BulletinBoard.AppServices.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Domain.Entities.Bulletin;
 
