@@ -57,6 +57,8 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainSpecificationBuilder, BulletinMainSpecificationBuilder>();
         services.AddScoped<IBulletinRatingSpecificationBuilder, BulletinRatingSpecificationBuilder>();
         services.AddScoped<IBulletinUserSpecificationBuilder, BulletinUserSpecificationBuilder>();
+        services.AddScoped<IBulletinViewsCountSpecificationBuilder, BulletinViewsCountSpecificationBuilder>();
+
 
 
         // BulletinValidators

@@ -43,4 +43,9 @@ public class BulletinUser : EntityBase
     /// </summary>
     public List<BulletinMain> Bulletins { get; set; }
 
+
+    /// <summary>
+    /// Навигационное свойство для доступа к списку рейтингов
+    /// </summary>
+    public List<BulletinRating> Ratings { get; set; }
 }

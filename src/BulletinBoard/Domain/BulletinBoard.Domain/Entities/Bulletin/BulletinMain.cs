@@ -71,7 +71,12 @@ public class BulletinMain : EntityBase
     /// <summary>
     /// Навигационное свойство для доступа к рейтингу
     /// </summary>
-    public BulletinRating Rating { get; set; }
+    public List<BulletinRating> Ratings { get; set; }
+
+    /// <summary>
+    /// Количество просмотров данного объявления.
+    /// </summary>
+    public BulletinViewsCount ViewsCount {  get; set; }
 
     /// <summary>
     /// Навигационное свойство для доступа к списку изображений 

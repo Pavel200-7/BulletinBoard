@@ -3,7 +3,10 @@
 /// <summary>
 /// Формат данных одновления рейтинга объявления
 /// </summary>
-public class BulletinRatingUpdateDto : BulletinRatingCreateDto
+public class BulletinRatingUpdateDto
 {
-    // Требует доработки
+    /// <summary>
+    /// Рейтинг
+    /// </summary>
+    public int Rating { get; set; }
 }

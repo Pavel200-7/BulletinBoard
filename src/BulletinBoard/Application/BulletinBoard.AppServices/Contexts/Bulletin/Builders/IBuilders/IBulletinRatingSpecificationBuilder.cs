@@ -39,37 +39,9 @@ public interface IBulletinRatingSpecificationBuilder : ISpecificationBuilder<Bul
     IBulletinRatingSpecificationBuilder WhereRatingLessThan(decimal maxRating);
 
     /// <summary>
-    /// Отбор по количеству просмотров.
-    /// </summary>
-    /// <param name="minViews">Минимальное число просмотров.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    IBulletinRatingSpecificationBuilder WhereViewsCount(int minViews);
-
-    /// <summary>
-    /// Отбор по минимальному количеству просмотров.
-    /// </summary>
-    /// <param name="minViews">Минимальное число просмотров.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    IBulletinRatingSpecificationBuilder WhereViewsCountGreaterThan(int minViews);
-
-    /// <summary>
-    /// Отбор по максимальному количеству просмотров.
-    /// </summary>
-    /// <param name="maxViews">Максимальное число просмотров.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    IBulletinRatingSpecificationBuilder WhereViewsCountLessThan(int maxViews);
-
-    /// <summary>
     /// Добавить сортировку по рейтингу.
     /// </summary>
     /// <param name="ascending">Направление сортировки (true - по возрастанию, false - по убыванию).</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     IBulletinRatingSpecificationBuilder OrderByRating(bool ascending = true);
-
-    /// <summary>
-    /// Добавить сортировку по количеству просмотров.
-    /// </summary>
-    /// <param name="ascending">Направление сортировки (true - по возрастанию, false - по убыванию).</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    IBulletinRatingSpecificationBuilder OrderByViewsCount(bool ascending = true);
 }

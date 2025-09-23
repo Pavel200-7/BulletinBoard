@@ -14,17 +14,27 @@ public class BulletinRating : EntityBase
     public Guid BulletinId { get; set; }
 
     /// <summary>
-    /// Рейтинг
+    /// Id пользователя, оставившего отзыв.
     /// </summary>
-    public decimal Rating { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
-    /// Количество просмотров объявления
+    /// Рейтинг
     /// </summary>
-    public int ViewsCount { get; set; }
+    public int Rating { get; set; }
+
+    /// <summary>
+    /// Время создания.
+    /// </summary>
+    public DateTime CreatedAt { get; set; }
 
     /// <summary>
     /// Навигационное свойство для доступа к объявлению
     /// </summary>
     public BulletinMain Bulletin { get; set; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к пользовалелю.
+    /// </summary>
+    public BulletinUser BulletinUser { get; set; }
 }

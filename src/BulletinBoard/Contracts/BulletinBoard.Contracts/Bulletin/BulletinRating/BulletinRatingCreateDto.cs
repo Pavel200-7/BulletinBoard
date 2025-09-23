@@ -9,4 +9,14 @@ public class BulletinRatingCreateDto
     /// Id объявления
     /// </summary>
     public Guid BulletinId { get; set; }
+
+    /// <summary>
+    /// Id пользователя, оставившего отзыв.
+    /// </summary>
+    public Guid UserId { get; set; }
+
+    /// <summary>
+    /// Рейтинг
+    /// </summary>
+    public int Rating { get; set; }
 }

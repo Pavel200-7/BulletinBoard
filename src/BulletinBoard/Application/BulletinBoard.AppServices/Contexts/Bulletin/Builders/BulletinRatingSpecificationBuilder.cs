@@ -39,39 +39,11 @@ public class BulletinRatingSpecificationBuilder : SpecificationBuilderBase<Bulle
         return this;
     }
 
-    /// <inheritdoc/>
-    public IBulletinRatingSpecificationBuilder WhereViewsCount(int minViews)
-    {
-        _specification.Add(r => r.ViewsCount >= minViews);
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinRatingSpecificationBuilder WhereViewsCountGreaterThan(int minViews)
-    {
-        _specification.Add(r => r.ViewsCount > minViews);
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinRatingSpecificationBuilder WhereViewsCountLessThan(int maxViews)
-    {
-        _specification.Add(r => r.ViewsCount < maxViews);
-        return this;
-    }
 
     /// <inheritdoc/>
     public IBulletinRatingSpecificationBuilder OrderByRating(bool ascending = true)
     {
         _orderByExpression = r => r.Rating;
-        _orderByAscending = ascending;
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinRatingSpecificationBuilder OrderByViewsCount(bool ascending = true)
-    {
-        _orderByExpression = r => r.ViewsCount;
         _orderByAscending = ascending;
         return this;
     }

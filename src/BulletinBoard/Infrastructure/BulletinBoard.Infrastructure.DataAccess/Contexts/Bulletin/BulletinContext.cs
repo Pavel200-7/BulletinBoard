@@ -32,6 +32,9 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
 
         public DbSet<BulletinUser> BulletinUser { get; set; }
 
+        public DbSet<BulletinViewsCount> BulletinViewsCount { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +56,9 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
             new BulletinRatingEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinRating>());
 
             new BulletinUserEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinUser>());
+
+            new BulletinViewsCountEntityTypeConfiguration().Configure(modelBuilder.Entity<BulletinViewsCount>());
+
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
