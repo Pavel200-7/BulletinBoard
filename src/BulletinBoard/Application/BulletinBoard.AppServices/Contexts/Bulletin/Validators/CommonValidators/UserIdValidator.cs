@@ -2,7 +2,7 @@
 using FluentValidation;
 using FluentValidation.Validators;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 
 /// <summary>
 /// Класс берущий на себя задачу валидации данных по 

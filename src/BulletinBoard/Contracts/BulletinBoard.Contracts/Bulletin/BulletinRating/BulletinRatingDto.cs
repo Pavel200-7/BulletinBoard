@@ -6,6 +6,11 @@
 public class BulletinRatingDto
 {
     /// <summary>
+    /// Id рейтинга
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
     /// Id объявления
     /// </summary>
     public Guid BulletinId { get; set; }

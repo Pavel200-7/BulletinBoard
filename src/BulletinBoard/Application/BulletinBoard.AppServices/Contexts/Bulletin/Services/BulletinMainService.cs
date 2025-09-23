@@ -53,7 +53,6 @@ public class BulletinMainService : IBulletinMainService
         }
 
         return outputBulletinDto;
-
     }
 
     /// <inheritdoc/>

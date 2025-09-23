@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Validators;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.CustomValidators;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 
 /// <summary>
 ///  Проверяет, существует ли объявление и заблокировано ли оно.
