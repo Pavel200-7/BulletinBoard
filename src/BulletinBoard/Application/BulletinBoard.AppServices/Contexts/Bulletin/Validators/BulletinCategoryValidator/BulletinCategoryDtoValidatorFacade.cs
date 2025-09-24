@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ForValidating;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator;
@@ -9,7 +10,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 public sealed class BulletinCategoryDtoValidatorFacade : BaseValidatorFacade
     <
     BulletinCategoryCreateDto,
-    BulletinCategoryUpdateDto,
+    BulletinCategoryUpdateDtoForValidating,
     IBulletinCategoryCreateDtoValidator,
     IBulletinCategoryUpdateDtoValidator,
     IBulletinCategoryDeleteValidator

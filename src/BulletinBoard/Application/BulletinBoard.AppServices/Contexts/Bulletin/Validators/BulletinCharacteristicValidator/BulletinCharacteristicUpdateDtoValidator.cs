@@ -29,7 +29,7 @@ public class BulletinCharacteristicUpdateDtoValidator : AbstractValidator<Bullet
         _characteristicRepository = characteristicRepository;
         _specificationBuilder = specificationBuilder;
 
-        RuleFor(bulletinCharacteristicUpdateDto => bulletinCharacteristicUpdateDto.Name)
+        RuleFor(updateDto => updateDto.Name)
             .NotEmpty()
             .Length(3, 35)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s]+$")

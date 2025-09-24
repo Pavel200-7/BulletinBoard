@@ -11,5 +11,8 @@ namespace BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
 /// </summary>
 public class BulletinViewsCountUpdateDto
 {
-    // незачем, но пусть будет
+    /// <summary>
+    /// Количество просмотров объявления
+    /// </summary>
+    public int ViewsCount { get; set; }
 }

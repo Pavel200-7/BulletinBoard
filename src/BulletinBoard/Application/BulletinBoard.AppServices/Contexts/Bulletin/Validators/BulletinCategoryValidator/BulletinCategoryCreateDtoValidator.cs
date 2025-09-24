@@ -24,16 +24,16 @@ public sealed class BulletinCategoryCreateDtoValidator : AbstractValidator<Bulle
         _categoryRepository = categoryRepository;
         _specificationBuilder = specificationBuilder;
 
-        RuleFor(bulletinCategoryCreateDto => bulletinCategoryCreateDto.ParentCategoryId)
+        RuleFor(createDto => createDto.ParentCategoryId)
             .SetAsyncValidator(new ParentCategoryValidator<BulletinCategoryCreateDto>(_categoryRepository));
 
-        RuleFor(bulletinCategoryCreateDto => bulletinCategoryCreateDto.CategoryName)
+        RuleFor(createDto => createDto.CategoryName)
             .NotEmpty()
             .Length(3, 50)
             .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
             .SetAsyncValidator(new CategoryNameValidator<BulletinCategoryCreateDto>(_categoryRepository, _specificationBuilder));
 
-        RuleFor(bulletinCategoryCreateDto => bulletinCategoryCreateDto.IsLeafy)
+        RuleFor(createDto => createDto.IsLeafy)
             .NotNull();
     }
 }

@@ -1,51 +1,56 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ForValidating;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
-using FluentValidation.Results;
+
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
-public sealed class BulletinCategoryService : IBulletinCategoryService 
+public sealed class BulletinCategoryService : BaseCRUDService
+    <
+    BulletinCategoryDto,
+    BulletinCategoryCreateDto,
+    BulletinCategoryUpdateDto,
+    BulletinCategoryUpdateDtoForValidating,
+    IBulletinCategoryRepository,
+    IBulletinCategoryDtoValidatorFacade
+    >, IBulletinCategoryService
 {
-    private readonly IBulletinCategoryRepository _repository;
-    private readonly IBulletinCategoryDtoValidatorFacade _validator;
+    /// <inheritdoc/>
+    protected override string EntityName { get; } = "category";
+
     private readonly IBulletinCategorySpecificationBuilder _specificationBuilder;
     private readonly IBulletinCategoryMappingService _mapper;
 
     /// <inheritdoc/>
     public BulletinCategoryService
         (
-        IBulletinCategoryRepository repository, 
+        IBulletinCategoryRepository repository,
         IBulletinCategoryDtoValidatorFacade validator,
+        IMapper automapper,
         IBulletinCategorySpecificationBuilder specificationBuilder,
         IBulletinCategoryMappingService mapper
-        ) 
+        ) : base(repository, validator, automapper)
     {
-        _repository = repository;
-        _validator = validator;
         _specificationBuilder = specificationBuilder;
         _mapper = mapper;
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinCategoryDto> GetByIdAsync(Guid id)
+    protected override Task<BulletinCategoryUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinCategoryUpdateDto updateDto)
     {
-        BulletinCategoryDto? outputCategoryDto = await _repository.GetByIdAsync(id);
-        if (outputCategoryDto is null)
-        {
-            string errorMessage = $"The category with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputCategoryDto;
+        var validatinoDto = _autoMapper.Map<BulletinCategoryUpdateDtoForValidating>(updateDto);
+        return Task.FromResult(validatinoDto);
     }
 
     /// <inheritdoc/>
@@ -69,41 +74,6 @@ public sealed class BulletinCategoryService : IBulletinCategoryService
         return categoryDtoCollection;
     }
 
-    /// <inheritdoc/>
-    public async Task<BulletinCategoryDto> CreateAsync(BulletinCategoryCreateDto categoryDto)
-    {
-        await _validator.ValidateThrowValidationExeptionAsync(categoryDto);
-        BulletinCategoryDto outputCategoryDto = await _repository.CreateAsync(categoryDto);
-        return outputCategoryDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCategoryDto> UpdateAsync(Guid id, BulletinCategoryUpdateDto categoryDto)
-    {
-        await _validator.ValidateThrowValidationExeptionAsync(categoryDto);
-        BulletinCategoryDto? outputCategoryDto = await _repository.UpdateAsync(id, categoryDto);
-        if (outputCategoryDto is null)
-        {
-            string errorMessage = $"The category with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputCategoryDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
-        bool isOnDeleting = await _repository.DeleteAsync(id);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The category with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
-    }
 
     /// <inheritdoc/>
     public async Task<BulletinCategoryReadAllDto> GetAllAsync()

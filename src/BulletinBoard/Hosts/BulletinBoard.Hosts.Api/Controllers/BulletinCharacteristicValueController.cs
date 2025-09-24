@@ -1,7 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
-using Microsoft.AspNetCore.Mvc;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -50,9 +51,9 @@ public class BulletinCharacteristicValueController : ControllerBase
     /// </summary>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinCharacteristicValueDto), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create([FromBody] BulletinCharacteristicValueCreateDto createDto)
+    public async Task<IActionResult> Create([FromBody] BulletinCharacteristicValueCreateDto createDto, CancellationToken cancellationToken)
     {
-        var created = await _characteristicValueService.CreateAsync(createDto);
+        var created = await _characteristicValueService.CreateAsync(createDto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
@@ -62,9 +63,9 @@ public class BulletinCharacteristicValueController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinCharacteristicValueDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] BulletinCharacteristicValueUpdateDto updateDto)
+    public async Task<IActionResult> Update(Guid id, [FromBody] BulletinCharacteristicValueUpdateDto updateDto, CancellationToken cancellationToken)
     {
-        var updated = await _characteristicValueService.UpdateAsync(id, updateDto);
+        var updated = await _characteristicValueService.UpdateAsync(id, updateDto, cancellationToken);
         return Ok(updated);
     }
 
@@ -74,9 +75,9 @@ public class BulletinCharacteristicValueController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _characteristicValueService.DeleteAsync(id);
+        var result = await _characteristicValueService.DeleteAsync(id, cancellationToken);
         return Ok(result);
     }
 

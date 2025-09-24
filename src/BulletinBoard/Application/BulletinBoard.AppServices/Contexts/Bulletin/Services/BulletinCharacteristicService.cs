@@ -1,5 +1,7 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
@@ -7,44 +9,53 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.ForValidating;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
-using FluentValidation.Results;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
-public class BulletinCharacteristicService : IBulletinCharacteristicService
+public class BulletinCharacteristicService : BaseCRUDService
+    <
+    BulletinCharacteristicDto,
+    BulletinCharacteristicCreateDto,
+    BulletinCharacteristicUpdateDto,
+    BulletinCharacteristicUpdateDtoForValidating,
+    IBulletinCharacteristicRepository,
+    IBulletinCharacteristicDtoValidatorFacade
+    >, IBulletinCharacteristicService
 {
-    private readonly IBulletinCharacteristicRepository _repository;
-    private readonly IBulletinCharacteristicDtoValidatorFacade _validator;
+    /// <inheritdoc/>
+    protected override string EntityName { get; } = "characteristic";
+
     private readonly IBulletinCharacteristicSpecificationBuilder _specificationBuilder;
 
     /// <inheritdoc/>
     public BulletinCharacteristicService
         (
-        IBulletinCharacteristicRepository bulletinCharacteristicRepository,
-        IBulletinCharacteristicDtoValidatorFacade bulletinCharacteristicDtoValidatorFacade,
+        IBulletinCharacteristicRepository repository,
+        IBulletinCharacteristicDtoValidatorFacade validator,
+        IMapper autoMapper,
         IBulletinCharacteristicSpecificationBuilder specificationBuilder
-        )
+        ) : base(repository, validator, autoMapper)
     {
-        _repository = bulletinCharacteristicRepository;
-        _validator = bulletinCharacteristicDtoValidatorFacade;
         _specificationBuilder = specificationBuilder;
     }
 
-
     /// <inheritdoc/>
-    public async Task<BulletinCharacteristicDto> GetByIdAsync(Guid id)
+    protected override async Task<BulletinCharacteristicUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinCharacteristicUpdateDto updateDto)
     {
-        BulletinCharacteristicDto? outputCharacteristicDto = await _repository.GetByIdAsync(id);
-        if (outputCharacteristicDto is null)
+        BulletinCharacteristicDto? characteristicBaseDto = await _repository.GetByIdAsync(id);
+        if (characteristicBaseDto is null)
         {
-            string errorMessage = $"The characteristic with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
+        var validatinoDto = _autoMapper.Map<BulletinCharacteristicUpdateDtoForValidating>(characteristicBaseDto);
+        _autoMapper.Map(updateDto, validatinoDto);
 
-        return outputCharacteristicDto;
+        return validatinoDto;
     }
+
 
     /// <inheritdoc/>
     public async Task<IReadOnlyCollection<BulletinCharacteristicDto>> GetAsync(BulletinCharacteristicFilterDto сharacteristicFilterDto)
@@ -69,63 +80,6 @@ public class BulletinCharacteristicService : IBulletinCharacteristicService
         IReadOnlyCollection<BulletinCharacteristicDto> characteristicDtoCollection = await _repository.FindAsync(specification);
 
         return characteristicDtoCollection;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCharacteristicDto> CreateAsync(BulletinCharacteristicCreateDto сharacteristicDto)
-    {
-        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicDto);
-        BulletinCharacteristicDto outputCharacteristicDto = await _repository.CreateAsync(сharacteristicDto);
-        return outputCharacteristicDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCharacteristicDto> UpdateAsync(Guid id, BulletinCharacteristicUpdateDto сharacteristicDto)
-    {
-        var сharacteristicDtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicDto);
-        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicDtoForValidating);
-
-        BulletinCharacteristicDto? outputCharacteristicDto = await _repository.UpdateAsync(id, сharacteristicDto);
-
-        // Эти 4 строки не обязательны если есть GetDtoForValidatingUpdateDtoThrowNotFound.
-        if (outputCharacteristicDto is null)
-        {
-            string errorMessage = $"The characteristic with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputCharacteristicDto!;
-    }
-
-    /// <inheritdoc/>
-    private async Task<BulletinCharacteristicUpdateDtoForValidating> GetDtoForValidatingUpdateDtoThrowNotFound(Guid id, BulletinCharacteristicUpdateDto сharacteristicDto)
-    {
-        BulletinCharacteristicDto? characteristicBaseDto = await _repository.GetByIdAsync(id);
-        if (characteristicBaseDto is null)
-        {
-            string errorMessage = $"The characteristic with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-         return new BulletinCharacteristicUpdateDtoForValidating()
-        {
-            Name = сharacteristicDto.Name,
-            CategoryId = characteristicBaseDto.CategoryId
-        };
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
-        bool isOnDeleting = await _repository.DeleteAsync(id);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The characteristic with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
     }
 
     /// <inheritdoc/>

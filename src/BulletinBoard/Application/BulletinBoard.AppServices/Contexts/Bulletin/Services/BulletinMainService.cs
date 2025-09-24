@@ -1,71 +1,48 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Errors.Exeptions;
-using FluentValidation.Results;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.ForValidating;
+
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
-public class BulletinMainService : IBulletinMainService
+public class BulletinMainService : BaseCRUDService
+    <
+    BulletinMainDto,
+    BulletinMainCreateDto,
+    BulletinMainUpdateDto,
+    BulletinMainUpdateDtoForValidating,
+    IBulletinMainRepository,
+    IBulletinMainDtoValidatorFacade
+    >, IBulletinMainService
 {
-    private readonly IBulletinMainRepository _repository;
-    private readonly IBulletinMainDtoValidatorFacade _validator;
+    /// <inheritdoc/>
+    protected override string EntityName { get; } = "bulletin";
+
     private readonly IBulletinMainSpecificationBuilder _specificationBuilder;
 
-
     /// <inheritdoc/>
-
     public BulletinMainService
         (
         IBulletinMainRepository repository,
         IBulletinMainDtoValidatorFacade validator,
+        IMapper autoMapper,
         IBulletinMainSpecificationBuilder specificationBuilder
-        )
+        ) : base ( repository, validator, autoMapper)
     {
-        _repository = repository;
-        _validator = validator;
         _specificationBuilder = specificationBuilder;
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinMainDto> CreateAsync(BulletinMainCreateDto bulletinDto)
+    protected override Task<BulletinMainUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinMainUpdateDto updateDto)
     {
-        await _validator.ValidateThrowValidationExeptionAsync(bulletinDto);
-        BulletinMainDto outputBulletinDto = await _repository.CreateAsync(bulletinDto);
-        return outputBulletinDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinMainDto> UpdateAsync(Guid id, BulletinMainUpdateDto bulletinDto)
-    {
-        await _validator.ValidateThrowValidationExeptionAsync(bulletinDto);
-
-        BulletinMainDto? outputBulletinDto = await _repository.UpdateAsync(id, bulletinDto);
-        if (outputBulletinDto is null)
-        {
-            string errorMessage = $"The bulletin with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputBulletinDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
-        bool isOnDeleting = await _repository.DeleteAsync(id);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The bulletin with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
+        var validatinoDto = _autoMapper.Map<BulletinMainUpdateDtoForValidating>(updateDto);
+        return Task.FromResult(validatinoDto);
     }
 }

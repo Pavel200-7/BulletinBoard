@@ -21,7 +21,7 @@ public class BulletinCharacteristicComparisonUpdateDtoValidator : AbstractValida
     {
         _characteristicValueRepository = characteristicValueRepository;
 
-        RuleFor(bulletinCharacteristicComparisonUpdateDto => bulletinCharacteristicComparisonUpdateDto.CharacteristicValueId)
+        RuleFor(updateDto => updateDto.CharacteristicValueId)
             .MustAsync(async (dto, id, validationContext, cancellationToken) =>
             {
                 Guid characteristicId = dto.CharacteristicId;

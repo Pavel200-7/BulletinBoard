@@ -25,7 +25,7 @@ public class BulletinCharacteristicValueUpdateDtoValidator : AbstractValidator<B
         _characteristicValueRepository = characteristicValueRepository;
         _characteristicValueSpecificationBuilder = characteristicValueSpecificationBuilder;
 
-        RuleFor(bulletinCharacteristicValueUpdateDto => bulletinCharacteristicValueUpdateDto.Value)
+        RuleFor(updateDto => updateDto.Value)
             .NotEmpty()
             .Length(3, 35)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s]+$")

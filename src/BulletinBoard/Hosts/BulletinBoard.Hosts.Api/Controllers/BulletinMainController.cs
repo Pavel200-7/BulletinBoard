@@ -39,13 +39,14 @@ public class BulletinMainController : ControllerBase
     ///
     /// </remarks> 
     /// <param name="createDto">Данные создания объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Данные объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinMainDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create(BulletinMainCreateDto createDto)
+    public async Task<IActionResult> Create(BulletinMainCreateDto createDto, CancellationToken cancellationToken)
     {
-        var createdBulletin = await _bulletinService.CreateAsync(createDto);
+        var createdBulletin = await _bulletinService.CreateAsync(createDto, cancellationToken);
         return Ok(createdBulletin);
     }
 
@@ -64,14 +65,15 @@ public class BulletinMainController : ControllerBase
     ///
     /// </remarks> 
     /// <param name="id">Id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <param name="updateDto">Данные обновления объявления.</param>
     /// <returns>Данные объявления.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinMainDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, BulletinMainUpdateDto updateDto)
+    public async Task<IActionResult> Update(Guid id, BulletinMainUpdateDto updateDto, CancellationToken cancellationToken)
     {
-        var updatedBulletin = await _bulletinService.UpdateAsync(id, updateDto);
+        var updatedBulletin = await _bulletinService.UpdateAsync(id, updateDto, cancellationToken);
         return Ok(updatedBulletin);
     }
 
@@ -85,15 +87,16 @@ public class BulletinMainController : ControllerBase
     ///
     /// </remarks>
     /// <param name="id">Идентификатор объявеления, которое нужно удалить.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>true если все прошло успешно.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        bool result = await _bulletinService.DeleteAsync(id);
+        bool result = await _bulletinService.DeleteAsync(id, cancellationToken);
         return Ok(result);
     }
 
-   
+
 }

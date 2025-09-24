@@ -5,6 +5,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -59,13 +60,14 @@ public class BulletinCharacteristicController : ControllerBase
     ///
     /// </remarks>
     /// <param name="characteristic">Формат данных создания характеристики.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateCharacteristic(BulletinCharacteristicCreateDto characteristic)
+    public async Task<IActionResult> CreateCharacteristic(BulletinCharacteristicCreateDto characteristic, CancellationToken cancellationToken)
     {
-        var createdCharacteristic = await _bulletinCharacteristicService.CreateAsync(characteristic);
+        var createdCharacteristic = await _bulletinCharacteristicService.CreateAsync(characteristic, cancellationToken);
         return Ok(createdCharacteristic);
     }
 
@@ -84,13 +86,14 @@ public class BulletinCharacteristicController : ControllerBase
     /// </remarks>
     /// <param name="id">id характеристики.</param>
     /// <param name="characteristic">Формат данных обновления характеристики.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateCharacteristic(Guid id, BulletinCharacteristicUpdateDto characteristic)
+    public async Task<IActionResult> UpdateCharacteristic(Guid id, BulletinCharacteristicUpdateDto characteristic, CancellationToken cancellationToken)
     {
-        var updetedCharacteristic = await _bulletinCharacteristicService.UpdateAsync(id, characteristic);
+        var updetedCharacteristic = await _bulletinCharacteristicService.UpdateAsync(id, characteristic, cancellationToken);
         return Ok(updetedCharacteristic);
     }
 
@@ -104,13 +107,14 @@ public class BulletinCharacteristicController : ControllerBase
     ///
     /// </remarks>
     /// <param name="id">Идентификатор характеристики.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteCharacteristic(Guid id)
+    public async Task<IActionResult> DeleteCharacteristic(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _bulletinCharacteristicService.DeleteAsync(id);
+        var result = await _bulletinCharacteristicService.DeleteAsync(id, cancellationToken);
         return Ok(result);
     }
 }

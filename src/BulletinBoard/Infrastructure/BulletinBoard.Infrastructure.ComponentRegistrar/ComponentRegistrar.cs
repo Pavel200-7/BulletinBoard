@@ -16,8 +16,13 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteris
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoValidatorFacade.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
@@ -41,7 +46,10 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinCharacteristicService, BulletinCharacteristicService>();
         services.AddScoped<IBulletinCharacteristicValueService, BulletinCharacteristicValueService>();
         services.AddScoped<IBulletinMainService, BulletinMainService>();
+        services.AddScoped<IBulletinRatingService, BulletinRatingService>();
         services.AddScoped<IBulletinUserService, BulletinUserService>();
+        services.AddScoped<IBulletinViewsCountService, BulletinViewsCountService>();
+
 
 
         // BulletinMappingServices
@@ -87,11 +95,21 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainUpdateDtoValidator, BulletinMainUpdateDtoValidator>();
         services.AddScoped<IBulletinMainDeleteValidator, BulletinMainDeleteValidator>();
         services.AddScoped<IBulletinMainDtoValidatorFacade, BulletinMainDtoValidatorFacade>();
+        // BulletinRating
+        services.AddScoped<IBulletinRatingCreateDtoValidator, BulletinRatingCreateDtoValidator>();
+        services.AddScoped<IBulletinRatingUpdateDtoValidator, BulletinRatingUpdateDtoValidator>();
+        services.AddScoped<IBulletinRatingDeleteValidator, BulletinRatingDeleteValidator>();
+        services.AddScoped<IBulletinRatingDtoValidatorFacade, BulletinRatingDtoValidatorFacade>();
         // BulletinUser
         services.AddScoped<IBulletinUserCreateDtoValidator, BulletinUserCreateDtoValidator>();
         services.AddScoped<IBulletinUserUpdateDtoValidator, BulletinUserUpdateDtoValidator>();
         services.AddScoped<IBulletinUserDeleteValidator, BulletinUserDeleteValidator>();
         services.AddScoped<IBulletinUserDtoValidatorFacade, BulletinUserDtoValidatorFacade>();
+        // BulletinViewsCount
+        services.AddScoped<IBulletinViewsCountCreateDtoValidator, BulletinViewsCountCreateDtoValidator>();
+        services.AddScoped<IBulletinViewsCountUpdateDtoValidator, BulletinViewsCountUpdateDtoValidator>();
+        services.AddScoped<IBulletinViewsCountDeleteValidator, BulletinViewsCountDeleteValidator>();
+        services.AddScoped<IBulletinViewsCountDtoValidatorFacade, BulletinViewsCountDtoValidatorFacade>();
 
         return services;
     }
@@ -110,9 +128,11 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainRepository, BulletinMainRepository>();
         services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
         services.AddScoped<IBulletinUserRepository, BulletinUserRepository>();
+        services.AddScoped<IBulletinViewsCountRepository, BulletinViewsCountRepository>();
 
 
-       
+
+
         // Репозитории следующего домена
 
         return services;

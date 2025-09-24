@@ -1,4 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinUser;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
+using BulletinBoard.Contracts.Bulletin.BulletinUser;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -6,15 +7,13 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 /// <summary>
 ///  Сервис для работы со сущностью пользователя - создателя объявлений.
 /// </summary>
-public interface IBulletinUserService
+public interface IBulletinUserService : IBaseCRUDService
+    <
+    BulletinUserDto,
+    BulletinUserCreateDto,
+    BulletinUserUpdateDto
+    >
 {
-    /// <summary>
-    /// Получить пользователя по id.
-    /// </summary>
-    /// <param name="id">id пользователя.</param>
-    /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> GetByIdAsync(Guid id);
-
     /// <summary>
     /// Получить список пользователей по фильтру.
     /// </summary>
@@ -23,54 +22,45 @@ public interface IBulletinUserService
     public Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userFilterDto);
 
     /// <summary>
-    /// Добавить пользователя.
-    /// </summary>
-    /// <param name="userDto">Формат данных создания пользователя - владельца объявления.</param>
-    /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> CreateAsync(BulletinUserCreateDto userDto);
-
-    /// <summary>
-    /// Удалить пользователя - владельца объявления.
-    /// </summary>
-    /// <param name="id">Id пользователя.</param>
-    /// <returns>Истина, если удаление прошло успешно; иначе ложь.</returns>
-    public Task<bool> DeleteAsync(Guid id);
-
-    /// <summary>
     /// Изменить имя по id.
     /// </summary>
     /// <param name="id">Id пользователя.</param>
     /// <param name="name">Новое имя пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> ChangeNameAsync(Guid id, string name);
+    public Task<BulletinUserDto> ChangeNameAsync(Guid id, string name, CancellationToken cancellationToken);
 
     /// <summary>
     /// Изменить пользователя - владельца объявления.
     /// </summary>
     /// <param name="id">Id пользователя.</param>
     /// <param name="userLocationDto"></param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto);
+    public Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Изменить телефон пользователя - владельца объявления.
     /// </summary>
     /// <param name="id">Id пользователя.</param>
     /// <param name="phone"></param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone);
+    public Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone, CancellationToken cancellationToken);
 
     /// <summary>
     /// Заблокировать пользователя - владельца объявления.
     /// </summary>
     /// <param name="id">Id пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> BlockUserAsync(Guid id);
+    public Task<BulletinUserDto> BlockUserAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Разблокировать пользователя - владельца объявления.
     /// </summary>
     /// <param name="id">Id пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных пользователя - владельца объявления.</returns>
-    public Task<BulletinUserDto> UnBlockUserAsync(Guid id);
+    public Task<BulletinUserDto> UnBlockUserAsync(Guid id, CancellationToken cancellationToken);
 }

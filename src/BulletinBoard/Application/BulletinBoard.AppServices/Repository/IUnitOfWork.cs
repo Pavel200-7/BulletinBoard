@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BulletinBoard.AppServices.Repository;
+﻿namespace BulletinBoard.AppServices.Repository;
 
 /// <summary>
 /// Класс для использования транзакций.

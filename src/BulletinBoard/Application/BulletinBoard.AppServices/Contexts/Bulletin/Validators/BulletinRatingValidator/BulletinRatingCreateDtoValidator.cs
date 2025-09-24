@@ -29,13 +29,13 @@ public class BulletinRatingCreateDtoValidator : AbstractValidator<BulletinRating
         _userRepository = userRepository;
         _bulletibRepository = bulletibRepository;
 
-        RuleFor(bulletinRatingCreateDto => bulletinRatingCreateDto.UserId)
+        RuleFor(createDto => createDto.UserId)
             .SetAsyncValidator(new UserIdValidator<BulletinRatingCreateDto>(_userRepository));
 
-        RuleFor(bulletinRatingCreateDto => bulletinRatingCreateDto.BulletinId)
+        RuleFor(createDto => createDto.BulletinId)
             .SetAsyncValidator(new BulletinIdValidator<BulletinRatingCreateDto>(_bulletibRepository));
 
-        RuleFor(bulletinRatingCreateDto => bulletinRatingCreateDto.Rating)
+        RuleFor(createDto => createDto.Rating)
             .NotNull().WithMessage("Rating не может быть null.")
             .InclusiveBetween(1, 10).WithMessage("Rating должен быть целым числом в диапазоне от 1 до 10.");
     }

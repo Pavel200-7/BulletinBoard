@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingV
 /// <summary>
 /// Класс, предоставляющий единый интерфейс для валидации разных ДТО сущности BulletinRating
 /// </summary>
-public interface IBulletinRatingDtoValidatorFacade : IValidatorFacade<BulletinRatingCreateDto, BulletinRatingUpdateDto>
+public interface IBulletinRatingDtoValidatorFacade : IValidatorFacade<BulletinRatingCreateDto, BulletinRatingUpdateDtoForValidating>
 {
 }

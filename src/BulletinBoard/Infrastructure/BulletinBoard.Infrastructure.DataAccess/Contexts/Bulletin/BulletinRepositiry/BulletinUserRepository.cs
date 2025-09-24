@@ -25,43 +25,41 @@ public class BulletinUserRepository :
     {
     }
 
-    public async Task<BulletinUserDto?> SetUserBlockStatusAsync(Guid id, bool blockStatus)
+    public async Task<BulletinUserDto?> SetUserBlockStatusAsync(Guid id, bool blockStatus, CancellationToken cancellation)
     {
         BulletinUser? user = await _repository.GetByIdAsync(id);
         if (user is null) { return null; }
         user.Blocked = blockStatus;
-        await _repository.UpdateAsync(user);
+        await _repository.UpdateAsync(user, cancellation);
         return _mapper.Map<BulletinUserDto>(user);
     }
 
-    public async Task<BulletinUserDto?> ChangeNameAsync(Guid id, string name)
+    public async Task<BulletinUserDto?> ChangeNameAsync(Guid id, string name, CancellationToken cancellation)
     {
         BulletinUser? user = await _repository.GetByIdAsync(id);
         if (user is null) { return null; }
         user.FullName = name;
-        await _repository.UpdateAsync(user);
+        await _repository.UpdateAsync(user, cancellation);
         return _mapper.Map<BulletinUserDto>(user);
     }
 
-    public async Task<BulletinUserDto?> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto)
+    public async Task<BulletinUserDto?> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto, CancellationToken cancellation)
     {
         BulletinUser? user = await _repository.GetByIdAsync(id);
         if (user is null) { return null; }
         user = _mapper.Map<BulletinUser>(userLocationDto);
-        await _repository.UpdateAsync(user);
+        await _repository.UpdateAsync(user, cancellation);
         return _mapper.Map<BulletinUserDto>(user);
     }
 
-    
 
-    public async Task<BulletinUserDto?> ChangePhoneAsync(Guid id, string phone)
+
+    public async Task<BulletinUserDto?> ChangePhoneAsync(Guid id, string phone, CancellationToken cancellationToken)
     {
         BulletinUser? user = await _repository.GetByIdAsync(id);
         if (user is null) { return null; }
         user.Phone = phone;
-        await _repository.UpdateAsync(user);
+        await _repository.UpdateAsync(user, cancellationToken);
         return _mapper.Map<BulletinUserDto>(user);
     }
-
-    
 }

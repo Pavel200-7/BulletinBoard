@@ -1,5 +1,6 @@
-﻿using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
+using BulletinBoard.Contracts.Bulletin.BelletinMain;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.ForValidating;
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 
@@ -18,6 +19,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainVal
 ///     1. Соответствует типу данных decimal.
 ///     2. Не является отрицательным.
 /// </summary>
-public interface IBulletinMainUpdateDtoValidator : IDtoValidator<BulletinMainUpdateDto>
+public interface IBulletinMainUpdateDtoValidator : IDtoValidator<BulletinMainUpdateDtoForValidating>
 {
 }

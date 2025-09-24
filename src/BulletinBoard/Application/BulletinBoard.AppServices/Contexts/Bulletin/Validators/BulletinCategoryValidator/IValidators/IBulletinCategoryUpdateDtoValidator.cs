@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ForValidating;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
@@ -15,6 +16,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategor
 ///     3. Может хранить только русские, английские буквы нижнего, верхнего регистра и пробелы.
 ///     4. Является уникальным.
 /// </summary>
-public interface IBulletinCategoryUpdateDtoValidator : IDtoValidator<BulletinCategoryUpdateDto>
+public interface IBulletinCategoryUpdateDtoValidator : IDtoValidator<BulletinCategoryUpdateDtoForValidating>
 {
 }

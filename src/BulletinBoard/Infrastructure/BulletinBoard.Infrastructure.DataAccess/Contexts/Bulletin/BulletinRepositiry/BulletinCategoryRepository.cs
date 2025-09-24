@@ -22,7 +22,5 @@ public class BulletinCategoryRepository :
     public BulletinCategoryRepository(IRepository<BulletinCategory, BulletinContext> repository, IMapper mapper)
         : base(repository, mapper)
     {
-
     }
-
 }

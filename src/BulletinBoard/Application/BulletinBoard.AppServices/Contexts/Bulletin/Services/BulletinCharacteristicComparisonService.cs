@@ -1,9 +1,13 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ForValidating;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.ForValidating;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
@@ -14,10 +18,19 @@ using FluentValidation.Results;
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
-public class BulletinCharacteristicComparisonService : IBulletinCharacteristicComparisonService
+public class BulletinCharacteristicComparisonService : BaseCRUDService
+    <
+    BulletinCharacteristicComparisonDto,
+    BulletinCharacteristicComparisonCreateDto,
+    BulletinCharacteristicComparisonUpdateDto,
+    BulletinCharacteristicComparisonUpdateDtoForValidating,
+    IBulletinCharacteristicComparisonRepository,
+    IBulletinCharacteristicComparisonDtoValidatorFacade
+    >, IBulletinCharacteristicComparisonService
 {
-    private readonly IBulletinCharacteristicComparisonRepository _repository;
-    private readonly IBulletinCharacteristicComparisonDtoValidatorFacade _validator;
+    /// <inheritdoc/>
+    protected override string EntityName { get; } = "characteristic comparison";
+
     private readonly IBulletinCharacteristicComparisonSpecificationBuilder _specificationBuilder;
 
     /// <inheritdoc/>
@@ -25,51 +38,15 @@ public class BulletinCharacteristicComparisonService : IBulletinCharacteristicCo
         (
         IBulletinCharacteristicComparisonRepository repository,
         IBulletinCharacteristicComparisonDtoValidatorFacade validator,
+        IMapper automapper,
         IBulletinCharacteristicComparisonSpecificationBuilder specificationBuilder
-        )
+        ) : base(repository, validator, automapper)
     {
-        _repository = repository;
-        _validator = validator;
         _specificationBuilder = specificationBuilder;
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinCharacteristicComparisonDto> GetByIdAsync(Guid id)
-    {
-        BulletinCharacteristicComparisonDto? outputcharacteristicComparisonDto = await _repository.GetByIdAsync(id);
-        if (outputcharacteristicComparisonDto is null)
-        {
-            string errorMessage = $"The characteristic comparison with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputcharacteristicComparisonDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCharacteristicComparisonDto> CreateAsync(BulletinCharacteristicComparisonCreateDto сharacteristicComparisonDto)
-    {
-        await _validator.ValidateThrowValidationExeptionAsync(сharacteristicComparisonDto);
-        BulletinCharacteristicComparisonDto outputCharacteristicComparisonDto = await _repository.CreateAsync(сharacteristicComparisonDto);
-        return outputCharacteristicComparisonDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinCharacteristicComparisonDto> UpdateAsync(Guid id, BulletinCharacteristicComparisonUpdateDto сharacteristicComparisonDto)
-    {
-        var dtoForValidating = await GetDtoForValidatingUpdateDtoThrowNotFound(id, сharacteristicComparisonDto);
-        await _validator.ValidateThrowValidationExeptionAsync(dtoForValidating);
-
-        BulletinCharacteristicComparisonDto? outputcharacteristicComparisonDto = await _repository.UpdateAsync(id, сharacteristicComparisonDto);
-        if (outputcharacteristicComparisonDto is null)
-        {
-            string errorMessage = $"The characteristic comparison with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputcharacteristicComparisonDto;
-    }
-    private async Task<BulletinCharacteristicComparisonUpdateDtoForValidating> GetDtoForValidatingUpdateDtoThrowNotFound(Guid id, BulletinCharacteristicComparisonUpdateDto сharacteristicComparisonDto)
+    protected override async Task<BulletinCharacteristicComparisonUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinCharacteristicComparisonUpdateDto updateDto)
     {
         BulletinCharacteristicComparisonDto? characteristicComparisonBaseDto = await _repository.GetByIdAsync(id);
         if (characteristicComparisonBaseDto is null)
@@ -77,28 +54,9 @@ public class BulletinCharacteristicComparisonService : IBulletinCharacteristicCo
             string errorMessage = $"The characteristic comparison with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
+        var validatinoDto = _autoMapper.Map<BulletinCharacteristicComparisonUpdateDtoForValidating>(characteristicComparisonBaseDto);
+        _autoMapper.Map(updateDto, validatinoDto);
 
-        return new BulletinCharacteristicComparisonUpdateDtoForValidating()
-        {
-            BulletinId = characteristicComparisonBaseDto.BulletinId,
-            CharacteristicId = characteristicComparisonBaseDto.CharacteristicId,
-            CharacteristicValueId = сharacteristicComparisonDto.CharacteristicValueId
-        };
-    }
-
-
-
-    /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
-    {
-        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
-        bool isOnDeleting = await _repository.DeleteAsync(id);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The characteristic comparison with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
+        return validatinoDto;
     }
 }

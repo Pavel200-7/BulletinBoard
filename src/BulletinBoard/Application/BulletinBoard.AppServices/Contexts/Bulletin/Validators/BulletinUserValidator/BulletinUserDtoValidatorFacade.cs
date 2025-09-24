@@ -2,6 +2,7 @@
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.ForValidating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserVal
 public class BulletinUserDtoValidatorFacade : BaseValidatorFacade
     <
     BulletinUserCreateDto,
-    BulletinUserUpdateDto,
+    BulletinUserUpdateDtoForValidating,
     IBulletinUserCreateDtoValidator,
     IBulletinUserUpdateDtoValidator,
     IBulletinUserDeleteValidator

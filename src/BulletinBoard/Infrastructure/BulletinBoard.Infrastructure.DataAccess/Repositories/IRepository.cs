@@ -9,9 +9,9 @@ public interface IRepository<TEntity, TContext> where TEntity : class where TCon
 
     Task<TEntity?> GetByIdAsync(Guid id);
 
-    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken);
 
-    Task<TEntity> UpdateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken);
 
-    Task DeleteAsync(Guid id);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 }

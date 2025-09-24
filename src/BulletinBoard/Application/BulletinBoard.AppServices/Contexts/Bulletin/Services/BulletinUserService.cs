@@ -1,48 +1,57 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
+using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.ForValidating;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation.Results;
+using System.Threading;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
 
 /// <inheritdoc/>
-public class BulletinUserService : IBulletinUserService
+public class BulletinUserService : BaseCRUDService
+    <
+    BulletinUserDto,
+    BulletinUserCreateDto,
+    BulletinUserUpdateDto,
+    BulletinUserUpdateDtoForValidating,
+    IBulletinUserRepository,
+    IBulletinUserDtoValidatorFacade
+    >, IBulletinUserService
 {
-    private readonly IBulletinUserRepository _repository;
+    /// <inheritdoc/>
+    protected override string EntityName { get; } = "user";
+
     private readonly IBulletinUserSpecificationBuilder _specificationBuilder;
-    private readonly IBulletinUserDtoValidatorFacade _validator;   
 
 
     /// <inheritdoc/>
     public BulletinUserService
         (
         IBulletinUserRepository repository,
-        IBulletinUserSpecificationBuilder specificationBuilder,
-        IBulletinUserDtoValidatorFacade validator
-        )
+        IBulletinUserDtoValidatorFacade validator,
+        IMapper automapper,
+        IBulletinUserSpecificationBuilder specificationBuilder
+        ) : base(repository, validator, automapper)
     {
-        _repository = repository;
         _specificationBuilder = specificationBuilder;
-        _validator = validator;
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinUserDto> GetByIdAsync(Guid id)
+    protected override Task<BulletinUserUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinUserUpdateDto updateDto)
     {
-        BulletinUserDto? outputUserDto = await _repository.GetByIdAsync(id);
-        if (outputUserDto is null)
-        {
-            string errorMessage = $"The user with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return outputUserDto;
+        var validatinoDto = _autoMapper.Map<BulletinUserUpdateDtoForValidating>(updateDto);
+        return Task.FromResult(validatinoDto);
     }
 
     /// <inheritdoc/>
@@ -51,7 +60,7 @@ public class BulletinUserService : IBulletinUserService
         if (userFilterDto.IsUsedFullName)
         {
             _specificationBuilder.WhereFullName(userFilterDto.FullName);
-        } 
+        }
         else if (userFilterDto.IsUsedFullNameContains)
         {
             _specificationBuilder.WhereFullNameContains(userFilterDto.FullName);
@@ -113,16 +122,9 @@ public class BulletinUserService : IBulletinUserService
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinUserDto> CreateAsync(BulletinUserCreateDto userDto)
+    public async Task<BulletinUserDto> ChangeNameAsync(Guid id, string name, CancellationToken cancellationToken)
     {
-        BulletinUserDto outputUserDto = await _repository.CreateAsync(userDto);
-        return outputUserDto;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinUserDto> ChangeNameAsync(Guid id, string name)
-    {
-        BulletinUserDto? userDto = await _repository.ChangeNameAsync(id, name);
+        BulletinUserDto? userDto = await _repository.ChangeNameAsync(id, name, cancellationToken);
 
         if (userDto is null)
         {
@@ -134,23 +136,9 @@ public class BulletinUserService : IBulletinUserService
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto, CancellationToken cancellationToken)
     {
-        await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
-        bool isOnDeleting = await _repository.DeleteAsync(id);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The user with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
-        return isOnDeleting;
-    }
-
-    /// <inheritdoc/>
-    public async Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto)
-    {
-        BulletinUserDto? userDto = await _repository.ChangeAdressAsync(id, userLocationDto);
+        BulletinUserDto? userDto = await _repository.ChangeAdressAsync(id, userLocationDto, cancellationToken);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
@@ -161,9 +149,9 @@ public class BulletinUserService : IBulletinUserService
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone)
+    public async Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone, CancellationToken cancellationToken)
     {
-        BulletinUserDto? userDto = await _repository.ChangePhoneAsync(id, phone);
+        BulletinUserDto? userDto = await _repository.ChangePhoneAsync(id, phone, cancellationToken);
         if (userDto is null)
         {
             string errorMessage = $"The user with id {id} is not found.";
@@ -174,7 +162,7 @@ public class BulletinUserService : IBulletinUserService
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinUserDto> BlockUserAsync(Guid id)
+    public async Task<BulletinUserDto> BlockUserAsync(Guid id, CancellationToken cancellationToken)
     {
         BulletinUserDto? userDto;
         userDto = await _repository.GetByIdAsync(id);
@@ -184,13 +172,13 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        userDto = await _repository.SetUserBlockStatusAsync(id, true);
+        userDto = await _repository.SetUserBlockStatusAsync(id, true, cancellationToken);
 
         return userDto!;
     }
 
     /// <inheritdoc/>
-    public async Task<BulletinUserDto> UnBlockUserAsync(Guid id)
+    public async Task<BulletinUserDto> UnBlockUserAsync(Guid id, CancellationToken cancellationToken)
     {
         BulletinUserDto? userDto;
         userDto = await _repository.GetByIdAsync(id);
@@ -200,7 +188,7 @@ public class BulletinUserService : IBulletinUserService
             throw new NotFoundException(errorMessage);
         }
 
-        userDto = await _repository.SetUserBlockStatusAsync(id, false);
+        userDto = await _repository.SetUserBlockStatusAsync(id, false, cancellationToken);
 
         return userDto!;
     }

@@ -30,11 +30,11 @@ public class BulletinCharacteristicCreateDtoValidator : AbstractValidator<Bullet
         _categoryRepository = categoryRepository;
         _specificationBuilder = specificationBuilder;
 
-        RuleFor(bulletinCharacteristicCreateDto => bulletinCharacteristicCreateDto.CategoryId)
+        RuleFor(createDto => createDto.CategoryId)
             .NotEmpty()
             .SetAsyncValidator(new BulletinCategoryValidator<BulletinCharacteristicCreateDto>(_categoryRepository));
 
-        RuleFor(x => x.Name)
+        RuleFor(createDto => createDto.Name)
             .NotEmpty()
             .Length(3, 35)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s]+$")

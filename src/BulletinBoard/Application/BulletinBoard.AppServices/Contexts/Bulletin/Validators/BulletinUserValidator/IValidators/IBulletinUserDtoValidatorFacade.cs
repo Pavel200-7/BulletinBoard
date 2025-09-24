@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.ForValidating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserVal
 /// <summary>
 /// Класс, предоставляющий единый интерфейс для валидации разных ДТО сущности BulletinUser
 /// </summary>
-public interface IBulletinUserDtoValidatorFacade : IValidatorFacade<BulletinUserCreateDto, BulletinUserUpdateDto>
+public interface IBulletinUserDtoValidatorFacade : IValidatorFacade<BulletinUserCreateDto, BulletinUserUpdateDtoForValidating>
 {
 }

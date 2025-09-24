@@ -64,13 +64,14 @@ public class BulletinCategoryController : ControllerBase
     ///
     /// </remarks>
     /// <param name="category">Формат данных создания категории.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных категории.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateBulletinCategory(BulletinCategoryCreateDto category)
+    public async Task<IActionResult> CreateBulletinCategory(BulletinCategoryCreateDto category, CancellationToken cancellationToken)
     {
-        var createdCategory = await _bulletinCategoryService.CreateAsync(category);
+        var createdCategory = await _bulletinCategoryService.CreateAsync(category, cancellationToken);
         return Ok(createdCategory);
     }
 
@@ -95,13 +96,14 @@ public class BulletinCategoryController : ControllerBase
     /// </remarks>
     /// <param name="id">Идентификатор категории, которую нужно обновить.</param>
     /// <param name="category">Формат данных изменения категории.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных категории.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category)
+    public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category, CancellationToken cancellationToken)
     {
-        var updetedCategory = await _bulletinCategoryService.UpdateAsync(id, category);
+        var updetedCategory = await _bulletinCategoryService.UpdateAsync(id, category, cancellationToken);
         return Ok(updetedCategory);
     }
 
@@ -115,13 +117,14 @@ public class BulletinCategoryController : ControllerBase
     ///
     /// </remarks>
     /// <param name="id">Идентификатор категории, которую нужно удалить.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>true если все прошло успешно.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteBulletinCategory(Guid id)
+    public async Task<IActionResult> DeleteBulletinCategory(Guid id, CancellationToken cancellationToken)
     {
-        bool isDeleted = await _bulletinCategoryService.DeleteAsync(id);
+        bool isDeleted = await _bulletinCategoryService.DeleteAsync(id, cancellationToken);
         return Ok(isDeleted);
     }
 

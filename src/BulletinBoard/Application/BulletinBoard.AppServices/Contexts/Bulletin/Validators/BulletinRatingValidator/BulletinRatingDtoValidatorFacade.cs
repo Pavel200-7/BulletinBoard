@@ -4,6 +4,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoVa
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingV
 public class BulletinRatingDtoValidatorFacade : BaseValidatorFacade
     <
     BulletinRatingCreateDto,
-    BulletinRatingUpdateDto,
+    BulletinRatingUpdateDtoForValidating,
     IBulletinRatingCreateDtoValidator,
     IBulletinRatingUpdateDtoValidator,
     IBulletinRatingDeleteValidator

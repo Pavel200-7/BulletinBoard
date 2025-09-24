@@ -32,27 +32,27 @@ public class BulletinMainCreateDtoValidator : AbstractValidator<BulletinMainCrea
         _mainSpecificationBuilder = mainSpecificationBuilder;
         _categoryRepository = bulletinCategory;
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.UserId)
+        RuleFor(createDto => createDto.UserId)
             .SetAsyncValidator(new UserIdValidator<BulletinMainCreateDto>(_userRepository));
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.Title)
+        RuleFor(createDto => createDto.Title)
             .NotEmpty()
             .Length(3, 100)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
                 .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation")
             .SetAsyncValidator(new BulletinTitleValudator<BulletinMainCreateDto>(_bulletinRepository, _mainSpecificationBuilder));
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.Description)
+        RuleFor(createDto => createDto.Description)
             .NotEmpty()
             .Length(3, 1000)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
                 .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation");
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.CategoryId)
+        RuleFor(createDto => createDto.CategoryId)
             .NotEmpty()
             .SetAsyncValidator(new BulletinCategoryValidator<BulletinMainCreateDto>(_categoryRepository));
 
-        RuleFor(bulletinMainCreateDto => bulletinMainCreateDto.Price)
+        RuleFor(createDto => createDto.Price)
             .GreaterThanOrEqualTo(0)
                 .WithMessage("{PropertyName} must be a non-negative number");
     }

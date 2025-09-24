@@ -3,13 +3,14 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.ForValidating;
 using FluentValidation;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 
 /// <inheritdoc/>
-public class BulletinMainUpdateDtoValidator : AbstractValidator<BulletinMainUpdateDto>, IBulletinMainUpdateDtoValidator
+public class BulletinMainUpdateDtoValidator : AbstractValidator<BulletinMainUpdateDtoForValidating>, IBulletinMainUpdateDtoValidator
 {
     private readonly IBulletinMainRepository _bulletinRepository;
 
@@ -25,18 +26,18 @@ public class BulletinMainUpdateDtoValidator : AbstractValidator<BulletinMainUpda
         _bulletinRepository = bulletinRepository;
         _mainSpecificationBuilder = mainSpecificationBuilder;
 
-        RuleFor(bulletinMainUpdateDto => bulletinMainUpdateDto.Title)
+        RuleFor(updateDto => updateDto.Title)
             .NotEmpty()
             .Length(3, 100)
             .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
-            .SetAsyncValidator(new BulletinTitleValudator<BulletinMainUpdateDto>(_bulletinRepository, _mainSpecificationBuilder));
+            .SetAsyncValidator(new BulletinTitleValudator<BulletinMainUpdateDtoForValidating>(_bulletinRepository, _mainSpecificationBuilder));
 
-        RuleFor(bulletinMainUpdateDto => bulletinMainUpdateDto.Description)
+        RuleFor(updateDto => updateDto.Description)
             .NotEmpty()
             .Length(3, 1000)
             .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces");
 
-        RuleFor(bulletinMainUpdateDto => bulletinMainUpdateDto.Price)
+        RuleFor(updateDto => updateDto.Price)
             .GreaterThanOrEqualTo(0)
                 .WithMessage("{PropertyName} must be a non-negative number");
     }
