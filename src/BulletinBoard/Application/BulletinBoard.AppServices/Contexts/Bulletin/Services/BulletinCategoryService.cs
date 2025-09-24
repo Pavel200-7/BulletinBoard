@@ -98,7 +98,7 @@ public sealed class BulletinCategoryService : BaseCRUDService
             var currentCategory = await _repository.GetByIdAsync(searchingCategoryId.Value);
             if (currentCategory is null)
             {
-                string errorMessage = $"The category with id {searchingCategoryId} is not found.";
+                string errorMessage = $"The {EntityName} with id {searchingCategoryId} is not found.";
                 throw new NotFoundException(errorMessage);
             }
 

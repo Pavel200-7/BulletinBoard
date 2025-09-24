@@ -26,9 +26,4 @@ public class BulletinImageCreateDto
     /// Название изображения
     /// </summary>
     public string Name { get; set; }
-
-    /// <summary>
-    /// Время создания
-    /// </summary>
-    public DateTime CreatedAt { get; set; }
 }

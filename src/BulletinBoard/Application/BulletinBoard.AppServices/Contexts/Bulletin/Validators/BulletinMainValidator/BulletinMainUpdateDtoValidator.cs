@@ -29,13 +29,15 @@ public class BulletinMainUpdateDtoValidator : AbstractValidator<BulletinMainUpda
         RuleFor(updateDto => updateDto.Title)
             .NotEmpty()
             .Length(3, 100)
-            .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces")
+            .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
+                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation")
             .SetAsyncValidator(new BulletinTitleValudator<BulletinMainUpdateDtoForValidating>(_bulletinRepository, _mainSpecificationBuilder));
 
         RuleFor(updateDto => updateDto.Description)
             .NotEmpty()
             .Length(3, 1000)
-            .Matches("^[а-яА-Яa-zA-Z\\s]+$").WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z) and spaces");
+            .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
+                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation");
 
         RuleFor(updateDto => updateDto.Price)
             .GreaterThanOrEqualTo(0)

@@ -14,6 +14,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteris
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoValidatorFacade.IValidators;
@@ -45,6 +47,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinCharacteristicComparisonService, BulletinCharacteristicComparisonService>();
         services.AddScoped<IBulletinCharacteristicService, BulletinCharacteristicService>();
         services.AddScoped<IBulletinCharacteristicValueService, BulletinCharacteristicValueService>();
+        services.AddScoped<IBulletinImageService, BulletinImageService>();
         services.AddScoped<IBulletinMainService, BulletinMainService>();
         services.AddScoped<IBulletinRatingService, BulletinRatingService>();
         services.AddScoped<IBulletinUserService, BulletinUserService>();
@@ -90,6 +93,11 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinCharacteristicValueUpdateDtoValidator, BulletinCharacteristicValueUpdateDtoValidator>();
         services.AddScoped<IBulletinCharacteristicValueDeleteValidator, BulletinCharacteristicValueDeleteValidator>();
         services.AddScoped<IBulletinCharacteristicValueDtoValidatorFacade, BulletinCharacteristicValueDtoValidatorFacade>();
+        // BulletinImage
+        services.AddScoped<IBulletinImageCreateDtoValidator, BulletinImageCreateDtoValidator>();
+        services.AddScoped<IBulletinImageUpdateDtoValidator, BulletinImageUpdateDtoValidator>();
+        services.AddScoped<IBulletinImageDeleteValidator, BulletinImageDeleteValidator>();
+        services.AddScoped<IBulletinImageDtoValidatorFacade, BulletinImageDtoValidatorFacade>();
         // BulletinMain
         services.AddScoped<IBulletinMainCreateDtoValidator, BulletinMainCreateDtoValidator>();
         services.AddScoped<IBulletinMainUpdateDtoValidator, BulletinMainUpdateDtoValidator>();

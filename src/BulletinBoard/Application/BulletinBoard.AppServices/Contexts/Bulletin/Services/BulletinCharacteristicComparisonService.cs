@@ -51,7 +51,7 @@ public class BulletinCharacteristicComparisonService : BaseCRUDService
         BulletinCharacteristicComparisonDto? characteristicComparisonBaseDto = await _repository.GetByIdAsync(id);
         if (characteristicComparisonBaseDto is null)
         {
-            string errorMessage = $"The characteristic comparison with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
         var validatinoDto = _autoMapper.Map<BulletinCharacteristicComparisonUpdateDtoForValidating>(characteristicComparisonBaseDto);

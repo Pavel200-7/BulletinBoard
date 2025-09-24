@@ -128,7 +128,7 @@ public class BulletinUserService : BaseCRUDService
 
         if (userDto is null)
         {
-            string errorMessage = $"The user with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -141,7 +141,7 @@ public class BulletinUserService : BaseCRUDService
         BulletinUserDto? userDto = await _repository.ChangeAdressAsync(id, userLocationDto, cancellationToken);
         if (userDto is null)
         {
-            string errorMessage = $"The user with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -154,7 +154,7 @@ public class BulletinUserService : BaseCRUDService
         BulletinUserDto? userDto = await _repository.ChangePhoneAsync(id, phone, cancellationToken);
         if (userDto is null)
         {
-            string errorMessage = $"The user with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -168,7 +168,7 @@ public class BulletinUserService : BaseCRUDService
         userDto = await _repository.GetByIdAsync(id);
         if (userDto is null)
         {
-            string errorMessage = $"The user with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 
@@ -184,7 +184,7 @@ public class BulletinUserService : BaseCRUDService
         userDto = await _repository.GetByIdAsync(id);
         if (userDto is null)
         {
-            string errorMessage = $"The user with id {id} is not found.";
+            string errorMessage = $"The {EntityName} with id {id} is not found.";
             throw new NotFoundException(errorMessage);
         }
 

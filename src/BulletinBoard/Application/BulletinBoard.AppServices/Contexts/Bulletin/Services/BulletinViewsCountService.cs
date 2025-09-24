@@ -47,9 +47,6 @@ public class BulletinViewsCountService : BaseCRUDService
         return Task.FromResult(validatinoDto);
     }
 
-
-
-
     /// <inheritdoc/>
     public async Task<BulletinViewsCountDto> IncreaseViewsCountAsync(Guid bulletinId, CancellationToken cancellationToken)
     {

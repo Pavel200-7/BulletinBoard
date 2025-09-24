@@ -9,4 +9,9 @@ public class BulletinImageUpdateDto
     /// Название изображения
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Является ли изображение титульным
+    /// </summary>
+    public bool IsMain { get; set; }
 }
