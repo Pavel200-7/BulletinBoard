@@ -29,11 +29,6 @@ public class BulletinImageEntityTypeConfiguration : IEntityTypeConfiguration<Bul
             .IsRequired()
             .HasDefaultValue(false);
 
-        builder.Property(i => i.Name)
-            .HasColumnType("varchar(255)")
-            .HasMaxLength(255)
-            .IsRequired();
-
         builder.Property(i => i.CreatedAt)
             .HasDefaultValueSql("CURRENT_TIMESTAMP")
             .IsRequired();

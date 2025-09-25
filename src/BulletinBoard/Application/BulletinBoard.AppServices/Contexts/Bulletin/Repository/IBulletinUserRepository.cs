@@ -1,5 +1,7 @@
 ﻿using BulletinBoard.AppServices.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.UpdateDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 

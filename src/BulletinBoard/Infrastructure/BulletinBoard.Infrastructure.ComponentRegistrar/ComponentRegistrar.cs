@@ -52,6 +52,9 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinRatingService, BulletinRatingService>();
         services.AddScoped<IBulletinUserService, BulletinUserService>();
         services.AddScoped<IBulletinViewsCountService, BulletinViewsCountService>();
+        services.AddScoped<IBulletinService, BulletinService>();
+
+
 
 
 
@@ -137,6 +140,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
         services.AddScoped<IBulletinUserRepository, BulletinUserRepository>();
         services.AddScoped<IBulletinViewsCountRepository, BulletinViewsCountRepository>();
+        services.AddScoped<IUnitOfWorkBulletin, UnitOfWorkBulletin>();
 
 
 

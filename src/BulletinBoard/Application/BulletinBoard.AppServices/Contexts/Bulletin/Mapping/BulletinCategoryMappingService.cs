@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ReadDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Mapping;

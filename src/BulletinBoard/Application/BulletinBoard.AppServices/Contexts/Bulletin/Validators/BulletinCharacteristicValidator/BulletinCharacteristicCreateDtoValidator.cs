@@ -5,7 +5,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryVal
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using FluentValidation;
 
 

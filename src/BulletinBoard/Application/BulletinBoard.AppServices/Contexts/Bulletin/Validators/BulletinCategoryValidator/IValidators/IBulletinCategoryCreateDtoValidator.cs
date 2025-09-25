@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;

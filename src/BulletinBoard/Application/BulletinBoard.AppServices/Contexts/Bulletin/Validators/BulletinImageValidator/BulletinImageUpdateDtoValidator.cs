@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinImage.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using FluentValidation;
 
 
@@ -11,10 +11,7 @@ public class BulletinImageUpdateDtoValidator : AbstractValidator<BulletinImageUp
     /// <inheritdoc/>
     public BulletinImageUpdateDtoValidator()
     {
-        RuleFor(updateDto => updateDto.Name)
-            .NotEmpty()
-            .Length(3, 255)
-            .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
-                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation");
+        // нет требований.
+
     }
 }

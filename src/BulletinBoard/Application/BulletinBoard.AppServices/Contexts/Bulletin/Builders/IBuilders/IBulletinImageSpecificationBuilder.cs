@@ -27,20 +27,6 @@ public interface IBulletinImageSpecificationBuilder : ISpecificationBuilder<Bull
     public IBulletinImageSpecificationBuilder WhereIsMain(bool isMain);
 
     /// <summary>
-    /// Добавить отбор по полю Name.
-    /// </summary>
-    /// <param name="imageName">Имя изображения.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinImageSpecificationBuilder WhereName(string imageName);
-
-    /// <summary>
-    /// Добавить отбор полей содержащих во фрагменте Name следующую строку.
-    /// </summary>
-    /// <param name="imageName">Фрагмент имени.</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinImageSpecificationBuilder WhereNameContains(string imageName);
-
-    /// <summary>
     /// Добавить отбор по полю сreatedAt.
     /// </summary>
     /// <param name="сreatedAt">Время создания</param>
@@ -62,13 +48,6 @@ public interface IBulletinImageSpecificationBuilder : ISpecificationBuilder<Bull
     /// <param name="timePoint">Временная точка.</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
     public IBulletinImageSpecificationBuilder WhereCreatedAtAfter(DateTime timePoint);
-
-    /// <summary>
-    /// Добавить сортироваку по полю Name.
-    /// </summary>
-    /// <param name="ascending">Добавлять ли сотрировку (true, false).</param>
-    /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinImageSpecificationBuilder OrderByName(bool ascending = true);
 
     /// <summary>
     /// Добавить сортироваку по полю IsMain.

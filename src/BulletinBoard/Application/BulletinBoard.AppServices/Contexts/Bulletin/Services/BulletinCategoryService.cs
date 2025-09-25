@@ -7,7 +7,10 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.FilterDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.ReadDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 

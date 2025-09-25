@@ -1,11 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.BulletinImage;
-using BulletinBoard.Contracts.Bulletin.BulletinImage.ForValidating;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
 

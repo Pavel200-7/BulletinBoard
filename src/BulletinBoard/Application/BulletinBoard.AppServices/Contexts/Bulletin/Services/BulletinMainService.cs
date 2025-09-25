@@ -5,7 +5,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
 
 
 

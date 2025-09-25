@@ -1,6 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;

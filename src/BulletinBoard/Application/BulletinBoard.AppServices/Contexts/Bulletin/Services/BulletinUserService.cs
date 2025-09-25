@@ -3,17 +3,15 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
-using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
-using BulletinBoard.Contracts.Bulletin.BulletinUser.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.FilterDto;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
-using FluentValidation.Results;
-using System.Threading;
+
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;

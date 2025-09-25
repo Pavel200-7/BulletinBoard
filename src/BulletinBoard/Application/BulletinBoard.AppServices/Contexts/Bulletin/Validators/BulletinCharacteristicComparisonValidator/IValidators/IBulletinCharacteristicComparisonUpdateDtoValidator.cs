@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;

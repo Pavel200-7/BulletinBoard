@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.UpdateDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;

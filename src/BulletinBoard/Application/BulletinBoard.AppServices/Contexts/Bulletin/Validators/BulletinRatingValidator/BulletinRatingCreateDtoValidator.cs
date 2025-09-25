@@ -3,7 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoVa
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
-using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

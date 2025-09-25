@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

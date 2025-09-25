@@ -6,7 +6,9 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.IValidators;
 using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.FilterDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Domain.Entities.Bulletin;
 

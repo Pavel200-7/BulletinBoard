@@ -23,11 +23,6 @@ public class BulletinImageDto
     public bool IsMain { get; set; }
 
     /// <summary>
-    /// Название изображения
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
     /// Время создания
     /// </summary>
     public DateTime CreatedAt { get; set; }

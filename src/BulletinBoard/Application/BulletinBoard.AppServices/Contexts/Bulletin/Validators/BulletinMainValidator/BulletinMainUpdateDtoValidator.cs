@@ -3,7 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
 using FluentValidation;
 
 

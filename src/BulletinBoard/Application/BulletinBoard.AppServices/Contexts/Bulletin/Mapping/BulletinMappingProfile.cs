@@ -1,12 +1,31 @@
 ﻿using AutoMapper;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinUser;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.UpdateDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -36,6 +55,8 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinCharacteristicComparisonCreateDto, BulletinCharacteristicComparison>().ReverseMap();
         CreateMap<BulletinCharacteristicComparisonDto, BulletinCharacteristicComparison>().ReverseMap();
         CreateMap<BulletinCharacteristicComparisonUpdateDto, BulletinCharacteristicComparison>().ReverseMap();
+        CreateMap<BulletinCharacteristicComparisonCreateDto, BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>().ReverseMap();
+ 
 
         // BulletinCharacteristicValue
         CreateMap<BulletinCharacteristicValueCreateDto, BulletinCharacteristicValue>().ReverseMap();
@@ -46,6 +67,8 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinImageCreateDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageUpdateDto, BulletinImage>().ReverseMap();
+        CreateMap<BulletinImageCreateDto, BulletinImageCreateDtoWhileBulletinCreating>().ReverseMap();
+
 
         // BulletinMain
         CreateMap<BulletinMainCreateDto, BulletinMain>().ReverseMap();
@@ -63,6 +86,11 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinUserUpdateDto, BulletinUser>().ReverseMap();
         CreateMap<BulletinUserCreateDto, BulletinUserDto>().ReverseMap();
         CreateMap<BulletinUserUpdateDto, BulletinUserDto>().ReverseMap();
+
+        // BulletinRating
+        CreateMap<BulletinViewsCountCreateDto, BulletinViewsCount>().ReverseMap();
+        CreateMap<BulletinViewsCountDto, BulletinViewsCount>().ReverseMap();
+        CreateMap<BulletinViewsCountUpdateDto, BulletinViewsCount>().ReverseMap();
 
         //Другие маппинги
     }

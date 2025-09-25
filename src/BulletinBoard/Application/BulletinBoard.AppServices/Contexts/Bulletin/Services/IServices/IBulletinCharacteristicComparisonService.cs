@@ -1,5 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;

@@ -50,6 +50,7 @@ public class UnitOfWorkBulletin : IUnitOfWorkBulletin
     {
         if (_transaction != null)
         {
+            return;
             throw new InvalidOperationException("Transaction already started");
         }
         _transaction = await _context.Database.BeginTransactionAsync();
@@ -61,6 +62,7 @@ public class UnitOfWorkBulletin : IUnitOfWorkBulletin
         {
             if (_transaction == null)
             {
+                return;
                 throw new InvalidOperationException("No transaction to commit");
             }
 

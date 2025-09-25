@@ -11,12 +11,6 @@ namespace BulletinBoard.Domain.Entities.Bulletin;
 public class BulletinImage : EntityBase
 {
     /// <summary>
-    /// Id изображения.
-    /// Является копией id изображения из другого домена,
-    /// который предназначен для храния изображений в BLOB полях БД.
-    /// </summary>
-
-    /// <summary>
     /// Id объявления
     /// </summary>
     public Guid BulletinId { get; set; }
@@ -25,11 +19,6 @@ public class BulletinImage : EntityBase
     /// Является ли изображение титульным 
     /// </summary>
     public bool IsMain { get; set; }
-
-    /// <summary>
-    /// Название изображения
-    /// </summary>
-    public string Name { get; set; }
 
     /// <summary>
     /// Время создания

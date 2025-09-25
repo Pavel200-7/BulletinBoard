@@ -8,4 +8,18 @@
 	<DocumentationFile>bin\Debug\net9.0\BulletinBoard.Contracts.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Bulletin\Agrigates\Bulletin\FilterDto\" />
+    <Folder Include="Bulletin\Agrigates\Bulletin\ReadDto\" />
+    <Folder Include="Bulletin\Agrigates\Bulletin\UpdateDto\" />
+    <Folder Include="Bulletin\BelletinMain\ReadDto\" />
+    <Folder Include="Bulletin\BulletinCharacteristicComparison\ReadDto\" />
+    <Folder Include="Bulletin\BulletinCharacteristicValue\ReadDto\" />
+    <Folder Include="Bulletin\BulletinCharacteristic\ReadDto\" />
+    <Folder Include="Bulletin\BulletinImage\ReadDto\" />
+    <Folder Include="Bulletin\BulletinRating\ReadDto\" />
+    <Folder Include="Bulletin\BulletinUser\ReadDto\" />
+    <Folder Include="Bulletin\BulletinViewsCount\ReadDto\" />
+  </ItemGroup>
+
 </Project>

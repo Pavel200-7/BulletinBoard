@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
-using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;

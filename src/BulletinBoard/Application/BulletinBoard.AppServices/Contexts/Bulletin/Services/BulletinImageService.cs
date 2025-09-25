@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
-using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
-using BulletinBoard.AppServices.Repository;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
-using BulletinBoard.Contracts.Bulletin.BulletinImage.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 
 
@@ -28,7 +27,7 @@ public class BulletinImageService : BaseCRUDService
     /// <inheritdoc/>
     protected override string EntityName { get; } = "image";
 
-    private BulletinImageSpecificationBuilder _specificationBuilder;
+    private IBulletinImageSpecificationBuilder _specificationBuilder;
     private IUnitOfWorkBulletin _unitOfWork;
 
     /// <inheritdoc/>
@@ -37,7 +36,7 @@ public class BulletinImageService : BaseCRUDService
         IBulletinImageRepository repository,
         IBulletinImageDtoValidatorFacade validator,
         IMapper autoMapper,
-        BulletinImageSpecificationBuilder specificationBuilder,
+        IBulletinImageSpecificationBuilder specificationBuilder,
         IUnitOfWorkBulletin unitOfWork
         ) : base(repository, validator, autoMapper)
     {

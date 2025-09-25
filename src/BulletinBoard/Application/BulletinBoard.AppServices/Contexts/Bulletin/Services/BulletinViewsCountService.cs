@@ -5,7 +5,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
-using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 
 

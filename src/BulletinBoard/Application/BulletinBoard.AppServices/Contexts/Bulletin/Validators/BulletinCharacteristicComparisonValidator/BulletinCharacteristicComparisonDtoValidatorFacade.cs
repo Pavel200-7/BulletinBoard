@@ -2,8 +2,8 @@
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCategoryValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator;

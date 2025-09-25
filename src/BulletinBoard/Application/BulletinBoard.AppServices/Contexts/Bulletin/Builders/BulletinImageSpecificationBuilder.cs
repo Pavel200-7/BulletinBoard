@@ -28,26 +28,6 @@ public class BulletinImageSpecificationBuilder : SpecificationBuilderBase<Bullet
     }
 
     /// <inheritdoc/>
-    public IBulletinImageSpecificationBuilder WhereName(string imageName)
-    {
-        if (!string.IsNullOrEmpty(imageName))
-        {
-            _specification.Add(x => x.Name == imageName);
-        }
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinImageSpecificationBuilder WhereNameContains(string imageName)
-    {
-        if (!string.IsNullOrEmpty(imageName))
-        {
-            _specification.Add(x => x.Name.Contains(imageName));
-        }
-        return this;
-    }
-
-    /// <inheritdoc/>
     public IBulletinImageSpecificationBuilder WhereCreatedAt(DateTime createdAt)
     {
         _specification.Add(x => x.CreatedAt == createdAt);
@@ -65,14 +45,6 @@ public class BulletinImageSpecificationBuilder : SpecificationBuilderBase<Bullet
     public IBulletinImageSpecificationBuilder WhereCreatedAtAfter(DateTime timePoint)
     {
         _specification.Add(x => x.CreatedAt >= timePoint);
-        return this;
-    }
-
-    /// <inheritdoc/>
-    public IBulletinImageSpecificationBuilder OrderByName(bool ascending = true)
-    {
-        _orderByExpression = x => x.Name;
-        _orderByAscending = ascending;
         return this;
     }
 

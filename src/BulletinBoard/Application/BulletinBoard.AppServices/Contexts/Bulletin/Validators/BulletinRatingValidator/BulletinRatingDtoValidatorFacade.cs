@@ -3,8 +3,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidat
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoValidatorFacade.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

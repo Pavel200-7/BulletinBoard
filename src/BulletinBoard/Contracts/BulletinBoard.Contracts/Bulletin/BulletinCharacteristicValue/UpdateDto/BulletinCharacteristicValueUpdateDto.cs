@@ -1,0 +1,12 @@
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
+
+/// <summary>
+/// Формат данных обновления данных возможного значения характеристики
+/// </summary>
+public class BulletinCharacteristicValueUpdateDto
+{
+    /// <summary>
+    /// Возможное значение характеристики
+    /// </summary>
+    public string Value { get; set; }
+}

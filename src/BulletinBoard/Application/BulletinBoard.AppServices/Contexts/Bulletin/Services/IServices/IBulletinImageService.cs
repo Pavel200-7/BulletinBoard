@@ -1,5 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using System.Threading;
 
 

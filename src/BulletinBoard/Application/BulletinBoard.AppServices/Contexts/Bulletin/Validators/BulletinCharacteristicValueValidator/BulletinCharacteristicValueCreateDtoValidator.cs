@@ -2,7 +2,7 @@
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
 using FluentValidation;
 
 

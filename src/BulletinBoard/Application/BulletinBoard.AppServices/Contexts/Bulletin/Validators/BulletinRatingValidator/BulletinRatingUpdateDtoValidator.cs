@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 using FluentValidation;
 
 

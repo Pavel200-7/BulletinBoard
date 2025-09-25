@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValueValidator;

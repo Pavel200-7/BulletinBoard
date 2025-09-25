@@ -1,12 +1,6 @@
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.ComponentRegistrar;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.Middlewares;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+
 
 
 var builder = WebApplication.CreateBuilder(args);

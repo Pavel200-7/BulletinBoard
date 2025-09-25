@@ -2,7 +2,7 @@
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 using FluentValidation;
 
 

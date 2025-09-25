@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

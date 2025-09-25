@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
 using FluentValidation;
 
 

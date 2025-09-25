@@ -1,5 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.FilterDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;

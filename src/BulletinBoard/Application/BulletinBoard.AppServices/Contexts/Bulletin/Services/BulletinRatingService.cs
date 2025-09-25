@@ -5,7 +5,8 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
-using BulletinBoard.Contracts.Bulletin.BulletinRating.ForValidating;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;

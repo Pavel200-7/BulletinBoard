@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
-using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
+using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
 using FluentValidation;
 
 
