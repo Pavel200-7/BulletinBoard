@@ -68,12 +68,7 @@ public abstract class BaseCRUDService
     public async Task<TEntityDto> GetByIdAsync(Guid id)
     {
         TEntityDto? outputDto = await _repository.GetByIdAsync(id);
-        if (outputDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (outputDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         return outputDto;
     }
 
@@ -91,11 +86,8 @@ public abstract class BaseCRUDService
         TValidationEntityUpdateDto updateValidationDto =  await GetUpdateValidationDto(id, updateDto);
         await _validator.ValidateThrowValidationExeptionAsync(updateValidationDto);
         TEntityDto? outputDto = await _repository.UpdateAsync(id, updateDto, cancellationToken);
-        if (outputDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
+
+        if (outputDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
 
         return outputDto;
     }
@@ -118,12 +110,19 @@ public abstract class BaseCRUDService
     {
         await _validator.ValidateBeforeDeletingThrowValidationExeptionAsync(id);
         bool isOnDeleting = await _repository.DeleteAsync(id, cancellationToken);
-        if (!isOnDeleting)
-        {
-            string errorMessage = $"The entyty with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
+
+        if (!isOnDeleting) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
 
         return isOnDeleting;
+    }
+
+    /// <summary>
+    ///  Выдать сообщение о том, что сущность с данным id не найдена.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    protected string GetNotFoundIdMessage(Guid id)
+    {
+        return $"The {EntityName} with id {id} is not found.";
     }
 }

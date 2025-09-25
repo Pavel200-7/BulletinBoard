@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
+using BulletinBoard.AppServices.Repository;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.ForValidating;
+using BulletinBoard.Contracts.Errors.Exeptions;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -15,7 +20,7 @@ public class BulletinImageService : BaseCRUDService
     BulletinImageDto,
     BulletinImageCreateDto,
     BulletinImageUpdateDto,
-   BulletinImageUpdateDtoForValidating,
+    BulletinImageUpdateDtoForValidating,
     IBulletinImageRepository,
     IBulletinImageDtoValidatorFacade
     >, IBulletinImageService
@@ -23,13 +28,21 @@ public class BulletinImageService : BaseCRUDService
     /// <inheritdoc/>
     protected override string EntityName { get; } = "image";
 
+    private BulletinImageSpecificationBuilder _specificationBuilder;
+    private IUnitOfWorkBulletin _unitOfWork;
+
+    /// <inheritdoc/>
     public BulletinImageService
         (
-        IBulletinImageRepository repository, 
-        IBulletinImageDtoValidatorFacade validator, 
-        IMapper autoMapper
+        IBulletinImageRepository repository,
+        IBulletinImageDtoValidatorFacade validator,
+        IMapper autoMapper,
+        BulletinImageSpecificationBuilder specificationBuilder,
+        IUnitOfWorkBulletin unitOfWork
         ) : base(repository, validator, autoMapper)
     {
+        _specificationBuilder = specificationBuilder;
+        _unitOfWork = unitOfWork;
     }
 
     /// <inheritdoc/>
@@ -37,5 +50,89 @@ public class BulletinImageService : BaseCRUDService
     {
         var validatinoDto = _autoMapper.Map<BulletinImageUpdateDtoForValidating>(updateDto);
         return Task.FromResult(validatinoDto);
+    }
+
+    /// <inheritdoc/>
+    public new async Task<BulletinImageDto> CreateAsync(BulletinImageCreateDto createDto, CancellationToken cancellationToken)
+    {
+        await _validator.ValidateThrowValidationExeptionAsync(createDto);
+
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            if (createDto.IsMain) 
+            {
+                Guid bulletinId = createDto.BulletinId;
+                await UnSetMain(bulletinId, cancellationToken); 
+            }
+
+            BulletinImageDto outputDto = await _repository.CreateAsync(createDto, cancellationToken);
+
+            await _unitOfWork.CommitTransactionAsync();
+
+            return outputDto;
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinImageDto?> SetMain(Guid id, CancellationToken cancellationToken)
+    {
+        BulletinImageDto? outputDto = await _repository.GetByIdAsync(id);
+        if (outputDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            Guid bulletinId = outputDto.BulletinId;
+            await UnSetMain(bulletinId, cancellationToken);
+
+            outputDto.IsMain = true;
+            Guid updatingImageId = outputDto.Id;
+            BulletinImageUpdateDto imageMainUpdateDto = _autoMapper.Map<BulletinImageUpdateDto>(outputDto);
+            outputDto = await _repository.UpdateAsync(updatingImageId, imageMainUpdateDto, cancellationToken);
+
+            await _unitOfWork.CommitTransactionAsync();
+
+            return outputDto;
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
+    }
+
+    /// <inheritdoc/>
+    private async Task<BulletinImageDto?> UnSetMain(Guid bulletinId, CancellationToken cancellationToken)
+    {
+        BulletinImageDto? mainImage = await GetMainAsync(bulletinId);
+        if (mainImage == null) { return null; }
+ 
+        mainImage.IsMain = false;
+        Guid mainImageId = mainImage.Id;
+        BulletinImageUpdateDto mainImageUpdateDto = _autoMapper.Map<BulletinImageUpdateDto>(mainImage);
+        BulletinImageDto? imageDto = await _repository.UpdateAsync(mainImageId, mainImageUpdateDto, cancellationToken);
+        
+        return imageDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinImageDto?> GetMainAsync(Guid bulletinId)
+    {
+        var specification = _specificationBuilder
+            .WhereBelletinId(bulletinId)
+            .WhereIsMain(true)
+            .Build();
+
+        IReadOnlyCollection<BulletinImageDto> mainImageCollection = await _repository.FindAsync(specification);
+        if (mainImageCollection.Count == 0) { return null; }
+        BulletinImageDto mainImage = mainImageCollection.First();
+
+        return mainImage;
     }
 }

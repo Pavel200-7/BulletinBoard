@@ -125,13 +125,7 @@ public class BulletinUserService : BaseCRUDService
     public async Task<BulletinUserDto> ChangeNameAsync(Guid id, string name, CancellationToken cancellationToken)
     {
         BulletinUserDto? userDto = await _repository.ChangeNameAsync(id, name, cancellationToken);
-
-        if (userDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (userDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         return userDto;
     }
 
@@ -139,12 +133,7 @@ public class BulletinUserService : BaseCRUDService
     public async Task<BulletinUserDto> ChangeAdressAsync(Guid id, BulletinUserUpdateLocationDto userLocationDto, CancellationToken cancellationToken)
     {
         BulletinUserDto? userDto = await _repository.ChangeAdressAsync(id, userLocationDto, cancellationToken);
-        if (userDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (userDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         return userDto;
     }
 
@@ -152,12 +141,7 @@ public class BulletinUserService : BaseCRUDService
     public async Task<BulletinUserDto> ChangePhoneAsync(Guid id, string phone, CancellationToken cancellationToken)
     {
         BulletinUserDto? userDto = await _repository.ChangePhoneAsync(id, phone, cancellationToken);
-        if (userDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (userDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         return userDto;
     }
 
@@ -166,14 +150,8 @@ public class BulletinUserService : BaseCRUDService
     {
         BulletinUserDto? userDto;
         userDto = await _repository.GetByIdAsync(id);
-        if (userDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (userDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         userDto = await _repository.SetUserBlockStatusAsync(id, true, cancellationToken);
-
         return userDto!;
     }
 
@@ -182,14 +160,8 @@ public class BulletinUserService : BaseCRUDService
     {
         BulletinUserDto? userDto;
         userDto = await _repository.GetByIdAsync(id);
-        if (userDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
-
+        if (userDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
         userDto = await _repository.SetUserBlockStatusAsync(id, false, cancellationToken);
-
         return userDto!;
     }
 }

@@ -93,14 +93,11 @@ public sealed class BulletinCategoryService : BaseCRUDService
         List<BulletinCategoryDto> CategoriesList = new List<BulletinCategoryDto>();
         Guid? searchingCategoryId = id;
 
-        while (searchingCategoryId != null)
+        while (searchingCategoryId is not null)
         {
             var currentCategory = await _repository.GetByIdAsync(searchingCategoryId.Value);
-            if (currentCategory is null)
-            {
-                string errorMessage = $"The {EntityName} with id {searchingCategoryId} is not found.";
-                throw new NotFoundException(errorMessage);
-            }
+
+            if (currentCategory is null) { throw new NotFoundException(GetNotFoundIdMessage(searchingCategoryId.Value)); }
 
             CategoriesList.Add(currentCategory);
             searchingCategoryId = currentCategory.ParentCategoryId;

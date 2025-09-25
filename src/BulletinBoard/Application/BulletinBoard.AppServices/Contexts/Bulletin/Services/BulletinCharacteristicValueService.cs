@@ -49,11 +49,9 @@ public class BulletinCharacteristicValueService : BaseCRUDService
     protected override async Task<BulletinCharacteristicValueUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinCharacteristicValueUpdateDto updateDto)
     {
         BulletinCharacteristicValueDto? characteristicValueBaseDto = await _repository.GetByIdAsync(id);
-        if (characteristicValueBaseDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
+        
+        if (characteristicValueBaseDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+        
         var validatinoDto = _autoMapper.Map<BulletinCharacteristicValueUpdateDtoForValidating>(characteristicValueBaseDto);
         _autoMapper.Map(updateDto, validatinoDto);
 

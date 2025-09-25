@@ -49,11 +49,9 @@ public class BulletinCharacteristicComparisonService : BaseCRUDService
     protected override async Task<BulletinCharacteristicComparisonUpdateDtoForValidating> GetUpdateValidationDto(Guid id, BulletinCharacteristicComparisonUpdateDto updateDto)
     {
         BulletinCharacteristicComparisonDto? characteristicComparisonBaseDto = await _repository.GetByIdAsync(id);
-        if (characteristicComparisonBaseDto is null)
-        {
-            string errorMessage = $"The {EntityName} with id {id} is not found.";
-            throw new NotFoundException(errorMessage);
-        }
+        
+        if (characteristicComparisonBaseDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+
         var validatinoDto = _autoMapper.Map<BulletinCharacteristicComparisonUpdateDtoForValidating>(characteristicComparisonBaseDto);
         _autoMapper.Map(updateDto, validatinoDto);
 

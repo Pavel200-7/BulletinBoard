@@ -16,4 +16,7 @@ public interface IBulletinImageRepository : IBaseRepository
     BulletinImageUpdateDto
     >
 {
+
+
+
 }
