@@ -1,4 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+﻿using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
+using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 /// </summary>
 public interface IBulletinReposotory
 {
+    /// <summary>
+    /// Получить объявление (как совокупности связанных сущностей) по id.
+    /// </summary>
+    /// <param name="id">Id объявления.</param>
+    /// <returns>Данные объявления.</returns>
+    public Task<BelletinDto?> GetByIdAsync(Guid id);
+
     /// <summary>
     /// Создать агрегат BulletinDto (объявление и все сопутствующие сущности).
     /// </summary>

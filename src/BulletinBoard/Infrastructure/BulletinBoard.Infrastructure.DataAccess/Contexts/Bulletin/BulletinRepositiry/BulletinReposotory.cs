@@ -1,7 +1,10 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
 using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
-using AutoMapper;
 using BulletinBoard.Domain.Entities.Bulletin;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
@@ -10,6 +13,7 @@ public class BulletinReposotory : IBulletinReposotory
 {
     private BulletinContext _bulletinContext;
     private IMapper _autoMapper;
+    private DbSet<BulletinMain> DbSetBulletinMain;
 
     /// <inheritdoc/>
     public BulletinReposotory
@@ -20,8 +24,27 @@ public class BulletinReposotory : IBulletinReposotory
     {
         _bulletinContext = bulletinContext;
         _autoMapper = autoMapper;
+        DbSetBulletinMain = bulletinContext.Set<BulletinMain>();
+
     }
 
+    /// <inheritdoc/>
+    public async Task<BelletinDto?> GetByIdAsync(Guid id)
+    {
+        BelletinDto? belletinDto = await DbSetBulletinMain
+            .Where(b => b.Id == id)
+            .Include(b => b.Category)
+            .Include(b => b.Characteristics)
+                .ThenInclude(c => c.Characteristic)
+            .Include(b => b.Characteristics)
+                .ThenInclude (c => c.CharacteristicValue)
+            .Include(b => b.Images)
+            .Include (b => b.ViewsCount)
+            .ProjectTo<BelletinDto>(_autoMapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
+        return belletinDto;  
+    }
 
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken)
@@ -50,4 +73,6 @@ public class BulletinReposotory : IBulletinReposotory
 
         return bulletinMainId;
     }
+
+
 }

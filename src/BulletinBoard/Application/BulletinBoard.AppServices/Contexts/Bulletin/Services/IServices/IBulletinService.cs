@@ -1,10 +1,6 @@
 ﻿using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
 using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 
@@ -14,10 +10,17 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 public interface IBulletinService
 {
     /// <summary>
+    /// Получить объявление (как совокупности связанных сущностей) по id.
+    /// </summary>
+    /// <param name="id">Id объявления.</param>
+    /// <returns>Данные объявления.</returns>
+    public Task<BelletinDto> GetByIdAsync(Guid id);
+
+    /// <summary>
     /// Создать объявление.
     /// </summary>
-    /// <param name="createDto"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns> Id объявления.</returns>
+    /// <param name="createDto">Данные создания объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Id объявления.</returns>
     public Task<Guid> CreateAsync(BulletinCreateDtoController createDto, CancellationToken cancellationToken);
 }

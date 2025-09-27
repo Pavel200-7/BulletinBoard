@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
 using BulletinBoard.Contracts.Bulletin.BelletinMain;
 using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
@@ -96,7 +97,12 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinViewsCountUpdateDto, BulletinViewsCount>().ReverseMap();
         CreateMap<BulletinViewsCountCreateDtoWhileBulletinCreating, BulletinViewsCount>().ReverseMap();
 
-
+        // Bulletin
+        CreateMap<BulletinMain, BelletinDto>()
+            .ForMember(dest => dest.Main, opt => opt.MapFrom(src => src)) // Основная сущность
+            .ForMember(dest => dest.CharacteristicComparisons, opt => opt.MapFrom(src => src.Characteristics))
+            .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))
+            .ForMember(dest => dest.ViewsCount, opt => opt.MapFrom(src => src.ViewsCount));
 
 
         //Другие маппинги

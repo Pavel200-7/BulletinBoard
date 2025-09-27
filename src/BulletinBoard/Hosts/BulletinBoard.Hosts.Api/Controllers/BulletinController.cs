@@ -1,5 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
+using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
 using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +34,62 @@ public class BulletinController : ControllerBase
     }
 
     /// <summary>
-    /// Создание объявления.
+    /// Получить значение объявление по id.
     /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    GET /Bulletin/01992529-1ec8-766f-a03d-a7ac4f0996b9
+    ///
+    /// </remarks>
+    /// <param name="id">Идентификатор объявления.</param>
+    /// <returns>Данные объявления..</returns>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(BelletinDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var dto = await _bulletinService.GetByIdAsync(id);
+        return Ok(dto);
+    }
+
+    /// <summary>
+    /// Создать объявление.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    Post /Bulletin
+    ///    {
+    ///         "bulletinMain": 
+    ///         {
+    ///             "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///             "title": "string",
+    ///             "description": "string",
+    ///             "categoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///             "price": 0
+    ///         },
+    ///         "characteristicComparisons": 
+    ///         [
+    ///             {
+    ///                 "characteristicId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///                 "characteristicValueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    ///             }
+    ///             {
+    ///                 "characteristicId": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+    ///                 "characteristicValueId": "3fa85f64-5717-4562-b3fc-2c963f66afa0"
+    ///             }
+    ///             {
+    ///                 "characteristicId": "3fa85f64-5717-4562-b3fc-2c963f66afa5",
+    ///                 "characteristicValueId": "3fa85f64-5717-4562-b3fc-2c963f211afa6"
+    ///             }
+    ///         ]
+    ///     }
+    ///
+    /// </remarks>
     /// <param name="bulletinCreateDtoAPIVersion">Формат данных создания нового объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Базовый формат данных категории.</returns>
+    /// <returns>Id объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,5 +113,55 @@ public class BulletinController : ControllerBase
 
         Guid bulletinId = await _bulletinService.CreateAsync(bulletinCreateDto, cancellationToken);
         return Ok(bulletinId);
+    }
+
+
+    /// <summary>
+    /// Обновить объявление.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    Put /Bulletin
+    ///    {
+    ///         "title": "Заголовок объявления.",
+    ///         "description": "Описание объявления.",
+    ///         "price": 1000
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="id">Id объявления.</param>
+    /// <param name="updateDto">Данные обновления объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Id объявления.</returns>
+    [HttpPut]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateBulletin(Guid id, BulletinMainUpdateDto updateDto, CancellationToken cancellationToken)
+    {
+        var bulletinDto = await _bulletinMainService.UpdateAsync(id, updateDto, cancellationToken);
+        Guid bulletinId = bulletinDto.Id;
+        return Ok(bulletinId);
+    }
+
+    /// <summary>
+    /// Удалить объявление.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    Delete /Bulletin
+    ///
+    /// </remarks>
+    /// <param name="id">Id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Результат удаления.</returns>
+    [HttpDelete]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeleteBulletin(Guid id, CancellationToken cancellationToken)
+    {
+        bool result = await _bulletinMainService.DeleteAsync(id, cancellationToken);
+        return Ok(result);
     }
 }
