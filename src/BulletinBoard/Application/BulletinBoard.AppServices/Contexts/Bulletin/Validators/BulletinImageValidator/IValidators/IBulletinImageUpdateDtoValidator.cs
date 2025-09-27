@@ -6,10 +6,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageVa
 
 /// <summary>
 /// Валидатор проводящий проверку ДТО обновления изображения объявления по правилам:
-/// Name:
-///     1. Не пустая строка и не null.
-///     2. Имеет длинну он 3 до 255.
-///     3. Может хранить только русские, английские буквы нижнего, верхнего регистра, пробелы и знаки пунктуации.
+///     1. нет
 /// </summary>
 public interface IBulletinImageUpdateDtoValidator : IDtoValidator<BulletinImageUpdateDtoForValidating>
 {

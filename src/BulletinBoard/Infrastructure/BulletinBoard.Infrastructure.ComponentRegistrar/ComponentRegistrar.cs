@@ -18,18 +18,22 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValida
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinImageValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingDtoValidatorFacade.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinUserValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator;
+using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
+using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +110,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainUpdateDtoValidator, BulletinMainUpdateDtoValidator>();
         services.AddScoped<IBulletinMainDeleteValidator, BulletinMainDeleteValidator>();
         services.AddScoped<IBulletinMainDtoValidatorFacade, BulletinMainDtoValidatorFacade>();
+        services.AddScoped<IValidator<BulletinMainCreateDto>, BulletinMainCreateDtoValidator>();
         // BulletinRating
         services.AddScoped<IBulletinRatingCreateDtoValidator, BulletinRatingCreateDtoValidator>();
         services.AddScoped<IBulletinRatingUpdateDtoValidator, BulletinRatingUpdateDtoValidator>();
@@ -121,6 +126,12 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinViewsCountUpdateDtoValidator, BulletinViewsCountUpdateDtoValidator>();
         services.AddScoped<IBulletinViewsCountDeleteValidator, BulletinViewsCountDeleteValidator>();
         services.AddScoped<IBulletinViewsCountDtoValidatorFacade, BulletinViewsCountDtoValidatorFacade>();
+        // Bulletin
+        services.AddScoped<IBulletinCreateDtoValidator, BulletinCreateDtoValidator>();
+        services.AddScoped<IBulletinUpdateDtoValidator, BulletinUpdateDtoValidator>();
+        services.AddScoped<IBulletinDeleteValidator, BulletinDeleteValidator>();
+        services.AddScoped<IBulletinDtoValidatorFacade, BulletinDtoValidatorFacade>();
+        services.AddScoped<IValidator<BelletinCreateDto>, BulletinCreateDtoValidator>();
 
         return services;
     }
@@ -140,6 +151,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinRatingRepository, BulletinRatingRepository>();
         services.AddScoped<IBulletinUserRepository, BulletinUserRepository>();
         services.AddScoped<IBulletinViewsCountRepository, BulletinViewsCountRepository>();
+        services.AddScoped<IBulletinReposotory, BulletinReposotory>();
         services.AddScoped<IUnitOfWorkBulletin, UnitOfWorkBulletin>();
 
 

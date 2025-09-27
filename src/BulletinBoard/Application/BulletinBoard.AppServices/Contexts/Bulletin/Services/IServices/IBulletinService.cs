@@ -19,5 +19,5 @@ public interface IBulletinService
     /// <param name="createDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns> Id объявления.</returns>
-    public Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken);
+    public Task<Guid> CreateAsync(BulletinCreateDtoController createDto, CancellationToken cancellationToken);
 }

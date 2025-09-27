@@ -40,6 +40,8 @@ public class UnitOfWorkBulletin : IUnitOfWorkBulletin
     public IBulletinMainRepository _mainRepository { get; }
     public IBulletinRatingRepository _ratingRepository { get; }
     public IBulletinUserRepository _userRepository { get; }
+    public IBulletinViewsCountRepository _viewsCountRepository { get; }
+
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

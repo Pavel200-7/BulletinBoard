@@ -1,6 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
@@ -39,8 +38,7 @@ public class BulletinMainCreateDtoValidator : AbstractValidator<BulletinMainCrea
             .NotEmpty()
             .Length(3, 100)
             .Matches("^[а-яА-Яa-zA-Z0-9\\s.,'-]+$")
-                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation")
-            .SetAsyncValidator(new BulletinTitleValudator<BulletinMainCreateDto>(_bulletinRepository, _mainSpecificationBuilder));
+                .WithMessage("{PropertyName} can contain only letters (а-яА-Яa-zA-Z), digits, spaces, and some punctuation");
 
         RuleFor(createDto => createDto.Description)
             .NotEmpty()

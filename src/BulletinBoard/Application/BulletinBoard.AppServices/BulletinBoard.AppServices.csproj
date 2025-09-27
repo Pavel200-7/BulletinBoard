@@ -23,8 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contexts\Bulletin\Validators\BulletinMainValidator\CustomValidators\" />
     <Folder Include="Contexts\Bulletin\Validators\BulletinRatingValidator\CustomValidators\" />
     <Folder Include="Contexts\Bulletin\Validators\BulletinUserValidator\CustomValidators\" />
+    <Folder Include="Contexts\Bulletin\Validators\EntityValidators\" />
   </ItemGroup>
 
 </Project>

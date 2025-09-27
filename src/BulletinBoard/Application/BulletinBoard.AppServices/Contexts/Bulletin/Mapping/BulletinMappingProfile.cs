@@ -56,7 +56,8 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinCharacteristicComparisonDto, BulletinCharacteristicComparison>().ReverseMap();
         CreateMap<BulletinCharacteristicComparisonUpdateDto, BulletinCharacteristicComparison>().ReverseMap();
         CreateMap<BulletinCharacteristicComparisonCreateDto, BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>().ReverseMap();
- 
+        CreateMap<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating, BulletinCharacteristicComparison>().ReverseMap();
+
 
         // BulletinCharacteristicValue
         CreateMap<BulletinCharacteristicValueCreateDto, BulletinCharacteristicValue>().ReverseMap();
@@ -68,6 +69,8 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinImageDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageUpdateDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageCreateDto, BulletinImageCreateDtoWhileBulletinCreating>().ReverseMap();
+        CreateMap<BulletinImageCreateDtoWhileBulletinCreating, BulletinImage>().ReverseMap();
+
 
 
         // BulletinMain
@@ -87,10 +90,14 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinUserCreateDto, BulletinUserDto>().ReverseMap();
         CreateMap<BulletinUserUpdateDto, BulletinUserDto>().ReverseMap();
 
-        // BulletinRating
+        // BulletinViewsCount
         CreateMap<BulletinViewsCountCreateDto, BulletinViewsCount>().ReverseMap();
         CreateMap<BulletinViewsCountDto, BulletinViewsCount>().ReverseMap();
         CreateMap<BulletinViewsCountUpdateDto, BulletinViewsCount>().ReverseMap();
+        CreateMap<BulletinViewsCountCreateDtoWhileBulletinCreating, BulletinViewsCount>().ReverseMap();
+
+
+
 
         //Другие маппинги
     }

@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Validators;
 
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.CustomValidators;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.CustomValidators;
 
 /// <inheritdoc/>
 public class BulletinCategoryValidator<T> : AsyncPropertyValidator<T, Guid>

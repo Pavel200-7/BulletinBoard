@@ -36,10 +36,7 @@ public class BulletinCharacteristicComparisonCreateDtoValidator : AbstractValida
             {
                 Guid bulletinId = dto.BulletinId;
                 var validator = new CharacteristicIdValidator<BulletinCharacteristicComparisonCreateDto>(
-                    bulletinId,
-                    _bulletibRepository,
-                    _characteristicRepository
-                    );
+                    bulletinId, _bulletibRepository, _characteristicRepository);
                 return await validator.IsValidAsync(validationContext, id, cancellationToken);
             }).WithMessage("{Error}");
 
@@ -48,9 +45,7 @@ public class BulletinCharacteristicComparisonCreateDtoValidator : AbstractValida
             {
                 Guid characteristicId = dto.CharacteristicId;
                 var validator = new CharacteristicValueIdValidator<BulletinCharacteristicComparisonCreateDto>(
-                    characteristicId,
-                    _characteristicValueRepository
-                    );
+                    characteristicId, _characteristicValueRepository);
                 return await validator.IsValidAsync(validationContext, id, cancellationToken);
             }).WithMessage("{Error}");
     }

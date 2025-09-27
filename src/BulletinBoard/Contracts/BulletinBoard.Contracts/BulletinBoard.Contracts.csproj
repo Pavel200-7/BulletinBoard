@@ -11,7 +11,6 @@
   <ItemGroup>
     <Folder Include="Bulletin\Agrigates\Bulletin\FilterDto\" />
     <Folder Include="Bulletin\Agrigates\Bulletin\ReadDto\" />
-    <Folder Include="Bulletin\Agrigates\Bulletin\UpdateDto\" />
     <Folder Include="Bulletin\BelletinMain\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristicComparison\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristicValue\ReadDto\" />

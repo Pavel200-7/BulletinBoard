@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.CustomValidators;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 
 /// <summary>
 /// Проверяет поле CharacteristicValueId на условия:

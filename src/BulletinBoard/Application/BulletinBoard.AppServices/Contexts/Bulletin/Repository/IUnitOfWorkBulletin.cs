@@ -47,4 +47,9 @@ public interface IUnitOfWorkBulletin : IUnitOfWork
     /// Репозиторий пользоватеей.
     /// </summary>
     public IBulletinUserRepository _userRepository { get; }
+
+    /// <summary>
+    /// Репозиторий счетчика просмотров.
+    /// </summary>
+    public IBulletinViewsCountRepository _viewsCountRepository { get; }
 }

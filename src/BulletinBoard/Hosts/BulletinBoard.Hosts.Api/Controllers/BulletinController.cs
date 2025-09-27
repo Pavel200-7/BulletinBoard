@@ -39,7 +39,7 @@ public class BulletinController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateBulletin(BulletinCreateDtoAPIVersion bulletinCreateDtoAPIVersion, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBulletin(BulletinCreateDtoRequest bulletinCreateDtoAPIVersion, CancellationToken cancellationToken)
     {
         List<BulletinImageCreateDtoWhileBulletinCreating> imagesCreateDto = new()
         {
@@ -50,7 +50,7 @@ public class BulletinController : ControllerBase
             new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = false },
         };
 
-        BelletinCreateDto bulletinCreateDto = new BelletinCreateDto
+        BulletinCreateDtoController bulletinCreateDto = new BulletinCreateDtoController
         {
             BulletinMain = bulletinCreateDtoAPIVersion.BulletinMain,
             CharacteristicComparisons = bulletinCreateDtoAPIVersion.CharacteristicComparisons,

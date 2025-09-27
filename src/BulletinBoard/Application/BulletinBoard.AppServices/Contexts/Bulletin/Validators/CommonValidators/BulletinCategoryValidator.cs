@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicValidator.CustomValidators;
+namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
 
 /// <inheritdoc/>
 public class BulletinCategoryValidator<T> : AsyncPropertyValidator<T, Guid>
