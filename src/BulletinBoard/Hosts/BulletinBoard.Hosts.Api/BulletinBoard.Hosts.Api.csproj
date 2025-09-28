@@ -25,4 +25,8 @@
 		<ProjectReference Include="..\..\Infrastructure\BulletinBoard.Infrastructure\BulletinBoard.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="..\..\tests\BulletinBoard.IntegrationTests\BulletinBoard.IntegrationTests.csproj" />
+	</ItemGroup>
+
 </Project>

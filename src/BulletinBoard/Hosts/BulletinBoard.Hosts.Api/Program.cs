@@ -1,5 +1,6 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar;
 using BulletinBoard.Infrastructure.Middlewares;
+using System;
 
 
 
@@ -7,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Контекст Entity framework
-builder.Services.RegistrarAppContexsts(builder.Configuration);
+var environment = builder.Environment.EnvironmentName;
+builder.Services.RegistrarAppContexsts(builder.Configuration, environment);
 
 
 // Сервисы, репозитории, мапперы
@@ -26,6 +28,7 @@ builder.Services.AddSwaggerWithXmlComments();
 
 var app = builder.Build();
 
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
@@ -41,4 +44,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await app.InitAndRunAsync();
+
+await app.RunAsync();
+//await app.InitAndRunAsync();
+
+public partial class Program
+{ }

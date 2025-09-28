@@ -37,6 +37,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 
 namespace BulletinBoard.Infrastructure.ComponentRegistrar;
@@ -173,9 +174,10 @@ public static class ComponentRegistrar
         return services;
     }
 
-    public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
     {
-
+        //if (environment == "Development")
+        //{
         services.AddDbContext<BulletinContext>(options =>
         {
             options.UseNpgsql(
@@ -183,6 +185,17 @@ public static class ComponentRegistrar
                 b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
             );
         });
+        //}
+        //else if (environment == "Testing")
+        //{
+        //    services.AddDbContext<BulletinContext>(options =>
+        //    {
+        //        services.AddDbContextPool<BulletinContext>(options =>
+        //            options.UseInMemoryDatabase("TestingDB"));
+        //    });
+        //
+        //}
+        
 
         // Другие контексты
 
