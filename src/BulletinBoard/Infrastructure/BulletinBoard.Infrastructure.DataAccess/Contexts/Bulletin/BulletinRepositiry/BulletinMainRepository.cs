@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 

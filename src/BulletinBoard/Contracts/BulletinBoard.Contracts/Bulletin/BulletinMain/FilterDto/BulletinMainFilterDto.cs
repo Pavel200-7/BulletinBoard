@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BelletinMain.FilterDto;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinMain.FilterDto;
 
 /// <summary>
 /// Формат данных для фильтрации объявления по

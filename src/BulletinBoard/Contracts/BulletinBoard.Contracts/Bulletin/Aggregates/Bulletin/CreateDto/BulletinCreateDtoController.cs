@@ -1,6 +1,6 @@
-﻿using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount.CreateDto;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 
 /// <summary>
 /// Предназначен для операции создания объявления со всеми его сопутствующими связями (дополняющими сущностями).

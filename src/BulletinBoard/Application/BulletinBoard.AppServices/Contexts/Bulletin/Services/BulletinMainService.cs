@@ -4,9 +4,10 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.BaseServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 
 
 

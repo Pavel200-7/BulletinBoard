@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator.IBaseValidator;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.UpdateDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

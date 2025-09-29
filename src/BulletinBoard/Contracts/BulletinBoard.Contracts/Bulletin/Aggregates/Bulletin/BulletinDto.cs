@@ -1,16 +1,16 @@
-﻿using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
+using BulletinBoard.Contracts.Bulletin.BulletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
 
 
-namespace BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
+namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 
 /// <summary>
 /// Базовый формат объявления (как совокупности связанных сущностей)
 /// </summary>
-public class BelletinDto
+public class BulletinDto
 {
     /// <summary>
     /// Основная сущность объявления

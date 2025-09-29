@@ -1,8 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 
 
@@ -29,9 +29,9 @@ public class BulletinService : IBulletinService
     }
 
     /// <inheritdoc/>
-    public async Task<BelletinDto> GetByIdAsync(Guid id)
+    public async Task<BulletinDto> GetByIdAsync(Guid id)
     {
-        BelletinDto? outputDto = await _bulletinReposotory.GetByIdAsync(id);
+        BulletinDto? outputDto = await _bulletinReposotory.GetByIdAsync(id);
         if (outputDto is null) 
         {
             string message = $"The bulletin with id {id} is not found.";

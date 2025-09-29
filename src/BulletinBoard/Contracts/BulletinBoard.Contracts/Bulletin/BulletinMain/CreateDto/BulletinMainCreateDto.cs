@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
 
 /// <summary>
 /// Формат данных создания объявления

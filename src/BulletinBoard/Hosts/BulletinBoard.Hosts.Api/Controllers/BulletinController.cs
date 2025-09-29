@@ -1,9 +1,9 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +45,7 @@ public class BulletinController : ControllerBase
     /// <param name="id">Идентификатор объявления.</param>
     /// <returns>Данные объявления..</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(BelletinDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BulletinDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {

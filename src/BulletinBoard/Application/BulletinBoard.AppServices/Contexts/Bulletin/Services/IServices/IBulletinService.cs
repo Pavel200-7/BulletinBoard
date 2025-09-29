@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
+﻿using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
@@ -14,7 +14,7 @@ public interface IBulletinService
     /// </summary>
     /// <param name="id">Id объявления.</param>
     /// <returns>Данные объявления.</returns>
-    public Task<BelletinDto> GetByIdAsync(Guid id);
+    public Task<BulletinDto> GetByIdAsync(Guid id);
 
     /// <summary>
     /// Создать объявление.

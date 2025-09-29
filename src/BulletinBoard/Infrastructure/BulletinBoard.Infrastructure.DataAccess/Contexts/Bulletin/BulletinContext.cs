@@ -16,7 +16,7 @@ namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin
         {
         }
 
-        public DbSet<BulletinMain> BelletinMain { get; set; }
+        public DbSet<BulletinMain> BulletinMain { get; set; }
 
         public DbSet<BulletinCategory> BulletinCategory { get; set; }
 

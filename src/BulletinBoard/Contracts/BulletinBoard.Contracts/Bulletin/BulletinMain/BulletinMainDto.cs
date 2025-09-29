@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BelletinMain;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinMain;
 
 /// <summary>
 /// Базовый формат данных объявления

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.UpdateDto;
+namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.UpdateDto;
 
 /// <summary>
 /// Дто для валидации изменений объявления.

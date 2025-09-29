@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Belletin;
-using BulletinBoard.Contracts.Bulletin.BelletinMain;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
@@ -18,6 +16,9 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
 using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
@@ -46,11 +47,17 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinCategoryCreateDto, BulletinCategory>().ReverseMap();
         CreateMap<BulletinCategoryDto, BulletinCategory>().ReverseMap();
         CreateMap<BulletinCategoryUpdateDto, BulletinCategory>().ReverseMap();
+        CreateMap<BulletinCategoryUpdateDto, BulletinCategoryUpdateDtoForValidating>().ReverseMap();
+
 
         // BulletinCharacteristic
         CreateMap<BulletinCharacteristicCreateDto, BulletinCharacteristic>().ReverseMap();
         CreateMap<BulletinCharacteristicDto, BulletinCharacteristic>().ReverseMap();
         CreateMap<BulletinCharacteristicUpdateDto, BulletinCharacteristic>().ReverseMap();
+        CreateMap<BulletinCharacteristicUpdateDto, BulletinCharacteristicUpdateDtoForValidating>().ReverseMap();
+        CreateMap<BulletinCharacteristicDto, BulletinCharacteristicUpdateDtoForValidating>().ReverseMap();
+
+
 
         // BulletinCharacteristicComparison
         CreateMap<BulletinCharacteristicComparisonCreateDto, BulletinCharacteristicComparison>().ReverseMap();
@@ -64,6 +71,10 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinCharacteristicValueCreateDto, BulletinCharacteristicValue>().ReverseMap();
         CreateMap<BulletinCharacteristicValueDto, BulletinCharacteristicValue>().ReverseMap();
         CreateMap<BulletinCharacteristicValueUpdateDto, BulletinCharacteristicValue>().ReverseMap();
+        CreateMap<BulletinCharacteristicValueUpdateDto, BulletinCharacteristicValueUpdateDtoForValidating>().ReverseMap();
+        CreateMap<BulletinCharacteristicValueDto, BulletinCharacteristicValueUpdateDtoForValidating>().ReverseMap();
+
+
 
         // BulletinImage
         CreateMap<BulletinImageCreateDto, BulletinImage>().ReverseMap();
@@ -78,6 +89,11 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinMainCreateDto, BulletinMain>().ReverseMap();
         CreateMap<BulletinMainDto, BulletinMain>().ReverseMap();
         CreateMap<BulletinMainUpdateDto, BulletinMain>().ReverseMap();
+        CreateMap<BulletinMainUpdateDto, BulletinMainUpdateDtoForValidating>().ReverseMap();
+        CreateMap<BulletinMainDto, BulletinMainUpdateDtoForValidating>().ReverseMap();
+
+
+
 
         // BulletinRating
         CreateMap<BulletinRatingCreateDto, BulletinRating>().ReverseMap();
@@ -98,7 +114,7 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinViewsCountCreateDtoWhileBulletinCreating, BulletinViewsCount>().ReverseMap();
 
         // Bulletin
-        CreateMap<BulletinMain, BelletinDto>()
+        CreateMap<BulletinMain, BulletinDto>()
             .ForMember(dest => dest.Main, opt => opt.MapFrom(src => src)) // Основная сущность
             .ForMember(dest => dest.CharacteristicComparisons, opt => opt.MapFrom(src => src.Characteristics))
             .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))

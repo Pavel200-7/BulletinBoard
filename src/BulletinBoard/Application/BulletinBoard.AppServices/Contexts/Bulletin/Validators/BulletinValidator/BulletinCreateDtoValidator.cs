@@ -4,9 +4,9 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinMainValidat
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BelletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
 using FluentValidation;
 using System.Net;
 

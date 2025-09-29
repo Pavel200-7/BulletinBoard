@@ -1,8 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BaseValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinRatingValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.CreateDto;
-using BulletinBoard.Contracts.Bulletin.Agrigates.Bulletin.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating.UpdateDto;
 using System;

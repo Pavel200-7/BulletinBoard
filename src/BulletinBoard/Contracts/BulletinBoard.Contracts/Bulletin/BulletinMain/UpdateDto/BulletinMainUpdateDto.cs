@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
+﻿namespace BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 
 /// <summary>
 /// Формат данных обновления данных объявления
