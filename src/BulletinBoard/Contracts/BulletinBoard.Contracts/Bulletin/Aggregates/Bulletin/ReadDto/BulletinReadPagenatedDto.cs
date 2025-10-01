@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 
+/// <summary>
+///  Дто с пагинированными данными объявления.
+/// </summary>
 public class BulletinReadPagenatedDto
 {
     /// <summary>
     /// Объявления
     /// </summary>
-    public List<string> Bulletins { get; set; }
+    public List<BulletinReadPagenatedItemDto> Bulletins { get; set; }
 
     /// <summary>
     /// Номер страницы
@@ -24,23 +27,17 @@ public class BulletinReadPagenatedDto
     public int PageSize { get; set; }
 
     /// <summary>
-    /// Всего записей
-    /// </summary>
-    public int TotalCount { get; set; }
-
-    /// <summary>
-    /// Всего страниц
-    /// </summary>
-    public int TotalPages { get; set; }
-
-    /// <summary>
     /// Есть следующая страница
     /// </summary>
     public bool HasNextPage { get; set; }
 
     /// <summary>
-    /// Есть предыдущая страница
+    /// Указатель на следующую страницу.
     /// </summary>
-    public bool HasPreviousPage { get; set; }
+    public string Next { get; set; }
 
+    /// <summary>
+    /// Указатель на предыдущую страницу.
+    /// </summary>
+    public string Prewious { get; set; }
 }

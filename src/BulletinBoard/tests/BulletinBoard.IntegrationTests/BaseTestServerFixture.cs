@@ -10,9 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
-    private static bool _databaseInitialized = false;
-    private static readonly object _lock = new object();
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>

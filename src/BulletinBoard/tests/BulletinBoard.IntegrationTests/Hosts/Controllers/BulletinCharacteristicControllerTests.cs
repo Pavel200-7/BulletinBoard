@@ -61,7 +61,7 @@ public class BulletinCharacteristicControllerTests : IClassFixture<CustomWebAppl
         response.EnsureSuccessStatusCode();
 
         var createdCategory = await response.Content.ReadFromJsonAsync<BulletinCategoryDto>();
-        return createdCategory.Id;
+        return createdCategory!.Id;
     }
 
     private async Task<Guid> CreateTestCharacteristicAsync(Guid categoryId, string characteristicName = "Тестовая характеристика")
@@ -76,7 +76,7 @@ public class BulletinCharacteristicControllerTests : IClassFixture<CustomWebAppl
         response.EnsureSuccessStatusCode();
 
         var createdCharacteristic = await response.Content.ReadFromJsonAsync<BulletinCharacteristicDto>();
-        return createdCharacteristic.Id;
+        return createdCharacteristic!.Id;
     }
 
     [Fact]
@@ -96,8 +96,8 @@ public class BulletinCharacteristicControllerTests : IClassFixture<CustomWebAppl
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.Equal("Тестовая характеристика", receivedCharacteristic.Name);
-        Assert.Equal(categoryId, receivedCharacteristic.CategoryId);
+        Assert.Equal("Тестовая характеристика", receivedCharacteristic?.Name);
+        Assert.Equal(categoryId, receivedCharacteristic?.CategoryId);
     }
 
     [Fact]
@@ -138,9 +138,9 @@ public class BulletinCharacteristicControllerTests : IClassFixture<CustomWebAppl
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.Equal(createDto.Name, createdCharacteristic.Name);
-        Assert.Equal(createDto.CategoryId, createdCharacteristic.CategoryId);
-        Assert.NotEqual(Guid.Empty, createdCharacteristic.Id);
+        Assert.Equal(createDto.Name, createdCharacteristic?.Name);
+        Assert.Equal(createDto.CategoryId, createdCharacteristic?.CategoryId);
+        Assert.NotEqual(Guid.Empty, createdCharacteristic?.Id);
     }
 
     [Theory]
@@ -233,8 +233,8 @@ public class BulletinCharacteristicControllerTests : IClassFixture<CustomWebAppl
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.Equal(updateDto.Name, updatedCharacteristic.Name);
-        Assert.Equal(categoryId, updatedCharacteristic.CategoryId); // CategoryId не должен меняться
+        Assert.Equal(updateDto.Name, updatedCharacteristic?.Name);
+        Assert.Equal(categoryId, updatedCharacteristic?.CategoryId); // CategoryId не должен меняться
     }
 
     [Theory]

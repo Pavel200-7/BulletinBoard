@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
@@ -73,6 +74,40 @@ public class BulletinController : ControllerBase
     {
         var dto = await _bulletinService.GetByIdReadSingleAsync(id);
         return Ok(dto);
+    }
+
+    /// <summary>
+    /// Получить отсортированную и отфильтрованную выборку объявлений (страницу).
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    POST /Bulletin/Bulletins 
+    ///    {
+    ///         "limit": 0, (от 5 до 50)
+    ///         "sortBy": "Date", ()
+    ///         "sortOrder": "string",
+    ///         "lastId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///         "lastDate": "2025-10-01T17:43:47.431Z",
+    ///         "lastPrice": 0,
+    ///         "lastTitle": "Заголовок 7712",
+    ///         "categoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///         "minPrice": 0,
+    ///         "maxPrice": 1000,
+    ///         "searchText": "string"
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="request">Запрос на получение выборки.</param>
+    /// <returns>Данные объявления.</returns>
+    [HttpPost("Bulletins")]
+    [ProducesResponseType(typeof(BulletinReadPagenatedDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetBulletins(BulletinPaginationRequestDto request)
+    {
+        //var dto = await _bulletinService.GetByIdReadSingleAsync(id);
+        //return Ok(dto);
+        return Ok(new BulletinReadPagenatedDto());
     }
 
     /// <summary>

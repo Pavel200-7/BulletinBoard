@@ -29,4 +29,5 @@
 		<InternalsVisibleTo Include="..\..\tests\BulletinBoard.IntegrationTests\BulletinBoard.IntegrationTests.csproj" />
 	</ItemGroup>
 
+	
 </Project>

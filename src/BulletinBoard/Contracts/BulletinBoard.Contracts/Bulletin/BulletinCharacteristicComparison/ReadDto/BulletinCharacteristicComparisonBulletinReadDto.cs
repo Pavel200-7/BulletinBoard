@@ -23,11 +23,11 @@ public class BulletinCharacteristicComparisonBulletinReadDto
     /// <summary>
     /// Характеристика
     /// </summary>
-    public String Characteristic { get; set; }
+    public string Characteristic { get; set; }
 
 
     /// <summary>
     /// Значение характеристики.
     /// </summary>
-    public String CharacteristicValue { get; set; }
+    public string CharacteristicValue { get; set; }
 }

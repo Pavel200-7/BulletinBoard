@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace BulletinBoard.Contracts.Bulletin.BulletinRating.ReadDto;
 
+/// <summary>
+/// Базовый формат данных рейтинга объявления.
+/// Используется при чтении информации объявления.
+/// </summary>
 public class BulletinRatingBulletinReadDto
 {
     /// <summary>

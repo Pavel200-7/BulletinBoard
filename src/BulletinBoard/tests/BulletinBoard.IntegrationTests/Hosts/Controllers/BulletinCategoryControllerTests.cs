@@ -75,7 +75,7 @@ public class BulletinCategoryControllerTests : IClassFixture<CustomWebApplicatio
 
         var responceJson = await response.Content.ReadAsStringAsync();
         var createdCategory = JsonConvert.DeserializeObject<BulletinCategoryDto>(responceJson);
-        Guid categoryId = createdCategory.Id;
+        Guid categoryId = createdCategory!.Id;
 
         // Act
         var getStopwatch = Stopwatch.StartNew();
@@ -92,7 +92,7 @@ public class BulletinCategoryControllerTests : IClassFixture<CustomWebApplicatio
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.Equal(createDto.CategoryName, reseivedCategory.CategoryName);
+        Assert.Equal(createDto.CategoryName, reseivedCategory?.CategoryName);
     }
 
     [Fact]
@@ -239,7 +239,7 @@ public class BulletinCategoryControllerTests : IClassFixture<CustomWebApplicatio
 
         var responceJson = await response.Content.ReadAsStringAsync();
         var createdCategory = JsonConvert.DeserializeObject<BulletinCategoryDto>(responceJson);
-        Guid categoryId = createdCategory.Id;
+        Guid categoryId = createdCategory!.Id;
 
         // Act
         var getStopwatch = Stopwatch.StartNew();
@@ -260,7 +260,7 @@ public class BulletinCategoryControllerTests : IClassFixture<CustomWebApplicatio
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.Equal(updateDto.CategoryName, reseivedCategory.CategoryName);
+        Assert.Equal(updateDto.CategoryName, reseivedCategory?.CategoryName);
     }
 
     [Theory]
@@ -433,7 +433,7 @@ public class BulletinCategoryControllerTests : IClassFixture<CustomWebApplicatio
 
         responceJson = await response.Content.ReadAsStringAsync();
         createdCategory = JsonConvert.DeserializeObject<BulletinCategoryDto>(responceJson);
-        categoryId = createdCategory.Id;
+        categoryId = createdCategory!.Id;
 
         // Act
         var getStopwatch = Stopwatch.StartNew();

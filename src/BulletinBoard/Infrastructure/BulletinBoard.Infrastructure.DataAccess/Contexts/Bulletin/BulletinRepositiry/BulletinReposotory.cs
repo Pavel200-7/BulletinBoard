@@ -64,6 +64,8 @@ public class BulletinReposotory : IBulletinReposotory
         return belletinDto;
     }
 
+    //public async Task<>
+
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken)
     {

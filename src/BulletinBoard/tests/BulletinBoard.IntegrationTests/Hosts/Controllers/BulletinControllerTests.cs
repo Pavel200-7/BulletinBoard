@@ -73,7 +73,7 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
         response.EnsureSuccessStatusCode();
 
         var createdCategory = await response.Content.ReadFromJsonAsync<BulletinCategoryDto>();
-        return createdCategory.Id;
+        return createdCategory!.Id;
     }
 
     private async Task<Guid> CreateTestCharacteristicAsync(Guid categoryId, string characteristicName = "Тестовая характеристика")
@@ -103,7 +103,7 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
         response.EnsureSuccessStatusCode();
 
         var createdValue = await response.Content.ReadFromJsonAsync<BulletinCharacteristicValueDto>();
-        return createdValue.Id;
+        return createdValue!.Id;
     }
 
     private async Task<Guid> CreateTestUserAsync()
@@ -366,9 +366,9 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
         // Проверяем что объявление действительно обновлено
         var getResponse = await _client.GetAsync($"/api/Bulletin/{bulletinId}");
         var bulletin = await getResponse.Content.ReadFromJsonAsync<BulletinDto>();
-        Assert.Equal("Обновленный заголовок", bulletin.Main.Title);
-        Assert.Equal("Обновленное описание", bulletin.Main.Description);
-        Assert.Equal(2000.75m, bulletin.Main.Price);
+        Assert.Equal("Обновленный заголовок", bulletin?.Main.Title);
+        Assert.Equal("Обновленное описание", bulletin?.Main.Description);
+        Assert.Equal(2000.75m, bulletin?.Main.Price);
     }
 
     [Theory]
@@ -543,7 +543,7 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
         // Проверяем что объявление создано со всеми характеристиками
         var getResponse = await _client.GetAsync($"/api/Bulletin/{bulletinId}");
         var bulletin = await getResponse.Content.ReadFromJsonAsync<BulletinDto>();
-        Assert.NotNull(bulletin.CharacteristicComparisons);
+        Assert.NotNull(bulletin?.CharacteristicComparisons);
         Assert.Equal(3, bulletin.CharacteristicComparisons.Count);
     }
 

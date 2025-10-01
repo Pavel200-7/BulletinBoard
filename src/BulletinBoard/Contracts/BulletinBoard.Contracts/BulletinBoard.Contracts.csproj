@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Bulletin\Aggregates\Bulletin\FilterDto\" />
     <Folder Include="Bulletin\BulletinCharacteristicValue\ReadDto\" />
-    <Folder Include="Bulletin\BulletinMain\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristic\ReadDto\" />
     <Folder Include="Bulletin\BulletinUser\ReadDto\" />
   </ItemGroup>
