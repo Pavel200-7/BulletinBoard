@@ -1,20 +1,21 @@
 ﻿using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory;
+using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
+using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit.Abstractions;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BulletinCategory;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
-using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
-using BulletinBoard.Domain.Entities.Bulletin;
 
 namespace BulletinBoard.IntegrationTests.Hosts.Controllers;
 
@@ -140,6 +141,20 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
             },
             CharacteristicComparisons = characteristics
         };
+    }
+
+    private async Task AddTestRatingAsync(Guid bulletinId, Guid userId, int rating = 5, string comment = "Отличный товар")
+    {
+        var newRating = new BulletinRating()
+        {
+            Id = Guid.NewGuid(),
+            BulletinId = bulletinId,
+            UserId = userId,
+            Rating = rating,
+            CreatedAt = DateTime.UtcNow
+        };
+        await _dbContext.BulletinRating.AddAsync(newRating);
+        await _dbContext.SaveChangesAsync();
     }
 
     [Fact]
@@ -574,5 +589,115 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetByIdReadSingle_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+        var characteristicId = await CreateTestCharacteristicAsync(categoryId);
+        var characteristicValueId = await CreateTestCharacteristicValueAsync(characteristicId);
+
+        var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>
+        {
+            new() { CharacteristicId = characteristicId, CharacteristicValueId = characteristicValueId }
+        };
+
+        var createDto = CreateTestBulletinCreateDto(userId, categoryId, characteristics);
+        var createResponse = await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        createResponse.EnsureSuccessStatusCode();
+        var bulletinId = await createResponse.Content.ReadFromJsonAsync<Guid>();
+
+        // Добавляем рейтинг для тестирования
+        await AddTestRatingAsync(bulletinId, userId, 5, "Отличный товар");
+
+        // Act
+        var response = await _client.GetAsync($"/api/Bulletin/{bulletinId}/Single");
+        var bulletin = await response.Content.ReadFromJsonAsync<BulletinReadSingleDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(bulletin);
+        Assert.Equal(bulletinId, bulletin.Main.Id);
+        Assert.Equal("Тестовое объявление", bulletin.Main.Title);
+        Assert.Equal("Это тестовое описание объявления", bulletin.Main.Description);
+        Assert.Equal(1000.50m, bulletin.Main.Price);
+
+        Assert.NotNull(bulletin.CharacteristicComparisons);
+        Assert.Single(bulletin.CharacteristicComparisons);
+        Assert.Equal("Тестовая характеристика", bulletin.CharacteristicComparisons[0].Characteristic);
+        Assert.Equal("Тестовое значение", bulletin.CharacteristicComparisons[0].CharacteristicValue);
+
+        Assert.NotNull(bulletin.ViewsCount);
+        Assert.Equal(0, bulletin.ViewsCount.ViewsCount); 
+
+        Assert.NotNull(bulletin.Ratings);
+        Assert.Single(bulletin.Ratings);
+        Assert.Equal(5, bulletin.Ratings[0].Rating);
+        Assert.Equal(userId, bulletin.Ratings[0].UserId);
+
+        Assert.NotNull(bulletin.Images);
+        Assert.Equal(5, bulletin.Images.Count); 
+        Assert.Contains(bulletin.Images, img => img.IsMain);
+    }
+
+    [Fact]
+    public async Task GetByIdReadSingle_WithMultipleCharacteristics_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        // Создаем несколько характеристик
+        var characteristic1Id = await CreateTestCharacteristicAsync(categoryId, "Цвет");
+        var characteristic2Id = await CreateTestCharacteristicAsync(categoryId, "Размер");
+
+        var value1Id = await CreateTestCharacteristicValueAsync(characteristic1Id, "Красный");
+        var value2Id = await CreateTestCharacteristicValueAsync(characteristic2Id, "Большой");
+
+        var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>
+        {
+            new() { CharacteristicId = characteristic1Id, CharacteristicValueId = value1Id },
+            new() { CharacteristicId = characteristic2Id, CharacteristicValueId = value2Id }
+        };
+
+        var createDto = CreateTestBulletinCreateDto(userId, categoryId, characteristics);
+        var createResponse = await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        createResponse.EnsureSuccessStatusCode();
+        var bulletinId = await createResponse.Content.ReadFromJsonAsync<Guid>();
+
+        // Act
+        var response = await _client.GetAsync($"/api/Bulletin/{bulletinId}/Single");
+        var bulletin = await response.Content.ReadFromJsonAsync<BulletinReadSingleDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(bulletin);
+        Assert.NotNull(bulletin.CharacteristicComparisons);
+        Assert.Equal(2, bulletin.CharacteristicComparisons.Count);
+
+
+        var colorCharacteristic = bulletin.CharacteristicComparisons.FirstOrDefault(c => c.Characteristic == "Цвет");
+        Assert.NotNull(colorCharacteristic);
+        Assert.Equal("Красный", colorCharacteristic.CharacteristicValue);
+
+        var sizeCharacteristic = bulletin.CharacteristicComparisons.FirstOrDefault(c => c.Characteristic == "Размер");
+        Assert.NotNull(sizeCharacteristic);
+        Assert.Equal("Большой", sizeCharacteristic.CharacteristicValue);
+    }
+
+    [Fact]
+    public async Task GetByIdReadSingle_Negative()
+    {
+        // Arrange
+        var unknownId = Guid.NewGuid();
+
+        // Act
+        var response = await _client.GetAsync($"/api/Bulletin/{unknownId}/Single");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }

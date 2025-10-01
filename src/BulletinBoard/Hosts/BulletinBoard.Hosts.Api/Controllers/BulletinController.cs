@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
@@ -50,6 +51,27 @@ public class BulletinController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var dto = await _bulletinService.GetByIdAsync(id);
+        return Ok(dto);
+    }
+
+    /// <summary>
+    /// Получить значение объявление по id.
+    /// (Без избыточных идентификаторов)
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    GET /Bulletin/01992529-1ec8-766f-a03d-a7ac4f0996b9/Single
+    ///
+    /// </remarks>
+    /// <param name="id">Идентификатор объявления.</param>
+    /// <returns>Данные объявления..</returns>
+    [HttpGet("{id}/Single")]
+    [ProducesResponseType(typeof(BulletinReadSingleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByIdReadSingle(Guid id)
+    {
+        var dto = await _bulletinService.GetByIdReadSingleAsync(id);
         return Ok(dto);
     }
 

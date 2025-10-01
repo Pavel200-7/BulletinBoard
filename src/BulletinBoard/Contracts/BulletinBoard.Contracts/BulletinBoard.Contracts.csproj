@@ -10,15 +10,10 @@
 
   <ItemGroup>
     <Folder Include="Bulletin\Aggregates\Bulletin\FilterDto\" />
-    <Folder Include="Bulletin\Aggregates\Bulletin\ReadDto\" />
-    <Folder Include="Bulletin\BulletinMain\ReadDto\" />
-    <Folder Include="Bulletin\BulletinCharacteristicComparison\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristicValue\ReadDto\" />
+    <Folder Include="Bulletin\BulletinMain\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristic\ReadDto\" />
-    <Folder Include="Bulletin\BulletinImage\ReadDto\" />
-    <Folder Include="Bulletin\BulletinRating\ReadDto\" />
     <Folder Include="Bulletin\BulletinUser\ReadDto\" />
-    <Folder Include="Bulletin\BulletinViewsCount\ReadDto\" />
   </ItemGroup>
 
 </Project>

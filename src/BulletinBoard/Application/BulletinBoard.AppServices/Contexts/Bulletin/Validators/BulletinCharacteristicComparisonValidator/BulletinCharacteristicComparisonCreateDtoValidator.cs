@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.CustomValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinCharacteristicComparisonValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.CommonValidators;
@@ -14,21 +15,27 @@ public class BulletinCharacteristicComparisonCreateDtoValidator : AbstractValida
     private readonly IBulletinMainRepository _bulletibRepository;
     private readonly IBulletinCharacteristicRepository _characteristicRepository;
     private readonly IBulletinCharacteristicValueRepository _characteristicValueRepository;
+    private readonly IBulletinCharacteristicComparisonRepository _characteristicComparisonRepository;
+    private readonly IBulletinCharacteristicComparisonSpecificationBuilder _characteristicComparisonSpecificationBuilder;
 
     /// <inheritdoc/>
     public BulletinCharacteristicComparisonCreateDtoValidator
         (
         IBulletinMainRepository bulletibRepository,
         IBulletinCharacteristicRepository characteristicRepository,
-        IBulletinCharacteristicValueRepository characteristicValueRepository
+        IBulletinCharacteristicValueRepository characteristicValueRepository,
+        IBulletinCharacteristicComparisonRepository characteristicComparisonRepository,
+        IBulletinCharacteristicComparisonSpecificationBuilder characteristicComparisonSpecificationBuilder
         )
     {
         _bulletibRepository = bulletibRepository;
         _characteristicRepository = characteristicRepository;
         _characteristicValueRepository = characteristicValueRepository;
+        _characteristicComparisonRepository = characteristicComparisonRepository;
+        _characteristicComparisonSpecificationBuilder = characteristicComparisonSpecificationBuilder;
 
 
-        RuleFor(createDto => createDto.BulletinId)
+    RuleFor(createDto => createDto.BulletinId)
             .SetAsyncValidator(new BulletinIdValidator<BulletinCharacteristicComparisonCreateDto>(_bulletibRepository));
 
         RuleFor(createDto => createDto.CharacteristicId)
@@ -36,7 +43,7 @@ public class BulletinCharacteristicComparisonCreateDtoValidator : AbstractValida
             {
                 Guid bulletinId = dto.BulletinId;
                 var validator = new CharacteristicIdValidator<BulletinCharacteristicComparisonCreateDto>(
-                    bulletinId, _bulletibRepository, _characteristicRepository);
+                    bulletinId, _bulletibRepository, _characteristicRepository, _characteristicComparisonRepository, _characteristicComparisonSpecificationBuilder);
                 return await validator.IsValidAsync(validationContext, id, cancellationToken);
             }).WithMessage("{Error}");
 

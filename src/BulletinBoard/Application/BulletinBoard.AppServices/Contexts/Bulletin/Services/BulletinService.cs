@@ -3,6 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 
 
@@ -36,6 +37,19 @@ public class BulletinService : IBulletinService
         {
             string message = $"The bulletin with id {id} is not found.";
             throw new NotFoundException(message); 
+        }
+
+        return outputDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinReadSingleDto> GetByIdReadSingleAsync(Guid id)
+    {
+        BulletinReadSingleDto? outputDto = await _bulletinReposotory.GetByIdReadSingleAsync(id);
+        if (outputDto is null)
+        {
+            string message = $"The bulletin with id {id} is not found.";
+            throw new NotFoundException(message);
         }
 
         return outputDto;

@@ -4,13 +4,10 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using Xunit.Abstractions;
 
 namespace BulletinBoard.IntegrationTests.Hosts.Controllers;

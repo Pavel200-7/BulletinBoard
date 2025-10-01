@@ -1,6 +1,5 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar;
 using BulletinBoard.Infrastructure.Middlewares;
-using System;
 
 
 

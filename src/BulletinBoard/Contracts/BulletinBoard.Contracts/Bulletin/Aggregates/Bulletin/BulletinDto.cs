@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
@@ -20,7 +21,7 @@ public class BulletinDto
     /// <summary>
     /// Характеристики объявления
     /// </summary>
-    public List<BulletinCharacteristicComparisonDto> CharacteristicComparisons { get; set; }
+    public List<BulletinCharacteristicComparisonReadValueDto> CharacteristicComparisons { get; set; }
 
     /// <summary>
     ///  Счетчик просмотров

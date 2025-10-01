@@ -1,4 +1,5 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.Domain.Entities.Bulletin;
 using FluentValidation;
@@ -26,18 +27,24 @@ public class CharacteristicIdValidator<T> : AsyncPropertyValidator<T, Guid>
     private readonly Guid BulletinMainId;
     private readonly IBulletinMainRepository _bulletibRepository;
     private readonly IBulletinCharacteristicRepository _characteristicRepository;
+    private readonly IBulletinCharacteristicComparisonRepository _characteristicComparisonRepository;
+    private readonly IBulletinCharacteristicComparisonSpecificationBuilder _characteristicComparisonSpecificationBuilder;
 
     /// <inheritdoc/>
     public CharacteristicIdValidator
         (
         Guid bulletinMainId,
         IBulletinMainRepository bulletibRepository,
-        IBulletinCharacteristicRepository characteristicRepository
+        IBulletinCharacteristicRepository characteristicRepository,
+        IBulletinCharacteristicComparisonRepository characteristicComparisonRepository,
+        IBulletinCharacteristicComparisonSpecificationBuilder characteristicComparisonSpecificationBuilder
         )
     {
         BulletinMainId = bulletinMainId;
         _bulletibRepository = bulletibRepository;
         _characteristicRepository = characteristicRepository;
+        _characteristicComparisonRepository = characteristicComparisonRepository;
+        _characteristicComparisonSpecificationBuilder = characteristicComparisonSpecificationBuilder;
     }
 
     /// <summary>
@@ -58,6 +65,18 @@ public class CharacteristicIdValidator<T> : AsyncPropertyValidator<T, Guid>
             bulletin.CategoryId != characteristic.CategoryId)
         {
             context.MessageFormatter.AppendArgument("Error", "The characteristic and the bulletin belong to different categories.");
+            return false;
+        }
+
+        var specification = _characteristicComparisonSpecificationBuilder
+            .WhereBulletinId(BulletinMainId)
+            .WhereCharacteristicId(characteristicId)
+            .Build();
+
+        var characteristicComparisonCollection = await _characteristicComparisonRepository.FindAsync(specification);
+        if (characteristicComparisonCollection.Any())
+        {
+            context.MessageFormatter.AppendArgument("Error", "The characteristic must be unique for bulletin.");
             return false;
         }
 
