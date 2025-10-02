@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.Domain.Entities.Bulletin;
+using System.Linq.Expressions;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
@@ -122,8 +123,8 @@ public class BulletinUserSpecificationBuilder : SpecificationBuilderBase<Bulleti
     /// <inheritdoc/>
     public IBulletinUserSpecificationBuilder OrderByFullName(bool ascending = true)
     {
-        _orderByExpression = u => u.FullName;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinUser, object>>? orderByExpression = u => u.FullName;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

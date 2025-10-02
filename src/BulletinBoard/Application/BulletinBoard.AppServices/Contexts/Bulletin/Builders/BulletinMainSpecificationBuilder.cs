@@ -1,6 +1,5 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
-using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Domain.Entities.Bulletin;
 using System.Linq.Expressions;
 
@@ -30,7 +29,7 @@ public class BulletinMainSpecificationBuilder : SpecificationBuilderBase<Bulleti
     }
 
     /// <inheritdoc/>
-    public IBulletinMainSpecificationBuilder WhereTitleContains(string title)
+    public IBulletinMainSpecificationBuilder WhereTitleContains(string? title)
     {
         if (!string.IsNullOrEmpty(title))
         {
@@ -138,24 +137,25 @@ public class BulletinMainSpecificationBuilder : SpecificationBuilderBase<Bulleti
     /// <inheritdoc/>
     public IBulletinMainSpecificationBuilder OrderByCreatedAt(bool ascending = true)
     {
-        _orderByExpression = b => b.CreatedAt;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinMain, object>>? orderByExpression = b => b.CreatedAt;
+        _specification.AddOrderBy(orderByExpression, ascending);
+
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinMainSpecificationBuilder OrderByPrice(bool ascending = true)
     {
-        _orderByExpression = b => b.Price;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinMain, object>>? orderByExpression = b => b.Price;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinMainSpecificationBuilder OrderByTitle(bool ascending = true)
     {
-        _orderByExpression = b => b.Title;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinMain, object>>? orderByExpression = b => b.Title;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

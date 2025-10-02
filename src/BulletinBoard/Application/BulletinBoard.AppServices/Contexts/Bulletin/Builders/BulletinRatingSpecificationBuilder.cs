@@ -43,8 +43,8 @@ public class BulletinRatingSpecificationBuilder : SpecificationBuilderBase<Bulle
     /// <inheritdoc/>
     public IBulletinRatingSpecificationBuilder OrderByRating(bool ascending = true)
     {
-        _orderByExpression = r => r.Rating;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinRating, object>>? orderByExpression = r => r.Rating;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

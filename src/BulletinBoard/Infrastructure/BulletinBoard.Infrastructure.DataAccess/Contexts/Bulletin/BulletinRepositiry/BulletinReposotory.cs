@@ -1,11 +1,17 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+using BulletinBoard.AppServices.Specification;
+using BulletinBoard.AppServices.Specification.Extensions;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
+using BulletinBoard.Contracts.Bulletin.BulletinImage;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.ReadDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 
@@ -64,7 +70,37 @@ public class BulletinReposotory : IBulletinReposotory
         return belletinDto;
     }
 
-    //public async Task<>
+    public async Task<IReadOnlyCollection<BulletinReadPagenatedItemDto>> GetBulletinsAsync(ExtendedSpecification<BulletinMain> specification)
+    {
+
+        var query = DbSetBulletinMain
+            .Include(b => b.Ratings)
+            .Include(b => b.ViewsCount)
+            .Include(b => b.Images)
+            .AsQueryable();
+
+        query = query.ApplyExtendedSpecification(specification);
+
+        return await query
+        .Select(bulletinMain => new BulletinReadPagenatedItemDto()
+        {
+            Main = _autoMapper.Map<BulletinMainBulletinReadDto>(bulletinMain),
+            ViewsCount = bulletinMain.ViewsCount.ViewsCount,
+            Rating = bulletinMain.Ratings.Any()
+                ? (decimal)bulletinMain.Ratings.Sum(r => r.Rating) / bulletinMain.Ratings.Count
+                : 0,
+            MainImage = bulletinMain.Images
+                .Where(image => image.IsMain)
+                .Select(image => _autoMapper.Map<BulletinImageDto>(image))
+                .FirstOrDefault()
+        })
+        .ToListAsync();
+    }
+
+
+    //  var query = _repository.GetAll().AsQueryable();
+    //  query = query.ApplyExtendedSpecification(specification);
+    //  return await query.Select(e => _mapper.Map<TDto>(e)).ToListAsync();
 
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken)
@@ -93,6 +129,4 @@ public class BulletinReposotory : IBulletinReposotory
 
         return bulletinMainId;
     }
-
-
 }

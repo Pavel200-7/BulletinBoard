@@ -1,11 +1,14 @@
-﻿using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Repository;
 using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
+using BulletinBoard.AppServices.Specification;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using BulletinBoard.Domain.Entities.Bulletin;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -16,18 +19,23 @@ public class BulletinService : IBulletinService
     private IBulletinReposotory _bulletinReposotory;
     private IUnitOfWorkBulletin _unitOfWork;
     private IBulletinDtoValidatorFacade _validator;
+    private IBulletinMainSpecificationBuilder _specificationBuilder;
+
 
     /// <inheritdoc/>
     public BulletinService // Не рабочий
         (
         IBulletinReposotory bulletinReposotory,
         IUnitOfWorkBulletin unitOfWork,
-        IBulletinDtoValidatorFacade validator
+        IBulletinDtoValidatorFacade validator,
+        IBulletinMainSpecificationBuilder specificationBuilder
+
         )
     {
         _bulletinReposotory = bulletinReposotory;
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _specificationBuilder = specificationBuilder;
     }
 
     /// <inheritdoc/>
@@ -56,14 +64,28 @@ public class BulletinService : IBulletinService
         return outputDto;
     }
 
-    public Task<BulletinReadPagenatedDto> GetBulletinsAsync(BulletinPaginationRequestDto requestDto)
+    public async Task<BulletinReadPagenatedDto> GetBulletinsAsync(BulletinPaginationRequestDto requestDto)
     {
-        _validator.ValidateThrowValidationExeptionAsync(requestDto);
+        await _validator.ValidateThrowValidationExeptionAsync(requestDto);
 
+        var specification = _specificationBuilder
+            .WhereCategoryId(requestDto.CategoryId)
+            .WherePriceRange(requestDto.MinPrice, requestDto.MaxPrice)
+            .WhereTitleContains(requestDto.SearchText)
+            .Build();
 
+        var bulletins = await _bulletinReposotory.GetBulletinsAsync(specification);
 
+        return new BulletinReadPagenatedDto();
 
     }
+
+    //private ExtendedSpecification<BulletinMain> GetBulletinPaginationSpecification(BulletinPaginationRequestDto requestDto)
+    //{
+        
+
+    //    return _specificationBuilder.Build();
+    //}
 
 
     /// <inheritdoc/>

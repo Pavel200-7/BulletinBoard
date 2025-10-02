@@ -29,6 +29,21 @@ public class CompositeExtendedSpecification<T> : ExtendedSpecification<T>
     }
 
     /// <summary>
+    /// Добавить сортировку по полю.
+    /// </summary>
+    /// <param name="criterion">Лямбла выражение, указывающие на поле сортировки.</param>
+    /// <param name="ascending ">Порядок сортировки (true - ASC, false - DESC)</param>
+    public void AddOrderBy(Expression<Func<T, object>> criterion, bool ascending)
+    {
+        var orderByItem = new OrderByItem<T>()
+        {
+            OrderByExpression = criterion,
+            OrderByAscending = ascending,
+        };
+        OrderByList.Add(orderByItem);
+    }
+
+    /// <summary>
     /// Возвращает совокупное выражение условий, представляющее все добавленные критерии.
     /// </summary>
     /// <returns>Объединённое выражение фильтрации.</returns>

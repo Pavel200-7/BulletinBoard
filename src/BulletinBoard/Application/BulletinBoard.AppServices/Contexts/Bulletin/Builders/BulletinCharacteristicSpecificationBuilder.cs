@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.Domain.Entities.Bulletin;
+using System.Linq.Expressions;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
@@ -41,8 +42,8 @@ public class BulletinCharacteristicSpecificationBuilder : SpecificationBuilderBa
     /// <inheritdoc/>
     public IBulletinCharacteristicSpecificationBuilder OrderByName(bool ascending = true)
     {
-        _orderByExpression = u => u.Name;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinCharacteristic, object>>? orderByExpression = u => u.Name;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

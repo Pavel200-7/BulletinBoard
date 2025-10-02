@@ -38,10 +38,28 @@ public static class SpecificationExtensions
 
         query = query.Where(specification.ToExpression());
 
-        if (specification.OrderBy != null)
-            query = query.OrderBy(specification.OrderBy);
-        else if (specification.OrderByDescending != null)
-            query = query.OrderByDescending(specification.OrderByDescending);
+
+        IOrderedQueryable<T> orderedQuery = null;
+
+        bool isFirstOrderBy = true;
+        foreach (var orderByItem in specification.OrderByList)
+        {
+            if (isFirstOrderBy)
+            {
+                orderedQuery = orderByItem.OrderByAscending
+                    ? query.OrderBy(orderByItem.OrderByExpression)
+                    : query.OrderByDescending(orderByItem.OrderByExpression);
+                isFirstOrderBy = false;
+            }
+            else
+            {
+                orderedQuery = orderByItem.OrderByAscending
+                    ? orderedQuery!.ThenBy(orderByItem.OrderByExpression)
+                    : orderedQuery!.ThenByDescending(orderByItem.OrderByExpression);
+            }
+        }
+        query = orderedQuery ?? query;
+
 
         if (specification.Skip.HasValue)
             query = query.Skip(specification.Skip.Value);

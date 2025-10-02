@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-
+﻿using BulletinBoard.AppServices.Specification;
+using System.Linq.Expressions;
 
 namespace BulletinBoard.AppServices.Specification;
 
@@ -16,12 +16,7 @@ public abstract class ExtendedSpecification<T> : Specification<T>
     /// <summary>
     /// Определяет выражение для сортировки по возрастанию.
     /// </summary>
-    public Expression<Func<T, object>>? OrderBy { get; set; }
-
-    /// <summary>
-    /// Определяет выражение для сортировки по убыванию.
-    /// </summary>
-    public Expression<Func<T, object>>? OrderByDescending { get; set; }
+    public List<OrderByItem<T>> OrderByList { get; set; } = new List<OrderByItem<T>>();
 
     /// <summary>
     /// Количество элементов, которые нужно пропустить (используется для пагинации).

@@ -60,16 +60,16 @@ public class BulletinCategorySpecificationBuilder : SpecificationBuilderBase<Bul
     /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByCategoryName(bool ascending = true)
     {
-        _orderByExpression = x => x.CategoryName;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinCategory, object>>? orderByExpression = x => x.CategoryName;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinCategorySpecificationBuilder OrderByIsLeafy(bool ascending = true)
     {
-        _orderByExpression = x => x.IsLeafy;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinCategory, object>>? orderByExpression = x => x.IsLeafy;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

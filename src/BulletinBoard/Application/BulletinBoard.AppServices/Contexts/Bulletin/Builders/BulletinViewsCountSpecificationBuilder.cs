@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecificationBuilder;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.Domain.Entities.Bulletin;
+using System.Linq.Expressions;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders;
@@ -32,8 +33,8 @@ public class BulletinViewsCountSpecificationBuilder : SpecificationBuilderBase<B
     /// <inheritdoc/>
     public IBulletinViewsCountSpecificationBuilder OrderByViewsCount(bool ascending = true)
     {
-        _orderByExpression = r => r.ViewsCount;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinViewsCount, object>>? orderByExpression = r => r.ViewsCount;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

@@ -21,6 +21,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinImage.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
 using BulletinBoard.Contracts.Bulletin.BulletinRating.CreateDto;
@@ -99,8 +100,9 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinMainCreateDto, BulletinMain>().ReverseMap();
         CreateMap<BulletinMainDto, BulletinMain>().ReverseMap();
         CreateMap<BulletinMainUpdateDto, BulletinMain>().ReverseMap();
-        CreateMap<BulletinMainUpdateDto, BulletinMainUpdateDtoForValidating>().ReverseMap();
-        CreateMap<BulletinMainDto, BulletinMainUpdateDtoForValidating>().ReverseMap();
+        CreateMap<BulletinMainUpdateDto, BulletinMainUpdateDtoForValidating>();
+        CreateMap<BulletinMainDto, BulletinMainUpdateDtoForValidating>();
+        CreateMap<BulletinMainDto, BulletinMainBulletinReadDto>();
 
 
         // BulletinRating
@@ -108,7 +110,7 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinRatingDto, BulletinRating>().ReverseMap();
         CreateMap<BulletinRatingUpdateDto, BulletinRating>().ReverseMap();
         CreateMap<BulletinRating, BulletinRatingBulletinReadDto>();
-
+        
 
         // BulletinUser
         CreateMap<BulletinUserCreateDto, BulletinUser>().ReverseMap();

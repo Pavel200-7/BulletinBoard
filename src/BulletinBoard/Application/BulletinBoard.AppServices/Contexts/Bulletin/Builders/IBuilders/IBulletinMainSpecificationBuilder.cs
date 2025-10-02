@@ -30,7 +30,7 @@ public interface IBulletinMainSpecificationBuilder : ISpecificationBuilder<Bulle
     /// </summary>
     /// <param name="title">Фрагмент заголовка.</param>
     /// <returns>Ссылка на builder (самого себя).</returns>
-    public IBulletinMainSpecificationBuilder WhereTitleContains(string title);
+    public IBulletinMainSpecificationBuilder WhereTitleContains(string? title);
 
     /// <summary>
     /// Добавить отбор по полю Description.

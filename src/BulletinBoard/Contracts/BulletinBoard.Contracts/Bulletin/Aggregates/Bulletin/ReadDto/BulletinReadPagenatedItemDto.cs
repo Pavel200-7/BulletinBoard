@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinMain;
+using BulletinBoard.Contracts.Bulletin.BulletinMain.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinRating;
 using BulletinBoard.Contracts.Bulletin.BulletinViewsCount;
 using System;
@@ -20,7 +21,7 @@ public class BulletinReadPagenatedItemDto
     /// <summary>
     /// Основная сущность объявления
     /// </summary>
-    public BulletinReadPagenatedItemDto Main { get; set; }
+    public BulletinMainBulletinReadDto Main { get; set; }
 
     /// <summary>
     ///  Счетчик просмотров
@@ -35,5 +36,5 @@ public class BulletinReadPagenatedItemDto
     /// <summary>
     /// Главное изображение объявления.
     /// </summary>
-    public BulletinImageDto MainImage { get; set; }
+    public BulletinImageDto? MainImage { get; set; }
 }

@@ -51,16 +51,16 @@ public class BulletinImageSpecificationBuilder : SpecificationBuilderBase<Bullet
     /// <inheritdoc/>
     public IBulletinImageSpecificationBuilder OrderByIsMain(bool ascending = true)
     {
-        _orderByExpression = x => x.IsMain;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinImage, object>>? orderByExpression = x => x.IsMain;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinImageSpecificationBuilder OrderByCreatedAt(bool ascending = true)
     {
-        _orderByExpression = x => x.CreatedAt;
-        _orderByAscending = ascending;
+        Expression<Func<BulletinImage, object>>? orderByExpression = x => x.CreatedAt;
+        _specification.AddOrderBy(orderByExpression, ascending);
         return this;
     }
 }

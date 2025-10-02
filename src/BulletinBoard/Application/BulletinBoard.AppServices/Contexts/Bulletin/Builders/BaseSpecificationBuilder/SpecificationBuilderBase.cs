@@ -16,16 +16,6 @@ public abstract class SpecificationBuilderBase<TEntity> : ISpecificationBuilder<
     protected CompositeExtendedSpecification<TEntity> _specification;
 
     /// <summary>
-    /// Выражение сортировки.
-    /// </summary>
-    protected Expression<Func<TEntity, object>>? _orderByExpression;
-
-    /// <summary>
-    /// Порядок сортировки (возрастание/убывание).
-    /// </summary>
-    protected bool _orderByAscending = true;
-
-    /// <summary>
     /// Конструктор, создающий основу спецификации.
     /// </summary>
     public SpecificationBuilderBase()
@@ -55,18 +45,6 @@ public abstract class SpecificationBuilderBase<TEntity> : ISpecificationBuilder<
     /// <returns>Готовая спецификация для использования в репозитории.</returns>
     public ExtendedSpecification<TEntity> Build()
     {
-        if (_orderByExpression != null)
-        {
-            if (_orderByAscending)
-            {
-                _specification.OrderBy = _orderByExpression;
-            }
-            else
-            {
-                _specification.OrderByDescending = _orderByExpression;
-            }
-        }
-
         return _specification;
     }
 }
