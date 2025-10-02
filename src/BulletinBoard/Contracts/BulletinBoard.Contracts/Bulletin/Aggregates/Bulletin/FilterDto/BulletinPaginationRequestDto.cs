@@ -37,12 +37,10 @@ public class BulletinPaginationRequestDto
     /// </summary>
     public Guid? LastId { get; set; }
 
-
     /// <summary>
     /// Последняя дата.
     /// </summary>
     public DateTime? LastDate { get; set; }
-
 
     /// <summary>
     /// Последняя цена.

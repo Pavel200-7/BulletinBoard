@@ -3,6 +3,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Services.IServices;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
 
@@ -55,6 +56,15 @@ public class BulletinService : IBulletinService
         return outputDto;
     }
 
+    public Task<BulletinReadPagenatedDto> GetBulletinsAsync(BulletinPaginationRequestDto requestDto)
+    {
+        _validator.ValidateThrowValidationExeptionAsync(requestDto);
+
+
+
+
+    }
+
 
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(BulletinCreateDtoController createDto, CancellationToken cancellationToken)
@@ -81,6 +91,4 @@ public class BulletinService : IBulletinService
             throw;
         }
     }
-
-
 }

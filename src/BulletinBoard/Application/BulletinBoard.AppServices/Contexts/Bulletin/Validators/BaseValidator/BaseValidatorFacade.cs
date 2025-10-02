@@ -94,7 +94,12 @@ public abstract class BaseValidatorFacade
         CheckValidationResult(validationResult);
     }
 
-    private void CheckValidationResult(ValidationResult validationResult) 
+    /// <summary>
+    /// Проверяет результат валидации и вызывает исключени при наличии ошибок.
+    /// </summary>
+    /// <param name="validationResult">Результат валидации.</param>
+    /// <exception cref="ValidationExeption">Ничего или исключение.</exception>
+    protected void CheckValidationResult(ValidationResult validationResult) 
     {
         if (!validationResult.IsValid)
         {

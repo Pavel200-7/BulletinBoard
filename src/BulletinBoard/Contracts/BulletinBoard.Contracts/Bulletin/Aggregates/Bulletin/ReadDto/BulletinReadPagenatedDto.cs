@@ -17,11 +17,6 @@ public class BulletinReadPagenatedDto
     public List<BulletinReadPagenatedItemDto> Bulletins { get; set; }
 
     /// <summary>
-    /// Номер страницы
-    /// </summary>
-    public int Page { get; set; }
-
-    /// <summary>
     ///  Размер страницы
     /// </summary>
     public int PageSize { get; set; }
@@ -32,12 +27,42 @@ public class BulletinReadPagenatedDto
     public bool HasNextPage { get; set; }
 
     /// <summary>
-    /// Указатель на следующую страницу.
+    /// Последний id для следующей выборки.
     /// </summary>
-    public string Next { get; set; }
+    public Guid? NextId { get; set; }
 
     /// <summary>
-    /// Указатель на предыдущую страницу.
+    /// Последняя дата для следующей выборки.
     /// </summary>
-    public string Prewious { get; set; }
+    public DateTime? NextDate { get; set; }
+
+    /// <summary>
+    /// Последняя цена для следующей выборки.
+    /// </summary>
+    public decimal? NextPrice { get; set; }
+
+    /// <summary>
+    /// Последний заголовок для следующей выборки.
+    /// </summary>
+    public string NextTitle { get; set; }
+
+    /// <summary>
+    /// Последний id для предыдущей выборки.
+    /// </summary>
+    public Guid? PreviousId { get; set; }
+
+    /// <summary>
+    /// Последняя дата для предыдущей выборки.
+    /// </summary>
+    public DateTime? PreviousDate { get; set; }
+
+    /// <summary>
+    /// Последняя цена для предыдущей выборки.
+    /// </summary>
+    public decimal? PreviousPrice { get; set; }
+
+    /// <summary>
+    /// Последний заголовок для предыдущей выборки.
+    /// </summary>
+    public string PreviousTitle { get; set; }
 }

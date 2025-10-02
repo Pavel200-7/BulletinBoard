@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 
 
@@ -24,6 +25,13 @@ public interface IBulletinService
     /// <param name="id">Id объявления.</param>
     /// <returns>Данные объявления (без избыточных).</returns>
     public Task<BulletinReadSingleDto> GetByIdReadSingleAsync(Guid id);
+
+    /// <summary>
+    /// Получить отсортированную и отфильтрованную выборку объявлений (страницу).
+    /// </summary>
+    /// <param name="requestDto">Запрос на получение выборки.</param>
+    /// <returns>Коллекция данных объявления.</returns>
+    public Task<BulletinReadPagenatedDto> GetBulletinsAsync(BulletinPaginationRequestDto requestDto);
 
     /// <summary>
     /// Создать объявление.

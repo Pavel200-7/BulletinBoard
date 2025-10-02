@@ -99,14 +99,13 @@ public class BulletinController : ControllerBase
     ///
     /// </remarks>
     /// <param name="request">Запрос на получение выборки.</param>
-    /// <returns>Данные объявления.</returns>
+    /// <returns>Коллекция данных объявления.</returns>
     [HttpPost("Bulletins")]
     [ProducesResponseType(typeof(BulletinReadPagenatedDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBulletins(BulletinPaginationRequestDto request)
     {
-        //var dto = await _bulletinService.GetByIdReadSingleAsync(id);
-        //return Ok(dto);
+        var dto = await _bulletinService.GetBulletinsAsync(request);
         return Ok(new BulletinReadPagenatedDto());
     }
 
