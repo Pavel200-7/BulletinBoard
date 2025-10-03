@@ -85,7 +85,7 @@ public class BulletinController : ControllerBase
     ///    POST /Bulletin/Bulletins 
     ///    {
     ///         "limit": 0, (от 5 до 50)
-    ///         "sortBy": "Date", ()
+    ///         "sortBy": "Date",
     ///         "sortOrder": "string",
     ///         "lastId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     ///         "lastDate": "2025-10-01T17:43:47.431Z",

@@ -19,7 +19,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidat
 ///     2. Принимает одно из следующих значений: "date"/"title"/"price"
 /// SortOrder:
 ///     1. Задано.
-///     2. Принимает одно из следующих значений: "ask"/"desk"
+///     2. Принимает одно из следующих значений: "asc"/"desc"
 /// LastId:
 ///     1. Строгих требований нет.
 /// LastDate:

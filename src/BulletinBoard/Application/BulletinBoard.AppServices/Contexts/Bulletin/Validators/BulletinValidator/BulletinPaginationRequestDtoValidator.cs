@@ -29,8 +29,8 @@ public class BulletinPaginationRequestDtoValidator : AbstractValidator<BulletinP
         RuleFor(requestDto => requestDto.SortOrder)
             .NotEmpty()
                 .WithMessage("SortOrder is required")
-            .Must(sortOrder => new[] { "ask", "desk" }.Contains(sortOrder?.ToLower()))
-                .WithMessage("SortOrder must be 'ask' or 'desk'");
+            .Must(sortOrder => new[] { "asc", "desc" }.Contains(sortOrder?.ToLower()))
+                .WithMessage("SortOrder must be 'asc' or 'desc'");
 
         RuleFor(requestDto => requestDto.MinPrice)
            .GreaterThan(0).WithMessage("Must be not negative number");

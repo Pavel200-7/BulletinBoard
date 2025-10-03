@@ -153,8 +153,13 @@ public class BulletinMappingProfile : Profile
                 ? (decimal)src.Ratings.Sum(r => r.Rating) / src.Ratings.Count()
                 : 0
                 ))
-            .ForMember(dest => dest.MainImage, opt => opt.MapFrom(src =>
-                src.Images.FirstOrDefault(image => image.IsMain)));
+            .ForMember(dest => dest.MainImageId, opt => opt.MapFrom(src =>
+                src.Images
+                .Where(i => i.IsMain == true)
+                .Select(i => (Guid?)i.Id)
+                .FirstOrDefault()
+                )
+            );
         
         //Другие маппинги
     }

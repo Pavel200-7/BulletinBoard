@@ -34,7 +34,7 @@ public class BulletinReadPagenatedItemDto
     public decimal Rating { get; set; }
 
     /// <summary>
-    /// Главное изображение объявления.
+    /// Главное изображение объявления (его id).
     /// </summary>
-    public BulletinImageDto? MainImage { get; set; }
+    public Guid? MainImageId { get; set; }
 }

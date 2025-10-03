@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 
@@ -28,44 +29,14 @@ public class BulletinReadPagenatedDto
     public bool HasNextPage { get; set; }
 
     /// <summary>
-    /// Последний id для следующей выборки.
+    /// Данные поиска слудующей страницы.
     /// </summary>
-    public Guid? NextId { get; set; }
+    public BulletinPagenatedPageRef? Next { get; set; } = null;
 
     /// <summary>
-    /// Последний заголовок для следующей выборки.
+    /// Данные поиска предыдущей страницы.
     /// </summary>
-    public string? NextTitle { get; set; }
-
-    /// <summary>
-    /// Последняя дата для следующей выборки.
-    /// </summary>
-    public DateTime? NextDate { get; set; }
-
-    /// <summary>
-    /// Последняя цена для следующей выборки.
-    /// </summary>
-    public decimal? NextPrice { get; set; }
-
-    /// <summary>
-    /// Последний id для предыдущей выборки.
-    /// </summary>
-    public Guid? PreviousId { get; set; }
-
-    /// <summary>
-    /// Последний заголовок для предыдущей выборки.
-    /// </summary>
-    public string? PreviousTitle { get; set; }
-
-    /// <summary>
-    /// Последняя дата для предыдущей выборки.
-    /// </summary>
-    public DateTime? PreviousDate { get; set; }
-
-    /// <summary>
-    /// Последняя цена для предыдущей выборки.
-    /// </summary>
-    public decimal? PreviousPrice { get; set; }
+    public BulletinPagenatedPageRef? Previous { get; set; } = null;
 
 
     /// <summary>
@@ -77,14 +48,16 @@ public class BulletinReadPagenatedDto
     {
         Bulletins = bulletins;
 
-        if (bulletins.Count() == requestDto.Limit + 1)
+        HasNextPage = bulletins.Count > requestDto.Limit;
+
+        if (HasNextPage)
         {
-            HasNextPage = true;
             BulletinReadPagenatedItemDto nextPageItem = PopLastBulletinItem();
-            SetNextPageRefs(nextPageItem, requestDto);
+            SetNextPageRefs(nextPageItem, requestDto.SortBy);
         }
 
-        SetLastPageRefs(requestDto);
+        SetPreviousPageRefs(requestDto);
+        PageSize = Bulletins.Count();
     }
 
     /// <summary>
@@ -93,9 +66,8 @@ public class BulletinReadPagenatedDto
     /// <returns>Последний элемент списка объявлений</returns>
     public BulletinReadPagenatedItemDto PopLastBulletinItem()
     {
-        int lastIndex = Bulletins.Count() - 1;
-        var lastItem = Bulletins[lastIndex];
-        Bulletins.RemoveAt(lastIndex);
+        var lastItem = Bulletins[^1];
+        Bulletins.RemoveAt(Bulletins.Count() - 1);
         return lastItem;
     }
 
@@ -103,21 +75,22 @@ public class BulletinReadPagenatedDto
     /// Установить данные поиска слудующей страницы.
     /// </summary>
     /// <param name="nextPageItem">Первый элемент следующей страницы.</param>
-    /// <param name="requestDto">Данные запроса пагинации, полученные от клиента.</param>
-    public void SetNextPageRefs(BulletinReadPagenatedItemDto nextPageItem, BulletinPaginationRequestDto requestDto)
+    /// <param name="sortBy">Поле сортировки.</param>
+    public void SetNextPageRefs(BulletinReadPagenatedItemDto nextPageItem, string sortBy)
     {
-        NextId = nextPageItem.Main.Id;
+        Next = new();
+        Next.Id = nextPageItem.Main.Id;
 
-        switch (requestDto.SortBy)
+        switch (sortBy)
         {
             case "title":
-                NextTitle = nextPageItem.Main.Title;
+                Next.Title = nextPageItem.Main.Title;
                 break;
             case "date":
-                NextDate = nextPageItem.Main.CreatedAt;
+                Next.Date = nextPageItem.Main.CreatedAt;
                 break;
             case "price":
-                NextPrice = nextPageItem.Main.Price;
+                Next.Price = nextPageItem.Main.Price;
                 break;
         }
     }
@@ -126,21 +99,25 @@ public class BulletinReadPagenatedDto
     /// Установить данные поиска текущей страницы (которая станет предыдушей при переходе на следующую, логично).
     /// </summary>
     /// <param name="requestDto">Данные запроса пагинации, полученные от клиента.</param>
-    public void SetLastPageRefs(BulletinPaginationRequestDto requestDto)
+    public void SetPreviousPageRefs(BulletinPaginationRequestDto requestDto)
     {
-        PreviousId = requestDto.LastId;
+        if (requestDto.LastId is null) { return; }
+
+        Previous = new();
+        Previous.Id = requestDto.LastId;
 
         switch (requestDto.SortBy)
         {
             case "title":
-                PreviousTitle = requestDto.LastTitle;
+                Previous.Title = requestDto.LastTitle;
                 break;
             case "date":
-                PreviousDate = requestDto.LastDate;
+                Previous.Date = requestDto.LastDate;
                 break;
             case "price":
-                PreviousPrice = requestDto.LastPrice;
+                Previous.Price = requestDto.LastPrice;
                 break;
         }
     }
 }
+

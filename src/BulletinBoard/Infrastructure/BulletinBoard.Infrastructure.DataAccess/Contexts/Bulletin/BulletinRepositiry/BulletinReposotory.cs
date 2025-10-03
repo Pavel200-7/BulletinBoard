@@ -84,27 +84,7 @@ public class BulletinReposotory : IBulletinReposotory
         return await query
             .Select(b => _autoMapper.Map<BulletinReadPagenatedItemDto>(b))
             .ToListAsync();
-
-        //return await query
-        //.Select(bulletinMain => new BulletinReadPagenatedItemDto()
-        //{
-        //    Main = _autoMapper.Map<BulletinMainBulletinReadDto>(bulletinMain),
-        //    ViewsCount = bulletinMain.ViewsCount.ViewsCount,
-        //    Rating = bulletinMain.Ratings.Any()
-        //        ? (decimal)bulletinMain.Ratings.Sum(r => r.Rating) / bulletinMain.Ratings.Count
-        //        : 0,
-        //    MainImage = bulletinMain.Images
-        //        .Where(image => image.IsMain)
-        //        .Select(image => _autoMapper.Map<BulletinImageDto>(image))
-        //        .FirstOrDefault()
-        //})
-        //.ToListAsync();
     }
-
-
-    //  var query = _repository.GetAll().AsQueryable();
-    //  query = query.ApplyExtendedSpecification(specification);
-    //  return await query.Select(e => _mapper.Map<TDto>(e)).ToListAsync();
 
     /// <inheritdoc/>
     public async Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken)
