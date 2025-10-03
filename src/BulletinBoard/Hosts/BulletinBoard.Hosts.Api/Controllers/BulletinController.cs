@@ -106,7 +106,7 @@ public class BulletinController : ControllerBase
     public async Task<IActionResult> GetBulletins(BulletinPaginationRequestDto request)
     {
         var dto = await _bulletinService.GetBulletinsAsync(request);
-        return Ok(new BulletinReadPagenatedDto());
+        return Ok(dto);
     }
 
     /// <summary>
@@ -221,3 +221,5 @@ public class BulletinController : ControllerBase
         return Ok(result);
     }
 }
+
+

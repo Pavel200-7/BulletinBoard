@@ -97,9 +97,11 @@ public class BulletinService : IBulletinService
         specification = _paginationSpecificationBuilder.Build();
 
         var bulletins = await _bulletinReposotory.GetBulletinsAsync(specification);
+        var bulletinsList = bulletins.ToList();
 
-        return new BulletinReadPagenatedDto();
+        var response = new BulletinReadPagenatedDto(bulletinsList, requestDto);
 
+        return response;
     }
 
 

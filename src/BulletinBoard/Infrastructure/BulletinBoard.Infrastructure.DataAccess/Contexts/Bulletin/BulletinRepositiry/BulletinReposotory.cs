@@ -82,19 +82,23 @@ public class BulletinReposotory : IBulletinReposotory
         query = query.ApplyExtendedSpecification(specification);
 
         return await query
-        .Select(bulletinMain => new BulletinReadPagenatedItemDto()
-        {
-            Main = _autoMapper.Map<BulletinMainBulletinReadDto>(bulletinMain),
-            ViewsCount = bulletinMain.ViewsCount.ViewsCount,
-            Rating = bulletinMain.Ratings.Any()
-                ? (decimal)bulletinMain.Ratings.Sum(r => r.Rating) / bulletinMain.Ratings.Count
-                : 0,
-            MainImage = bulletinMain.Images
-                .Where(image => image.IsMain)
-                .Select(image => _autoMapper.Map<BulletinImageDto>(image))
-                .FirstOrDefault()
-        })
-        .ToListAsync();
+            .Select(b => _autoMapper.Map<BulletinReadPagenatedItemDto>(b))
+            .ToListAsync();
+
+        //return await query
+        //.Select(bulletinMain => new BulletinReadPagenatedItemDto()
+        //{
+        //    Main = _autoMapper.Map<BulletinMainBulletinReadDto>(bulletinMain),
+        //    ViewsCount = bulletinMain.ViewsCount.ViewsCount,
+        //    Rating = bulletinMain.Ratings.Any()
+        //        ? (decimal)bulletinMain.Ratings.Sum(r => r.Rating) / bulletinMain.Ratings.Count
+        //        : 0,
+        //    MainImage = bulletinMain.Images
+        //        .Where(image => image.IsMain)
+        //        .Select(image => _autoMapper.Map<BulletinImageDto>(image))
+        //        .FirstOrDefault()
+        //})
+        //.ToListAsync();
     }
 
 

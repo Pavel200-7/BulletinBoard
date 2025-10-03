@@ -103,6 +103,7 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinMainUpdateDto, BulletinMainUpdateDtoForValidating>();
         CreateMap<BulletinMainDto, BulletinMainUpdateDtoForValidating>();
         CreateMap<BulletinMainDto, BulletinMainBulletinReadDto>();
+        CreateMap<BulletinMain, BulletinMainBulletinReadDto>();
 
 
         // BulletinRating
@@ -144,6 +145,17 @@ public class BulletinMappingProfile : Profile
            .ForMember(dest => dest.ViewsCount, opt => opt.MapFrom(src => src.ViewsCount));
 
 
+        CreateMap<BulletinMain, BulletinReadPagenatedItemDto>()
+           .ForMember(dest => dest.Main, opt => opt.MapFrom(src => src)) 
+           .ForMember(dest => dest.ViewsCount, opt => opt.MapFrom(src => src.ViewsCount.ViewsCount))
+           .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => 
+                src.Ratings.Any()
+                ? (decimal)src.Ratings.Sum(r => r.Rating) / src.Ratings.Count()
+                : 0
+                ))
+            .ForMember(dest => dest.MainImage, opt => opt.MapFrom(src =>
+                src.Images.FirstOrDefault(image => image.IsMain)));
+        
         //Другие маппинги
     }
 }
