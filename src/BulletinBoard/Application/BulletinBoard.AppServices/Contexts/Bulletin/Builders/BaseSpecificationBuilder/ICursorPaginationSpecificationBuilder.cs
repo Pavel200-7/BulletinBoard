@@ -14,6 +14,13 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Builders.BaseSpecification
 public interface ICursorPaginationSpecificationBuilder<TEntity> where TEntity : EntityBase
 {
     /// <summary>
+    /// Установить спецификацию.
+    /// </summary>
+    /// <param name="specification">Спецификация.</param>
+    /// <returns>Ссылка на builder (самого себя).</returns>
+    public ICursorPaginationSpecificationBuilder<TEntity> SetSpecification(ExtendedSpecification<TEntity> specification);
+
+    /// <summary>
     /// Выставить количество элементов выборки.
     /// </summary>
     /// <param name="items">Количество элементов на странице.</param>

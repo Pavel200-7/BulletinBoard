@@ -20,7 +20,7 @@ public class BulletinService : IBulletinService
     private IUnitOfWorkBulletin _unitOfWork;
     private IBulletinDtoValidatorFacade _validator;
     private IBulletinMainSpecificationBuilder _specificationBuilder;
-
+    private IBulletinMainCursorPaginationSpecificationBuilder _paginationSpecificationBuilder;
 
     /// <inheritdoc/>
     public BulletinService // Не рабочий
@@ -28,7 +28,8 @@ public class BulletinService : IBulletinService
         IBulletinReposotory bulletinReposotory,
         IUnitOfWorkBulletin unitOfWork,
         IBulletinDtoValidatorFacade validator,
-        IBulletinMainSpecificationBuilder specificationBuilder
+        IBulletinMainSpecificationBuilder specificationBuilder,
+        IBulletinMainCursorPaginationSpecificationBuilder paginationSpecificationBuilder
 
         )
     {
@@ -36,6 +37,7 @@ public class BulletinService : IBulletinService
         _unitOfWork = unitOfWork;
         _validator = validator;
         _specificationBuilder = specificationBuilder;
+        _paginationSpecificationBuilder = paginationSpecificationBuilder;
     }
 
     /// <inheritdoc/>
@@ -74,18 +76,31 @@ public class BulletinService : IBulletinService
             .WhereTitleContains(requestDto.SearchText)
             .Build();
 
+        _paginationSpecificationBuilder.SetSpecification(specification);
+
+        Guid? lastId = requestDto.LastId;
+        bool ascending = requestDto.SortOrder.ToLower() == "asc" ? true : false;
+        switch (requestDto.SortBy)
+        {
+            case "title":
+                _paginationSpecificationBuilder.PaginateByTitle(lastId, requestDto.LastTitle, ascending);
+                break;
+            case "date": 
+                _paginationSpecificationBuilder.PaginateByDate(lastId, requestDto.LastDate, ascending);
+                break;
+            case "price":
+                _paginationSpecificationBuilder.PaginateByPrice(lastId, requestDto.LastPrice, ascending);
+                break;
+        }
+
+        _paginationSpecificationBuilder.Take(requestDto.Limit + 1);
+        specification = _paginationSpecificationBuilder.Build();
+
         var bulletins = await _bulletinReposotory.GetBulletinsAsync(specification);
 
         return new BulletinReadPagenatedDto();
 
     }
-
-    //private ExtendedSpecification<BulletinMain> GetBulletinPaginationSpecification(BulletinPaginationRequestDto requestDto)
-    //{
-        
-
-    //    return _specificationBuilder.Build();
-    //}
 
 
     /// <inheritdoc/>

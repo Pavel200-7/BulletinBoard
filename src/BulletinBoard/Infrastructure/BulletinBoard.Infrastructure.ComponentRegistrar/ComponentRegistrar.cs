@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.Bulletin.Builder.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders;
+using BulletinBoard.AppServices.Contexts.Bulletin.Builders.CursorPaginationBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Builders.IBuilders;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping;
 using BulletinBoard.AppServices.Contexts.Bulletin.Mapping.IMappingServices;
@@ -77,6 +78,9 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinRatingSpecificationBuilder, BulletinRatingSpecificationBuilder>();
         services.AddScoped<IBulletinUserSpecificationBuilder, BulletinUserSpecificationBuilder>();
         services.AddScoped<IBulletinViewsCountSpecificationBuilder, BulletinViewsCountSpecificationBuilder>();
+        services.AddScoped<IBulletinMainCursorPaginationSpecificationBuilder, BulletinMainCursorPaginationSpecificationBuilder>();
+
+        
 
 
 

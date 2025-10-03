@@ -47,8 +47,7 @@ public class BulletinRatingEntityTypeConfiguration : IEntityTypeConfiguration<Bu
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(r => r.BulletinId)
-            .HasDatabaseName("IX_BulletinRating_BulletinId")
-            .IsUnique();
+            .HasDatabaseName("IX_BulletinRating_BulletinId");
 
         builder.HasIndex(r => r.UserId)
             .HasDatabaseName("IX_BulletinRating_UserId");

@@ -21,13 +21,24 @@ public class CursorPaginationSpecificationBuilderBase<TEntity> : ICursorPaginati
     protected CompositeExtendedSpecification<TEntity> _specification;
 
 
-
     /// <summary>
     /// Конструктор, создающий основу спецификации.
     /// </summary>
     public CursorPaginationSpecificationBuilderBase()
     {
         _specification = new CompositeExtendedSpecification<TEntity>();
+    }
+
+    /// <summary>
+    /// Установить спецификацию.
+    /// </summary>
+    public ICursorPaginationSpecificationBuilder<TEntity> SetSpecification(ExtendedSpecification<TEntity> specification)
+    {
+        if (specification is CompositeExtendedSpecification<TEntity> compositeSpec)
+        {
+            _specification = compositeSpec;
+        }
+        return this;
     }
 
     /// <summary>
