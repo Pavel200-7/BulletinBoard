@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
@@ -699,5 +700,427 @@ public class BulletinControllerTests : IClassFixture<CustomWebApplicationFactory
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_FirstPage_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        // Создаем 15 тестовых объявлений
+        for (int i = 0; i < 15; i++)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = $"Объявление {i}",
+                    Description = $"Описание {i}",
+                    CategoryId = categoryId,
+                    Price = 100 + i * 10,
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "date",
+            SortOrder = "desc"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Equal(10, result.Bulletins.Count);
+        Assert.True(result.HasNextPage);
+        Assert.NotNull(result.Next);
+        Assert.NotNull(result.Next.Id);
+        Assert.NotNull(result.Next.Date);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_SecondPage_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+        Guid? firstPageLastId = null;
+        DateTime? firstPageLastDate = null;
+
+        // Создаем объявления и получаем первую страницу
+        for (int i = 0; i < 15; i++)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = $"Объявление {i}",
+                    Description = $"Описание {i}",
+                    CategoryId = categoryId,
+                    Price = 100 + i * 10,
+                },
+                CharacteristicComparisons = characteristics
+            };
+            var createResponse = await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+            var bulletinId = await createResponse.Content.ReadFromJsonAsync<Guid>();
+        }
+
+        var firstPageRequest = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "date",
+            SortOrder = "desc"
+        };
+
+        var firstPageResponse = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", firstPageRequest);
+        var firstPageResult = await firstPageResponse.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Act - запрашиваем вторую страницу
+        var secondPageRequest = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "date",
+            SortOrder = "desc",
+            LastId = firstPageResult.Next.Id,
+            LastDate = firstPageResult.Next.Date
+        };
+
+        var secondPageResponse = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", secondPageRequest);
+        var secondPageResult = await secondPageResponse.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        secondPageResponse.EnsureSuccessStatusCode();
+        Assert.NotNull(secondPageResult);
+        Assert.Equal(5, secondPageResult.Bulletins.Count); // Осталось 5 объявлений
+        Assert.False(secondPageResult.HasNextPage);
+        Assert.NotNull(secondPageResult.Previous);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_ByTitle_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        var titles = new[] { "Ааа", "Ббб", "Ввв", "Ггг", "Ддд", "Еее" };
+        foreach (var title in titles)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = title,
+                    Description = "Описание",
+                    CategoryId = categoryId,
+                    Price = 100
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 5,
+            SortBy = "title",
+            SortOrder = "asc"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Equal(5, result.Bulletins.Count);
+        Assert.True(result.HasNextPage);
+        Assert.Equal("Ааа", result.Bulletins[0].Main.Title);
+        Assert.Equal("Ббб", result.Bulletins[1].Main.Title);
+        Assert.Equal("Ввв", result.Bulletins[2].Main.Title);
+        Assert.NotNull(result.Next.Title);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_ByPrice_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        var prices = new[] { 100, 200, 300, 400, 500, 600, 700 };
+        foreach (var price in prices)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = $"Объявление за {price}",
+                    Description = "Описание",
+                    CategoryId = categoryId,
+                    Price = price
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 5,
+            SortBy = "price",
+            SortOrder = "desc"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(5, result.Bulletins.Count);
+        Assert.True(result.HasNextPage);
+        Assert.Equal(700, result.Bulletins[0].Main.Price);
+        Assert.Equal(600, result.Bulletins[1].Main.Price);
+        Assert.Equal(500, result.Bulletins[2].Main.Price);
+        Assert.NotNull(result.Next.Price);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_WithCategoryFilter_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var category1Id = await CreateTestCategoryAsync("Категория один");
+        var category2Id = await CreateTestCategoryAsync("Категория два");
+
+        // Создаем объявления в разных категориях
+        for (int i = 0; i < 5; i++)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = $"Объявление {i}",
+                    Description = "Описание",
+                    CategoryId = i < 3 ? category1Id : category2Id, // 3 в первой, 2 во второй
+                    Price = 100
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "date",
+            SortOrder = "desc",
+            CategoryId = category1Id // Фильтруем по первой категории
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Equal(3, result.Bulletins.Count); // Только объявления из category1
+        Assert.All(result.Bulletins, b => Assert.Equal(category1Id, b.Main.CategoryId));
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_WithPriceFilter_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        var prices = new[] { 50, 150, 250, 350, 450 };
+        foreach (var price in prices)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = $"Объявление за {price}",
+                    Description = "Описание",
+                    CategoryId = categoryId,
+                    Price = price
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "price",
+            SortOrder = "asc",
+            MinPrice = 100,
+            MaxPrice = 400
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Equal(3, result.Bulletins.Count); // 150, 250, 350
+        Assert.All(result.Bulletins, b =>
+        {
+            Assert.True(b.Main.Price >= 100);
+            Assert.True(b.Main.Price <= 400);
+        });
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_WithSearchText_Positive()
+    {
+        // Arrange
+        var userId = await CreateTestUserAsync();
+        var categoryId = await CreateTestCategoryAsync();
+
+        var titles = new[] { "Продам iPhone", "Куплю Samsung", "Продам MacBook", "Куплю Android", "Продам Nokia" };
+        foreach (var title in titles)
+        {
+            var characteristics = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+            var createDto = new BulletinCreateDtoRequest
+            {
+                BulletinMain = new BulletinMainCreateDto
+                {
+                    UserId = userId,
+                    Title = title,
+                    Description = "Описание техники",
+                    CategoryId = categoryId,
+                    Price = 100
+                },
+                CharacteristicComparisons = characteristics
+            };
+            await _client.PostAsJsonAsync("/api/Bulletin", createDto);
+        }
+
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "title",
+            SortOrder = "asc",
+            SearchText = "Продам"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Equal(3, result.Bulletins.Count); // "Продам iPhone", "Продам MacBook", "Продам Nokia"
+        Assert.All(result.Bulletins, b => Assert.Contains("Продам", b.Main.Title));
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_InvalidLimit_Negative()
+    {
+        // Arrange
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 3, // Меньше минимального
+            SortBy = "date",
+            SortOrder = "desc"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_InvalidSortBy_Negative()
+    {
+        // Arrange
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "invalid_field", // Невалидное поле
+            SortOrder = "desc"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_MissingCursorData_Negative()
+    {
+        // Arrange
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "title",
+            SortOrder = "asc",
+            LastId = Guid.NewGuid() // Указан LastId, но нет LastTitle
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetBulletins_Pagination_EmptyResult_Positive()
+    {
+        // Arrange
+        var request = new BulletinPaginationRequestDto
+        {
+            Limit = 10,
+            SortBy = "date",
+            SortOrder = "desc",
+            CategoryId = Guid.NewGuid() // Несуществующая категория
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
+        var result = await response.Content.ReadFromJsonAsync<BulletinReadPagenatedDto>();
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        Assert.NotNull(result);
+        Assert.Empty(result.Bulletins);
+        Assert.False(result.HasNextPage);
+        Assert.Equal(0, result.PageSize);
     }
 }

@@ -40,7 +40,7 @@ public class BulletinReadPagenatedDto
 
 
     /// <summary>
-    /// Конструктор ответа - пагинированной выборки объяв
+    /// Конструктор ответа - пагинированной выборки объявления.
     /// </summary>
     /// <param name="bulletins"></param>
     /// <param name="requestDto"></param>
@@ -59,6 +59,13 @@ public class BulletinReadPagenatedDto
         SetPreviousPageRefs(requestDto);
         PageSize = Bulletins.Count();
     }
+
+
+    /// <summary>
+    /// Конструктор ответа - пагинированной выборки объявления для сериализации.
+    /// </summary>
+    public BulletinReadPagenatedDto() { }
+
 
     /// <summary>
     /// Получить и удалить последний элемент списка объявлений.

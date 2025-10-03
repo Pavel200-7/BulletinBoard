@@ -23,11 +23,11 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) > 0 || (b.Title == lastTitle && b.Id > lastId));
+                _specification.Add(b => b.Title.CompareTo(lastTitle) >= 0 || (b.Title == lastTitle && b.Id >= lastId));
             }
             else
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) < 0 || (b.Title == lastTitle && b.Id < lastId));
+                _specification.Add(b => b.Title.CompareTo(lastTitle) <= 0 || (b.Title == lastTitle && b.Id <= lastId));
             }
         }
 
@@ -48,11 +48,11 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) > 0 || (b.Title == lastTitle && b.Id > lastId));
+                _specification.Add(b => b.Title.CompareTo(lastTitle) >= 0 || (b.Title == lastTitle && b.Id >= lastId));
             }
             else
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) < 0 || (b.Title == lastTitle && b.Id < lastId));
+                _specification.Add(b => b.Title.CompareTo(lastTitle) <= 0 || (b.Title == lastTitle && b.Id <= lastId));
             }
         }
 
@@ -73,11 +73,11 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.CreatedAt > lastDate || (b.CreatedAt == lastDate && b.Id > lastId));
+                _specification.Add(b => b.CreatedAt >= lastDate || (b.CreatedAt == lastDate && b.Id >= lastId));
             }
             else
             {
-                _specification.Add(b => b.CreatedAt < lastDate || (b.CreatedAt == lastDate && b.Id < lastId));
+                _specification.Add(b => b.CreatedAt <= lastDate || (b.CreatedAt == lastDate && b.Id <= lastId));
             }
         }
 
@@ -98,11 +98,11 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.Price > lastPrice || (b.Price == lastPrice && b.Id > lastId));
+                _specification.Add(b => b.Price >= lastPrice || (b.Price == lastPrice && b.Id >= lastId));
             }
             else
             {
-                _specification.Add(b => b.Price < lastPrice || (b.Price == lastPrice && b.Id < lastId));
+                _specification.Add(b => b.Price <= lastPrice || (b.Price == lastPrice && b.Id <= lastId));
             }
         }
 
