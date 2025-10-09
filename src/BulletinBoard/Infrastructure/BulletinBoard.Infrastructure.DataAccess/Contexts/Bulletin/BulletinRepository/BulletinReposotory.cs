@@ -6,14 +6,10 @@ using BulletinBoard.AppServices.Specification.Extensions;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
-using BulletinBoard.Contracts.Bulletin.BulletinImage;
-using BulletinBoard.Contracts.Bulletin.BulletinMain.ReadDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 
 /// <inheritdoc/>
 public class BulletinReposotory : IBulletinReposotory
@@ -32,7 +28,6 @@ public class BulletinReposotory : IBulletinReposotory
         _bulletinContext = bulletinContext;
         _autoMapper = autoMapper;
         DbSetBulletinMain = bulletinContext.Set<BulletinMain>();
-
     }
 
     /// <inheritdoc/>

@@ -12,6 +12,8 @@
     <Folder Include="Bulletin\BulletinCharacteristicValue\ReadDto\" />
     <Folder Include="Bulletin\BulletinCharacteristic\ReadDto\" />
     <Folder Include="Bulletin\BulletinUser\ReadDto\" />
+    <Folder Include="Images\Image\UpdateDto\" />
+    <Folder Include="Images\Image\FilterDto\" />
   </ItemGroup>
 
 </Project>

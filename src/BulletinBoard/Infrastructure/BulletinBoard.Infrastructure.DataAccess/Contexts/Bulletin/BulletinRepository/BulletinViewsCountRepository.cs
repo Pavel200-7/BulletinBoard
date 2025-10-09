@@ -8,7 +8,7 @@ using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 
 public class BulletinViewsCountRepository : BaseRepository
     <

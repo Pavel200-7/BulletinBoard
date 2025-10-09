@@ -5,8 +5,6 @@ using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinUser.UpdateDto;
 using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
-using System.Numerics;
-using System.Xml.Linq;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 

@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 
-
+/// <summary>
+/// Компонент, реализующий паттерн unit of work.
+/// Из него возможно запускать транзакции.
+/// Он предоставляет доступ ко всем репозиториям текущего домена.
+/// </summary>
 public class UnitOfWorkBulletin : IUnitOfWorkBulletin
 {
     private readonly BulletinContext _context;

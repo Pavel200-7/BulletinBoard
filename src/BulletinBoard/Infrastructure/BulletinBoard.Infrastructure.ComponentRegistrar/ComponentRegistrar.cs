@@ -27,12 +27,13 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.Images.Repository;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.Images.ImagesRepository;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -162,6 +163,8 @@ public static class ComponentRegistrar
         services.AddScoped<IUnitOfWorkBulletin, UnitOfWorkBulletin>();
 
 
+        //ImagesRepositories
+        services.AddScoped<IImageRepository, ImageRepository>();
 
 
         // Репозитории следующего домена

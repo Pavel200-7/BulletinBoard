@@ -7,7 +7,7 @@ using BulletinBoard.Domain.Entities.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepositiry;
+namespace BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 
 /// <inheritdoc/>
 public class BulletinCharacteristicComparisonRepository :
