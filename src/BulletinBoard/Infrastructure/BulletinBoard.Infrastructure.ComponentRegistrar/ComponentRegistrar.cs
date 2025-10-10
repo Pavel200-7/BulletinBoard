@@ -30,6 +30,7 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountV
 using BulletinBoard.AppServices.Contexts.Images.Repository;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Infrastructure.ComponentRegistrar.DBSettings;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
@@ -39,6 +40,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System;
 
 
@@ -165,6 +168,8 @@ public static class ComponentRegistrar
 
         //ImagesRepositories
         services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<IImageСacheRepository, ImageСacheRepository>();
+
 
 
         // Репозитории следующего домена
@@ -185,8 +190,7 @@ public static class ComponentRegistrar
 
     public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
     {
-        //if (environment == "Development")
-        //{
+        // BulletinContext
         services.AddDbContext<BulletinContext>(options =>
         {
             options.UseNpgsql(
@@ -194,17 +198,26 @@ public static class ComponentRegistrar
                 b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
             );
         });
-        //}
-        //else if (environment == "Testing")
-        //{
-        //    services.AddDbContext<BulletinContext>(options =>
-        //    {
-        //        services.AddDbContextPool<BulletinContext>(options =>
-        //            options.UseInMemoryDatabase("TestingDB"));
-        //    });
-        //
-        //}
-        
+
+        // ImageContext
+
+        var mongoSettings = new MongoDBSettings();
+        configuration.GetSection("MongoDB").Bind(mongoSettings);
+        services.AddSingleton(mongoSettings);
+
+        services.AddSingleton<IMongoClient>(serviceProvider =>
+        {
+            var settings = serviceProvider.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+            return new MongoClient(settings.ConnectionString);
+        });
+
+        services.AddScoped<IMongoDatabase>(serviceProvider =>
+        {
+            var settings = serviceProvider.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+            var client = serviceProvider.GetRequiredService<IMongoClient>();
+            return client.GetDatabase(settings.DatabaseName);
+        });
+
 
         // Другие контексты
 
