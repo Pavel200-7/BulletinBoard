@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 namespace BulletinBoard.Domain.Entities.Images;
 
 /// <summary>
-/// Изображение, помещаемое во временное хранилище 
-/// при загрузке его на сервер.
+/// Информация об изображении.
 /// </summary>
-public class ImageСache : EntityBase
+public class ImageMetadata : EntityBase
 {
     /// <summary>
     /// Имя.
     /// </summary>
     public string Name { get; set; }
-
-    /// <summary>
-    /// Контент.
-    /// </summary>
-    public byte[] Content { get; set; }
 
     /// <summary>
     /// Тип контента.

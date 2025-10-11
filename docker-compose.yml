@@ -26,7 +26,7 @@ services:
       - ConnectionStrings__MongoConnection=mongodb://dbuser:password@mongodb:27017/
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDB__ConnectionString=mongodb://dbuser:password@mongodb:27017/
-      - MongoDB__DatabaseName=BulletinBoardCache
+      - MongoDB__DatabaseName=Images
 
   postgresql:
     image: postgres:17

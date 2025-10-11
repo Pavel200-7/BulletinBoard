@@ -12,11 +12,6 @@ namespace BulletinBoard.Contracts.Images.Image.CreateDto;
 public class ImageCreateDto
 {
     /// <summary>
-    /// Идентификатор файла.
-    /// </summary>
-    public Guid Id { get; set; }
-
-    /// <summary>
     /// Имя
     /// </summary>
     public string Name { get; set; }

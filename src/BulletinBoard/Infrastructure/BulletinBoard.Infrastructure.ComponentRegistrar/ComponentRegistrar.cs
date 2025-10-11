@@ -28,8 +28,13 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.I
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Images.Repository;
+using BulletinBoard.AppServices.Contexts.Images.Sercices;
+using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
+using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator;
+using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
+using BulletinBoard.Domain.Base;
 using BulletinBoard.Infrastructure.ComponentRegistrar.DBSettings;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
@@ -41,6 +46,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using System;
 
@@ -144,6 +152,16 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinPaginationRequestDtoValidator, BulletinPaginationRequestDtoValidator>();
 
 
+        // Images
+        // ImagesServices
+        services.AddScoped<IImageServise, ImageServise>();
+
+        //ImagesValidators
+        services.AddScoped<IImageCreateDtoValidator, ImageCreateDtoValidator>();
+        services.AddScoped<IImageValidatorFacade, ImageValidatorFacade>();
+
+        
+
         return services;
     }
 
@@ -168,7 +186,6 @@ public static class ComponentRegistrar
 
         //ImagesRepositories
         services.AddScoped<IImageRepository, ImageRepository>();
-        services.AddScoped<IImageСacheRepository, ImageСacheRepository>();
 
 
 
@@ -200,6 +217,18 @@ public static class ComponentRegistrar
         });
 
         // ImageContext
+        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
+        // Регистрация маппинга для EntityBase
+        if (!BsonClassMap.IsClassMapRegistered(typeof(EntityBase)))
+        {
+            BsonClassMap.RegisterClassMap<EntityBase>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdProperty(x => x.Id)
+                  .SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            });
+        }
 
         var mongoSettings = new MongoDBSettings();
         configuration.GetSection("MongoDB").Bind(mongoSettings);
@@ -207,13 +236,13 @@ public static class ComponentRegistrar
 
         services.AddSingleton<IMongoClient>(serviceProvider =>
         {
-            var settings = serviceProvider.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+            var settings = serviceProvider.GetRequiredService<MongoDBSettings>(); // Без IOptions!
             return new MongoClient(settings.ConnectionString);
         });
 
         services.AddScoped<IMongoDatabase>(serviceProvider =>
         {
-            var settings = serviceProvider.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+            var settings = serviceProvider.GetRequiredService<MongoDBSettings>(); // Без IOptions!
             var client = serviceProvider.GetRequiredService<IMongoClient>();
             return client.GetDatabase(settings.DatabaseName);
         });

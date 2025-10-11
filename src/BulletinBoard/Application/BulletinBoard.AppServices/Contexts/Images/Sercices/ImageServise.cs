@@ -4,24 +4,25 @@ using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValid
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using BulletinBoard.Contracts.Images.Image.ReadDto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Images.Sercices;
 
 /// <inheritdoc/>
-public class ImageСacheServise : IImageСacheServise
+public class ImageServise : IImageServise
 {
-    private readonly IImageСacheRepository _imageСacheRepository;
+    private readonly IImageRepository _imageСacheRepository;
     private readonly IImageValidatorFacade _validator;
 
     /// <inheritdoc/>
-    public ImageСacheServise(IImageСacheRepository imageСacheRepository)
+    public ImageServise
+        (
+        IImageRepository imageСacheRepository,
+        IImageValidatorFacade validator
+        )
     {
         _imageСacheRepository = imageСacheRepository;
+        _validator = validator;
     }
     /// <inheritdoc/>
     public async Task<Guid> UploadAsync(ImageCreateDto createDto, CancellationToken cancellationToken)
@@ -35,7 +36,15 @@ public class ImageСacheServise : IImageСacheServise
     public async Task<ImageReadDto?> DownloadAsync(Guid id, CancellationToken cancellationToken)
     {
         var outputDto = await _imageСacheRepository.DownloadAsync(id, cancellationToken);
-        if (outputDto is null) { throw new NotFoundException($"The image with id {id} is not found."); }
+        if (outputDto is null) { throw new NotFoundException(GetNotFoundMessage(id)); }
+        return outputDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<ImageInfoReadDto?> GetMetaDataAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var outputDto = await _imageСacheRepository.GetMetaDataAsync(id, cancellationToken);
+        if (outputDto is null) { throw new NotFoundException(GetNotFoundMessage(id)); }
         return outputDto;
     }
 
@@ -43,7 +52,15 @@ public class ImageСacheServise : IImageСacheServise
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         bool isOnDeleting = await _imageСacheRepository.DeleteAsync(id, cancellationToken);
-        if (!isOnDeleting) { throw new NotFoundException($"The image with id {id} is not found."); }
+        if (!isOnDeleting) { throw new NotFoundException(GetNotFoundMessage(id)); }
         return isOnDeleting;
     }
+
+    private string GetNotFoundMessage(Guid id)
+    {
+        return $"The image with id {id} is not found.";
+
+    }
+
+
 }

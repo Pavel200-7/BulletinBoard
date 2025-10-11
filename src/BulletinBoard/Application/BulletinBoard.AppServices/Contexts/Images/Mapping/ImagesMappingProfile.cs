@@ -17,11 +17,9 @@ public class ImagesMappingProfile : Profile
     /// </summary>
     public ImagesMappingProfile()
     {
-        CreateMap<ImageCreateDto, Image>();
-        CreateMap<Image, ImageInfoReadDto>();
-        CreateMap<Image, ImageReadDto>();
-        CreateMap<Image, ImageDto>().ReverseMap();
+        CreateMap<ImageCreateDto, ImageMetadata>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+        CreateMap<ImageMetadata, ImageInfoReadDto>();
     }
 }
-
-

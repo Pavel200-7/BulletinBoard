@@ -1,11 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator;
 

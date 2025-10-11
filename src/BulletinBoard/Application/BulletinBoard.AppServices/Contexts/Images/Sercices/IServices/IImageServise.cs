@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
 
 /// <summary>
-///  сервис для работы с изображениями.
+/// Репозиторий для работы с временным хранилищем, в которое 
+/// попадают вновь загруженные изображения перед отправкой в место постоянного хранения.
 /// </summary>
 public interface IImageServise
 {
@@ -22,14 +23,6 @@ public interface IImageServise
     public Task<Guid> UploadAsync(ImageCreateDto createDto, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Получение информации об изображении.
-    /// </summary>
-    /// <param name="id">Идентификатор файла.</param>
-    /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Информация о файле.</returns>
-    public Task<ImageInfoReadDto?> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    /// <summary>
     /// Скачивание изображения.
     /// </summary>
     /// <param name="id">Идентификатор файла.</param>
@@ -38,11 +31,18 @@ public interface IImageServise
     public Task<ImageReadDto?> DownloadAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Получить мета информацию об изображении.
+    /// </summary>
+    /// <param name="id">Идентификатор файла.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Мета информация файла.</returns>
+    public Task<ImageInfoReadDto?> GetMetaDataAsync(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Удаление изображения.
     /// </summary>
     /// <param name="id">Идентификатор файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Было ли удалено изображение.</returns>
     public Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
-
 }

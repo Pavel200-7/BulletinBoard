@@ -10,7 +10,7 @@ namespace BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IV
 /// <summary>
 ///  Валидатор изображения.
 /// </summary>
-internal interface IImageValidatorFacade
+public interface IImageValidatorFacade
 {
     /// <summary>
     /// Валидировать изображение
