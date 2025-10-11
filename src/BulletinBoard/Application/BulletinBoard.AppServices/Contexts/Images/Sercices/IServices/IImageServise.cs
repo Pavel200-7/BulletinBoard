@@ -28,7 +28,7 @@ public interface IImageServise
     /// <param name="id">Идентификатор файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Модель файла.</returns>
-    public Task<ImageReadDto?> DownloadAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ImageReadDto> DownloadAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить мета информацию об изображении.
@@ -36,7 +36,7 @@ public interface IImageServise
     /// <param name="id">Идентификатор файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Мета информация файла.</returns>
-    public Task<ImageInfoReadDto?> GetMetaDataAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ImageInfoReadDto> GetMetaDataAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление изображения.

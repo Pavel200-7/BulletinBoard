@@ -1,5 +1,5 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar;
-using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
+using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Images;
 using BulletinBoard.Infrastructure.Middlewares;
 
 
@@ -8,14 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Контекст Entity framework
 var environment = builder.Environment.EnvironmentName;
-builder.Services.RegistrarBulletinContexsts(builder.Configuration, environment);
+builder.Services.RegistrarImagesContexsts(builder.Configuration, environment);
 
 
 // Сервисы, репозитории, мапперы
-builder.Services.RegisterBulletinServices();
-builder.Services.RegisterBulletinRepositories();
-builder.Services.RegistrarBulletinMappers();
-builder.Services.RegistrarBulletinInitializers();
+builder.Services.RegisterImagesServices();
+builder.Services.RegisterImagesRepositories();
+builder.Services.RegistrarImagesMappers();
 
 
 builder.Services.AddControllers();
@@ -45,7 +44,6 @@ app.MapControllers();
 
 
 await app.RunAsync();
-//await app.InitAndRunAsync();
 
 public partial class Program
 { }

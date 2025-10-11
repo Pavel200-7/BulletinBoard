@@ -33,7 +33,7 @@ public class ImageServise : IImageServise
     }
 
     /// <inheritdoc/>
-    public async Task<ImageReadDto?> DownloadAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ImageReadDto> DownloadAsync(Guid id, CancellationToken cancellationToken)
     {
         var outputDto = await _imageСacheRepository.DownloadAsync(id, cancellationToken);
         if (outputDto is null) { throw new NotFoundException(GetNotFoundMessage(id)); }
@@ -41,7 +41,7 @@ public class ImageServise : IImageServise
     }
 
     /// <inheritdoc/>
-    public async Task<ImageInfoReadDto?> GetMetaDataAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ImageInfoReadDto> GetMetaDataAsync(Guid id, CancellationToken cancellationToken)
     {
         var outputDto = await _imageСacheRepository.GetMetaDataAsync(id, cancellationToken);
         if (outputDto is null) { throw new NotFoundException(GetNotFoundMessage(id)); }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using BulletinBoard.Contracts.Images.Image.ReadDto;
-using BulletinBoard.Contracts.Images.Новая_папка;
 using BulletinBoard.Domain.Entities.Images;
 
 

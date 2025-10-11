@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Infrastructure.ComponentRegistrar;
+namespace BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
 
 public class DbInitializer : IAsyncInitializer
 {
@@ -28,7 +28,6 @@ public class DbInitializer : IAsyncInitializer
     {
         await _bulletinContext.Database.MigrateAsync(cancellationToken);
         //await FillDatabase(_bulletinContext); // Для ручных тестов
-
     }
 
 

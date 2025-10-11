@@ -42,8 +42,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{15ACC986-D4CA-45FC-BCA2-B680FAAEEABB}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		nginx.conf = nginx.conf
 		docker-compose.yml = docker-compose.yml
+		nginx.conf = nginx.conf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED5688F7-F6ED-498B-A724-54372746E667}"
@@ -51,6 +51,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Tests", "src\BulletinBoard\tests\BulletinBoard.Tests\BulletinBoard.Tests.csproj", "{5912D3C3-0ACE-4125-9B81-ABF72FB76958}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.IntegrationTests", "src\BulletinBoard\tests\BulletinBoard.IntegrationTests\BulletinBoard.IntegrationTests.csproj", "{9A99645B-E1A9-4882-8B00-FB6A9B6AF019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.BulletinAPI", "src\BulletinBoard\Hosts\BulletinBoard.Hosts.BulletinAPI\BulletinBoard.Hosts.BulletinAPI.csproj", "{229239C1-8F82-4C1A-88A7-D4FF73B85CDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.ImagesAPI", "src\BulletinBoard\Hosts\BulletinBoard.Hosts.ImagesAPI\BulletinBoard.Hosts.ImagesAPI.csproj", "{0E8A8D88-8204-4837-B617-A4F5D0D97B4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.APIGateway", "src\BulletinBoard\Hosts\BulletinBoard.Hosts.APIGateway\BulletinBoard.Hosts.APIGateway.csproj", "{22981B3E-9452-471E-B109-110C6F8BCC9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +108,18 @@ Global
 		{9A99645B-E1A9-4882-8B00-FB6A9B6AF019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A99645B-E1A9-4882-8B00-FB6A9B6AF019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A99645B-E1A9-4882-8B00-FB6A9B6AF019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +145,9 @@ Global
 		{ED5688F7-F6ED-498B-A724-54372746E667} = {F082B593-DA5D-4820-A296-B8D42CC93860}
 		{5912D3C3-0ACE-4125-9B81-ABF72FB76958} = {ED5688F7-F6ED-498B-A724-54372746E667}
 		{9A99645B-E1A9-4882-8B00-FB6A9B6AF019} = {ED5688F7-F6ED-498B-A724-54372746E667}
+		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
+		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
+		{22981B3E-9452-471E-B109-110C6F8BCC9E} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D52AF9F8-313A-4415-AF6F-5FF0257967C3}

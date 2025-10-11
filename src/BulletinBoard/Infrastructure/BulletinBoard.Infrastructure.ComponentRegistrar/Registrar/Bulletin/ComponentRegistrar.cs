@@ -27,39 +27,25 @@ using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator.IValidators;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator;
 using BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinViewsCountValidator.IValidators;
-using BulletinBoard.AppServices.Contexts.Images.Repository;
-using BulletinBoard.AppServices.Contexts.Images.Sercices;
-using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
-using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator;
-using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
-using BulletinBoard.Domain.Base;
-using BulletinBoard.Infrastructure.ComponentRegistrar.DBSettings;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.BulletinRepository;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Images.ImagesRepository;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver;
-using System;
 
 
-namespace BulletinBoard.Infrastructure.ComponentRegistrar;
+
+namespace BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
 
 public static class ComponentRegistrar 
 {
-    public static IServiceCollection RegisterAppServices(this IServiceCollection services)
+    public static IServiceCollection RegisterBulletinServices(this IServiceCollection services)
     {
-        // Bulletin - домен работы с объявлениями
         // BulletinServices
         services.AddScoped<IBulletinCategoryService, BulletinCategoryService>();
         services.AddScoped<IBulletinCharacteristicComparisonService, BulletinCharacteristicComparisonService>();
@@ -71,9 +57,6 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinUserService, BulletinUserService>();
         services.AddScoped<IBulletinViewsCountService, BulletinViewsCountService>();
         services.AddScoped<IBulletinService, BulletinService>();
-
-
-
 
 
         // BulletinMappingServices
@@ -93,9 +76,6 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinMainCursorPaginationSpecificationBuilder, BulletinMainCursorPaginationSpecificationBuilder>();
 
         
-
-
-
         // BulletinValidators
         // BulletinCategory
         services.AddScoped<IBulletinCategoryCreateDtoValidator, BulletinCategoryCreateDtoValidator>();
@@ -151,21 +131,10 @@ public static class ComponentRegistrar
         services.AddScoped<IValidator<BelletinCreateDto>, BulletinCreateDtoValidator>();
         services.AddScoped<IBulletinPaginationRequestDtoValidator, BulletinPaginationRequestDtoValidator>();
 
-
-        // Images
-        // ImagesServices
-        services.AddScoped<IImageServise, ImageServise>();
-
-        //ImagesValidators
-        services.AddScoped<IImageCreateDtoValidator, ImageCreateDtoValidator>();
-        services.AddScoped<IImageValidatorFacade, ImageValidatorFacade>();
-
-        
-
         return services;
     }
 
-    public static IServiceCollection RegisterAppRepositories(this IServiceCollection services)
+    public static IServiceCollection RegisterBulletinRepositories(this IServiceCollection services)
     {
         // Базовый глупый репозиторий.
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
@@ -183,29 +152,20 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinReposotory, BulletinReposotory>();
         services.AddScoped<IUnitOfWorkBulletin, UnitOfWorkBulletin>();
 
-
-        //ImagesRepositories
-        services.AddScoped<IImageRepository, ImageRepository>();
-
-
-
-        // Репозитории следующего домена
-
         return services;
     }
 
-    public static IServiceCollection RegistrarAppMappers(this IServiceCollection services)
+    public static IServiceCollection RegistrarBulletinMappers(this IServiceCollection services)
     {
         services.AddAutoMapper
             (
                 typeof(BulletinMappingProfile)
-            // Другие профайлеры
             );
 
         return services;
     }
 
-    public static IServiceCollection RegistrarAppContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
+    public static IServiceCollection RegistrarBulletinContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
     {
         // BulletinContext
         services.AddDbContext<BulletinContext>(options =>
@@ -216,50 +176,13 @@ public static class ComponentRegistrar
             );
         });
 
-        // ImageContext
-        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-
-        // Регистрация маппинга для EntityBase
-        if (!BsonClassMap.IsClassMapRegistered(typeof(EntityBase)))
-        {
-            BsonClassMap.RegisterClassMap<EntityBase>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdProperty(x => x.Id)
-                  .SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
-            });
-        }
-
-        var mongoSettings = new MongoDBSettings();
-        configuration.GetSection("MongoDB").Bind(mongoSettings);
-        services.AddSingleton(mongoSettings);
-
-        services.AddSingleton<IMongoClient>(serviceProvider =>
-        {
-            var settings = serviceProvider.GetRequiredService<MongoDBSettings>(); // Без IOptions!
-            return new MongoClient(settings.ConnectionString);
-        });
-
-        services.AddScoped<IMongoDatabase>(serviceProvider =>
-        {
-            var settings = serviceProvider.GetRequiredService<MongoDBSettings>(); // Без IOptions!
-            var client = serviceProvider.GetRequiredService<IMongoClient>();
-            return client.GetDatabase(settings.DatabaseName);
-        });
-
-
-        // Другие контексты
-
         return services;
     }
 
 
-    public static IServiceCollection RegistrarAppInitializers(this IServiceCollection services)
+    public static IServiceCollection RegistrarBulletinInitializers(this IServiceCollection services)
     {
         services.AddAsyncInitializer<DbInitializer>();
-
-        //  Другие инициализаторы
-
         return services;
     }
 }

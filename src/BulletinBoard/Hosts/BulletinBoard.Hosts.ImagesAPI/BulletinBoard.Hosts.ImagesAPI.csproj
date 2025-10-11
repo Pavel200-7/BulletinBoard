@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>bin\Debug\net9.0\BulletinBoard.Hosts.Api.xml</DocumentationFile>
+		<UserSecretsId>7eca69a8-b16e-403d-9d85-fee440ea57e0</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..\..\..</DockerfileContext>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+		<PackageReference Include="Swashbuckle" Version="5.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Application\BulletinBoard.AppServices\BulletinBoard.AppServices.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BulletinBoard.Infrastructure.ComponentRegistrar\BulletinBoard.Infrastructure.ComponentRegistrar.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BulletinBoard.Infrastructure.DataAccess\BulletinBoard.Infrastructure.DataAccess.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\BulletinBoard.Infrastructure\BulletinBoard.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="..\..\tests\BulletinBoard.IntegrationTests\BulletinBoard.IntegrationTests.csproj" />
+	</ItemGroup>
+
+
+</Project>
