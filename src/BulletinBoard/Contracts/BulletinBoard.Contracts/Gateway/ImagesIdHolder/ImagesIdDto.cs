@@ -24,5 +24,5 @@ public class ImagesIdDto
     /// <summary>
     /// Клиентский id, при помощи которого изображение можо удалить во время создания объявления.
     /// </summary>
-    public string clientImageId { get; set; }
+    public string? ClientImageId { get; set; }
 }

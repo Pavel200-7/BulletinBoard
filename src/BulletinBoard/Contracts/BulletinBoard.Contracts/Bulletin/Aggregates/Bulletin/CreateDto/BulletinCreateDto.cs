@@ -56,11 +56,53 @@ public class BelletinCreateDto
     /// <summary>
     /// Добавить изображения.
     /// </summary>
-    public void AddImages(List<BulletinImageCreateDtoWhileBulletinCreating>  images)
+    public void AddImages(List<BulletinImageCreateDtoWhileBulletinCreating>?  images)
     {
-        if (images != null && images.Any())
+        if (images is null || !images.Any()) {  return; }
+
+        if (IsMainImagesMoreThanOne(images))
         {
-            Images.AddRange(images);
+            MakeMainOnlyLastMainImage(images);
+        }
+
+        Images.AddRange(images);
+    }
+
+    /// <summary>
+    /// Больше ли одного главного (титульного) изображения.
+    /// </summary>
+    /// <param name="images">информация избражений.</param>
+    /// <returns>Результат проверки.</returns>
+    private bool IsMainImagesMoreThanOne(List<BulletinImageCreateDtoWhileBulletinCreating> images)
+    {
+        return images.Count(i => i.IsMain) > 1;
+    }
+
+    /// <summary>
+    /// Оставить только 1 главное (титульное изображение) (последнее).
+    /// </summary>
+    /// <param name="images">информация избражений.</param>
+    private void MakeMainOnlyLastMainImage(List<BulletinImageCreateDtoWhileBulletinCreating> images)
+    {
+        int lastMainIndex = -1;
+        for (int i = images.Count - 1; i >= 0; i--)
+        {
+            if (images[i].IsMain)
+            {
+                lastMainIndex = i;
+                break;
+            }
+        }
+
+        if (lastMainIndex >= 0)
+        {
+            for (int i = 0; i < images.Count; i++)
+            {
+                if (i != lastMainIndex)
+                {
+                    images[i].IsMain = false;
+                }
+            }
         }
     }
 

@@ -31,4 +31,34 @@ public class BulletinCreateDtoController
     /// Изображения объявления.
     /// </summary>
     public List<BulletinImageCreateDtoWhileBulletinCreating> Images { get; set; }
+
+    /// <summary>
+    /// Конструктор для контроллера.
+    /// </summary>
+    public BulletinCreateDtoController()
+    {
+        CharacteristicComparisons = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();
+        Images = new List<BulletinImageCreateDtoWhileBulletinCreating>();
+    }
+
+    /// <summary>
+    /// Создать объект объявления с главной частью и характеристиками.
+    /// </summary>
+    /// <param name="bulletinCreateDtoRequest">Данные объявления</param>
+    public BulletinCreateDtoController(BulletinCreateDtoRequest bulletinCreateDtoRequest)
+    {
+        BulletinMain = bulletinCreateDtoRequest.BulletinMain;
+        CharacteristicComparisons = bulletinCreateDtoRequest.CharacteristicComparisons;
+        Images = new();
+    }
+
+    /// <summary>
+    /// Добавить id изображений.
+    /// </summary>
+    /// <param name="imagesIslist">Данные изображений.</param>
+    public void AddImages(List<BulletinImageCreateDtoWhileBulletinCreating>? imagesIslist)
+    {
+        if (imagesIslist is null || !imagesIslist.Any()) { return; }
+        Images.AddRange(imagesIslist);
+    }
 }

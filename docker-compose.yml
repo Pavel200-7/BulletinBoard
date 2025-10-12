@@ -35,6 +35,8 @@ services:
     networks:
       bulletin_net:
         ipv4_address: 192.168.0.4
+    ports:
+      - "8091:8080"
     depends_on:
       - postgresql
     environment:
@@ -48,6 +50,8 @@ services:
     networks:
       bulletin_net:
         ipv4_address: 192.168.0.5
+    ports:
+      - "8092:8080"
     depends_on:
       - mongodb
     environment:

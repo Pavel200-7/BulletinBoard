@@ -143,30 +143,14 @@ public class BulletinController : ControllerBase
     ///     }
     ///
     /// </remarks>
-    /// <param name="bulletinCreateDtoAPIVersion">Формат данных создания нового объявления.</param>
+    /// <param name="bulletinCreateDto">Формат данных создания нового объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Id объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateBulletin(BulletinCreateDtoRequest bulletinCreateDtoAPIVersion, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBulletin(BulletinCreateDtoController bulletinCreateDto, CancellationToken cancellationToken)
     {
-        List<BulletinImageCreateDtoWhileBulletinCreating> imagesCreateDto = new()
-        {
-            new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = true },
-            new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = false },
-            new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = false },
-            new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = false },
-            new BulletinImageCreateDtoWhileBulletinCreating() { Id = Guid.NewGuid(), IsMain = false },
-        };
-
-        BulletinCreateDtoController bulletinCreateDto = new BulletinCreateDtoController
-        {
-            BulletinMain = bulletinCreateDtoAPIVersion.BulletinMain,
-            CharacteristicComparisons = bulletinCreateDtoAPIVersion.CharacteristicComparisons,
-            Images = imagesCreateDto
-        };
-
         Guid bulletinId = await _bulletinService.CreateAsync(bulletinCreateDto, cancellationToken);
         return Ok(bulletinId);
     }
@@ -178,7 +162,7 @@ public class BulletinController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    Put api/Bulletin
+    ///    Put api/Bulletin/0199d813-a325-7de1-bdc4-c61bdb4125fb
     ///    {
     ///         "title": "Заголовок объявления.",
     ///         "description": "Описание объявления.",
@@ -190,7 +174,7 @@ public class BulletinController : ControllerBase
     /// <param name="updateDto">Данные обновления объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Id объявления.</returns>
-    [HttpPut]
+    [HttpPut("{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBulletin(Guid id, BulletinMainUpdateDto updateDto, CancellationToken cancellationToken)
@@ -206,13 +190,13 @@ public class BulletinController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    Delete api/Bulletin
+    ///    Delete api/Bulletin/0199d813-a325-7de1-bdc4-c61bdb4125fb
     ///
     /// </remarks>
     /// <param name="id">Id объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат удаления.</returns>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteBulletin(Guid id, CancellationToken cancellationToken)

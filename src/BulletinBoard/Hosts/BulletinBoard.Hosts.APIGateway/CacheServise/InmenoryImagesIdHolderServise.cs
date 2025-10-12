@@ -33,7 +33,7 @@ public class InmenoryImagesIdHolderServise : IInmenoryImagesIdHolderServise
         var holder = GetOrCreateHolder(cacheKey);
 
         var existingImage = holder.imagesIds
-            .FirstOrDefault(iId => iId.clientImageId == idInfo.clientImageId);
+            .FirstOrDefault(iId => iId.ClientImageId == idInfo.ClientImageId);
 
         if (existingImage is not null) { return false; }
 
@@ -68,7 +68,7 @@ public class InmenoryImagesIdHolderServise : IInmenoryImagesIdHolderServise
         if (holder is null) { return null; }
 
         var image = holder.imagesIds
-            .Where(iId => iId.clientImageId == clientImageId)
+            .Where(iId => iId.ClientImageId == clientImageId)
             .FirstOrDefault();
 
         return image;
@@ -85,7 +85,7 @@ public class InmenoryImagesIdHolderServise : IInmenoryImagesIdHolderServise
         }
 
         var imageToRemove = holder!.imagesIds
-            .FirstOrDefault(iId => iId.clientImageId == clientImageId);
+            .FirstOrDefault(iId => iId.ClientImageId == clientImageId);
 
         if (imageToRemove == null) { return false; }
 
