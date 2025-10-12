@@ -1,4 +1,6 @@
 ﻿// BulletinBoard.Hosts.Gateway/Controllers/ImagesGatewayController.cs
+using BulletinBoard.AppServices.Contexts.Apigateway.Services.IServices;
+using BulletinBoard.Contracts.DTO.Gateway.ImagesIdHolder;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Gateway.Controllers
@@ -8,10 +10,68 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
     public class ImagesGatewayController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IInmenoryImagesIdHolderServise _idHolderServise;
 
-        public ImagesGatewayController(IHttpClientFactory httpClientFactory)
+        public ImagesGatewayController
+            (
+            IHttpClientFactory httpClientFactory,
+            IInmenoryImagesIdHolderServise idHolderServise
+            )
         {
             _httpClientFactory = httpClientFactory;
+            _idHolderServise = idHolderServise;
+        }
+
+        /// <summary>
+        /// Загрузить изображение во время создания объявления.
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     POST /api/ImagesGateway/upload
+        ///     {
+        ///         FormData: file,
+        ///         clientImageId: "04d28d48-8723-4b96-a070-5155f73545c4"
+        ///     }
+        ///     
+        ///
+        /// </remarks>
+        /// <param name="file">Файл изображения.</param>
+        /// <param name="imagesIdRequest">Информация для создания изображения.</param>
+
+        /// <returns>Идентификатор загруженного изображения.</returns>
+        [HttpPost("upload_with_bulletin")]
+        public async Task<IActionResult> UploadImage(IFormFile file, ImagesIdRequestDto imagesIdRequest)
+        {
+            // TODO текущий id сессии фейковый
+             Guid sessionId = Guid.NewGuid();
+
+
+            var client = _httpClientFactory.CreateClient("ImageService");
+
+            using var content = new MultipartFormDataContent();
+            using var fileStream = file.OpenReadStream();
+            var fileContent = new StreamContent(fileStream);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+            content.Add(fileContent, "file", file.FileName);
+
+
+            var response = await client.PostAsync("/api/images/upload", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Guid imageId = Guid.Parse(responseContent.Trim('"')); // Убираем кавычки если есть
+                var imageIdInfo = new ImagesIdDto()
+                {
+                    Id = imageId,
+                    clientImageId = imagesIdRequest.clientImageId,
+                    IsMain = imagesIdRequest.IsMain
+                };
+                _idHolderServise.Add(sessionId, imageIdInfo);
+            }
+
+            return Content(responseContent, "application/json");
         }
 
         /// <summary>

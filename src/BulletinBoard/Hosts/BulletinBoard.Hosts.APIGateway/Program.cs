@@ -1,3 +1,5 @@
+using BulletinBoard.AppServices.Contexts.Apigateway.Services;
+using BulletinBoard.AppServices.Contexts.Apigateway.Services.IServices;
 using BulletinBoard.Infrastructure.ComponentRegistrar;
 using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Images;
 using BulletinBoard.Infrastructure.Middlewares;
@@ -5,12 +7,21 @@ using BulletinBoard.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient("BulletinService", client =>
+{
+    client.BaseAddress = new Uri("http://bulletin_service:8080");
+});
 
-// Контекст Entity framework
-var environment = builder.Environment.EnvironmentName;
+builder.Services.AddHttpClient("ImageService", client =>
+{
+    client.BaseAddress = new Uri("http://images_service:8080");
+});
 
-// Сервисы, репозитории, мапперы
+
+// Сервисы, кеш и кеш сервисы
 builder.Services.RegisterAPIGatewayServices();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IInmenoryImagesIdHolderServise, InmenoryImagesIdHolderServise>();
 
 
 builder.Services.AddControllers();
