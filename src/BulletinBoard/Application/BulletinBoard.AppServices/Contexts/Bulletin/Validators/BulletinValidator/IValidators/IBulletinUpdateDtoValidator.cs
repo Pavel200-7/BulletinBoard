@@ -11,6 +11,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidat
 /// <summary>
 /// Требует доработки.
 /// </summary>
-public interface IBulletinUpdateDtoValidator : IDtoValidator<BelletinUpdateDtoForValidating> //UpdateDto нет  
+public interface IBulletinUpdateDtoValidator : IDtoValidator<BulletinUpdateDtoForValidating> //UpdateDto нет  
 {
 }

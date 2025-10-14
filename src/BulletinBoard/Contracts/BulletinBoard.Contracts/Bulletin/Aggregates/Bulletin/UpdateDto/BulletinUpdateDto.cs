@@ -9,6 +9,6 @@ namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.UpdateDto;
 /// <summary>
 /// Требует доработки.
 /// </summary>
-public class BelletinUpdateDto
+public class BulletinUpdateDto
 {
 }

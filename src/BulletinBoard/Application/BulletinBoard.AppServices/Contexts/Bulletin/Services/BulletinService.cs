@@ -111,7 +111,7 @@ public class BulletinService : IBulletinService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            BelletinCreateDto belletinCreateDto = new(createDto.BulletinMain);
+            BulletinCreateDto belletinCreateDto = new(createDto.BulletinMain);
             belletinCreateDto.AddCharacteristicComparisons(createDto.CharacteristicComparisons);
             belletinCreateDto.AddImages(createDto.Images);
             belletinCreateDto.AddViewsCount();

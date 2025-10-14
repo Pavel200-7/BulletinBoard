@@ -1,5 +1,6 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar;
 using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
+using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.User;
 using BulletinBoard.Infrastructure.Middlewares;
 
 

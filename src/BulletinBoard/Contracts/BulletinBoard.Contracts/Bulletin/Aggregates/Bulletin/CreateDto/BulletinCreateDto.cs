@@ -9,7 +9,7 @@ namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 /// <summary>
 /// Предназначен для операции создания объявления со всеми его сопутствующими связями (дополняющими сущностями).
 /// </summary>
-public class BelletinCreateDto
+public class BulletinCreateDto
 {
     /// <summary>
     /// Основная сущность объявления
@@ -34,7 +34,7 @@ public class BelletinCreateDto
     /// <summary>
     /// Конструктор объявления.
     /// </summary>
-    public BelletinCreateDto(BulletinMainCreateDto main)
+    public BulletinCreateDto(BulletinMainCreateDto main)
     {
         BulletinMain = main;
         CharacteristicComparisons = new List<BulletinCharacteristicComparisonCreateDtoWhileBulletinCreating>();

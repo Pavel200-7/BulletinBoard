@@ -19,8 +19,8 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidat
 /// <inheritdoc/>
 public class BulletinDtoValidatorFacade : BaseValidatorFacade
     <
-    BelletinCreateDto,
-    BelletinUpdateDtoForValidating,
+    BulletinCreateDto,
+    BulletinUpdateDtoForValidating,
     IBulletinCreateDtoValidator,
     IBulletinUpdateDtoValidator,
     IBulletinDeleteValidator

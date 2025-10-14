@@ -1,11 +1,11 @@
-﻿using BulletinBoard.AppServices.Contexts.Images.Repository;
+﻿using BulletinBoard.AppServices.Contexts.Images.Mapping;
+using BulletinBoard.AppServices.Contexts.Images.Repository;
 using BulletinBoard.AppServices.Contexts.Images.Sercices;
 using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
 using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator;
 using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
 using BulletinBoard.Domain.Base;
 using BulletinBoard.Infrastructure.ComponentRegistrar.DBSettings;
-using BulletinBoard.Infrastructure.DataAccess.Contexts.Bulletin.Mapping;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Images.ImagesRepository;
 using BulletinBoard.Infrastructure.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +47,7 @@ public static class ComponentRegistrar
     {
         services.AddAutoMapper
             (
-                typeof(BulletinMappingProfile)
+                typeof(ImagesMappingProfile)
             );
 
         return services;

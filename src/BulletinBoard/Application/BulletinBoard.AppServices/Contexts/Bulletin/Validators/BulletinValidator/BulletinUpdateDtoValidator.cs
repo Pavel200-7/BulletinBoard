@@ -11,6 +11,6 @@ using System.Threading.Tasks;
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator;
 
 /// <inheritdoc/>
-public class BulletinUpdateDtoValidator : AbstractValidator<BelletinUpdateDtoForValidating>, IBulletinUpdateDtoValidator
+public class BulletinUpdateDtoValidator : AbstractValidator<BulletinUpdateDtoForValidating>, IBulletinUpdateDtoValidator
 {
 }

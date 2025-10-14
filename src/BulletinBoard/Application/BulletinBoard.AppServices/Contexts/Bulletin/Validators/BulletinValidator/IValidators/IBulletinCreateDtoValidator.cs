@@ -44,6 +44,6 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidat
 ///     1. ViewsCount:
 ///         1. Равно 0.
 /// </summary>
-public interface IBulletinCreateDtoValidator : IDtoValidator<BelletinCreateDto>
+public interface IBulletinCreateDtoValidator : IDtoValidator<BulletinCreateDto>
 {
 }

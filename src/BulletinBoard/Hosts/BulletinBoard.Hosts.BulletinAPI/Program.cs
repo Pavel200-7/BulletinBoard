@@ -1,4 +1,3 @@
-using BulletinBoard.Infrastructure.ComponentRegistrar;
 using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
 using BulletinBoard.Infrastructure.Middlewares;
 

@@ -82,7 +82,7 @@ public class BulletinReposotory : IBulletinReposotory
     }
 
     /// <inheritdoc/>
-    public async Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken)
+    public async Task<Guid> CreateAsync(BulletinCreateDto createDto, CancellationToken cancellationToken)
     {
         var bulletinMain = _autoMapper.Map<BulletinMain>(createDto.BulletinMain);
         var bulletinMainEntyty = await _bulletinContext.BulletinMain.AddAsync(bulletinMain, cancellationToken);

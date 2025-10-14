@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\BulletinBoard.AppServices\BulletinBoard.AppServices.csproj" />
+    <ProjectReference Include="..\..\Domain\BulletinBoard.Domain\BulletinBoard.Domain.csproj" />
     <ProjectReference Include="..\BulletinBoard.Infrastructure.DataAccess\BulletinBoard.Infrastructure.DataAccess.csproj" />
   </ItemGroup>
 

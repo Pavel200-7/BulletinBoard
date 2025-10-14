@@ -9,6 +9,6 @@ namespace BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.UpdateDto;
 /// <summary>
 /// Дто для валидации изменений объявления.
 /// </summary>
-public class BelletinUpdateDtoForValidating : BelletinUpdateDto
+public class BulletinUpdateDtoForValidating : BulletinUpdateDto
 {
 }

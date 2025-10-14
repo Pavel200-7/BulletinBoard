@@ -14,7 +14,7 @@ using System.Net;
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidator;
 
 /// <inheritdoc/>
-public class BulletinCreateDtoValidator : AbstractValidator<BelletinCreateDto>, IBulletinCreateDtoValidator
+public class BulletinCreateDtoValidator : AbstractValidator<BulletinCreateDto>, IBulletinCreateDtoValidator
 {
     private readonly IBulletinCharacteristicValueRepository _characteristicValueRepository;
     private IBulletinCharacteristicRepository _characteristicRepository;
@@ -39,7 +39,7 @@ public class BulletinCreateDtoValidator : AbstractValidator<BelletinCreateDto>, 
                 Guid bulletinCategoryId = dto.BulletinMain.CategoryId;
                 Guid characteristicId = characteristicComparison.CharacteristicId;
 
-                var validator = new CharacteristicIdValidator<BelletinCreateDto>(
+                var validator = new CharacteristicIdValidator<BulletinCreateDto>(
                     bulletinCategoryId, _characteristicRepository);
 
                 return await validator.IsValidAsync(validationContext, characteristicId, cancellationToken);
@@ -49,7 +49,7 @@ public class BulletinCreateDtoValidator : AbstractValidator<BelletinCreateDto>, 
                 Guid characteristicId = characteristicComparison.CharacteristicId;
                 Guid characteristicValueId = characteristicComparison.CharacteristicValueId;
 
-                var validator = new CharacteristicValueIdValidator<BelletinCreateDto>(
+                var validator = new CharacteristicValueIdValidator<BulletinCreateDto>(
                     characteristicId, _characteristicValueRepository);
 
                 return await validator.IsValidAsync(validationContext, characteristicValueId, cancellationToken);

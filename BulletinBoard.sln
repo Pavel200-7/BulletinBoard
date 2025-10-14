@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.ImagesA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.APIGateway", "src\BulletinBoard\Hosts\BulletinBoard.Hosts.APIGateway\BulletinBoard.Hosts.APIGateway.csproj", "{22981B3E-9452-471E-B109-110C6F8BCC9E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulletinBoard.Hosts.UserAPI", "src\BulletinBoard\Hosts\BulletinBoard.Hosts.UserAPI\BulletinBoard.Hosts.UserAPI.csproj", "{AC647569-33AA-4DB1-956F-FABDEB62C2D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22981B3E-9452-471E-B109-110C6F8BCC9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC647569-33AA-4DB1-956F-FABDEB62C2D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC647569-33AA-4DB1-956F-FABDEB62C2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC647569-33AA-4DB1-956F-FABDEB62C2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC647569-33AA-4DB1-956F-FABDEB62C2D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{229239C1-8F82-4C1A-88A7-D4FF73B85CDE} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
 		{0E8A8D88-8204-4837-B617-A4F5D0D97B4C} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
 		{22981B3E-9452-471E-B109-110C6F8BCC9E} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
+		{AC647569-33AA-4DB1-956F-FABDEB62C2D4} = {E492C8AE-52C9-48A7-ADE2-5E5E3D2FE881}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D52AF9F8-313A-4415-AF6F-5FF0257967C3}

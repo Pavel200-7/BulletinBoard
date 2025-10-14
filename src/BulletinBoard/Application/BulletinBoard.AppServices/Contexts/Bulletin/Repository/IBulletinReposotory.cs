@@ -45,7 +45,7 @@ public interface IBulletinReposotory
     /// <param name="createDto">Дто создания объявления (агрегат).</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns></returns>
-    public Task<Guid> CreateAsync(BelletinCreateDto createDto, CancellationToken cancellationToken);
+    public Task<Guid> CreateAsync(BulletinCreateDto createDto, CancellationToken cancellationToken);
 
 
 }

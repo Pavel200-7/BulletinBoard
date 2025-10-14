@@ -128,7 +128,7 @@ public static class ComponentRegistrar
         services.AddScoped<IBulletinUpdateDtoValidator, BulletinUpdateDtoValidator>();
         services.AddScoped<IBulletinDeleteValidator, BulletinDeleteValidator>();
         services.AddScoped<IBulletinDtoValidatorFacade, BulletinDtoValidatorFacade>();
-        services.AddScoped<IValidator<BelletinCreateDto>, BulletinCreateDtoValidator>();
+        services.AddScoped<IValidator<BulletinCreateDto>, BulletinCreateDtoValidator>();
         services.AddScoped<IBulletinPaginationRequestDtoValidator, BulletinPaginationRequestDtoValidator>();
 
         return services;

@@ -11,7 +11,7 @@ namespace BulletinBoard.AppServices.Contexts.Bulletin.Validators.BulletinValidat
 /// <summary>
 /// Класс, предоставляющий единый интерфейс для валидации разных дто работы с объявлением (как совокупности связанных сущностей)
 /// </summary>
-public interface IBulletinDtoValidatorFacade : IValidatorFacade<BelletinCreateDto, BelletinUpdateDtoForValidating>
+public interface IBulletinDtoValidatorFacade : IValidatorFacade<BulletinCreateDto, BulletinUpdateDtoForValidating>
 {
     /// <summary>
     /// Валидировать ДТО запроса пагинации сущности.
