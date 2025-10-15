@@ -5,6 +5,7 @@ using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using BulletinBoard.Contracts.User.AuthDto;
 using BulletinBoard.Domain.Entities.User.Enums;
+using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Reflection;
 
@@ -14,14 +15,17 @@ namespace BulletinBoard.AppServices.Contexts.User.Services;
 public class UserService : IUserService
 {
     private IUserRepositoryAdapter _repositoryAdapter { get; set; }
+    private ILogger<UserService> _logger { get; set; }
 
     /// <inheritdoc/>
     public UserService
         (
-        IUserRepositoryAdapter repositoryAdapter
+        IUserRepositoryAdapter repositoryAdapter,
+        ILogger<UserService> logger
         )
     {
         _repositoryAdapter = repositoryAdapter;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -29,6 +33,7 @@ public class UserService : IUserService
     {
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
         if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
+        
         return userDto!;
     }
 
@@ -50,6 +55,8 @@ public class UserService : IUserService
             throw new ValidationExeption(result.Errors);
         }
 
+        _logger.LogInformation($"Был создан пользователь с id {result.UserId}.");
+
         return result.UserId;
     }
 
@@ -61,6 +68,8 @@ public class UserService : IUserService
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
         if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
 
+        _logger.LogInformation($"Пользователю с id {userId} была добавлена роль {Roles.User}.");
+
         return await _repositoryAdapter.AddRoleAsync(userId, role);
     }
 
@@ -71,6 +80,8 @@ public class UserService : IUserService
 
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
         if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
+
+        _logger.LogInformation($"У пользователя с id {userId} была отнята роль {Roles.User}.");
 
         return await _repositoryAdapter.DeleteRoleAsync(userId, role);
     }

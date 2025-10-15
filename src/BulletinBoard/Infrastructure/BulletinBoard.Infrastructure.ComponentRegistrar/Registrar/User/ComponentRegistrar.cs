@@ -2,8 +2,10 @@
 using BulletinBoard.AppServices.Contexts.User.Repository;
 using BulletinBoard.AppServices.Contexts.User.Services;
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.Domain.Entities.User;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User.UserRepository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,11 +32,6 @@ public static class ComponentRegistrar
 
         services.AddScoped<IUserEmailConfirmationRepositoryAdapter, UserEmailConfirmationRepositoryAdapter>();
         services.AddScoped<IUserRepositoryAdapter, UserRepositoryAdapter>();
-
-
-
-
-
 
         services.AddScoped<IUnitOfWorkUser, UnitOfWorkUser>();
 

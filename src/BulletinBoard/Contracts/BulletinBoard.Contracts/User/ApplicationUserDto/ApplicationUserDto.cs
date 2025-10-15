@@ -45,9 +45,8 @@ public class ApplicationUserDto
     /// </summary>
     public string? FormattedAddress { get; set; }
 
-
     /// <summary>
     /// Роли
     /// </summary>
-    public List<string> Roles { set; get; } = new();
+    public List<string> Roles { set; get; }
 }

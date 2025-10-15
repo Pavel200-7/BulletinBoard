@@ -8,7 +8,7 @@ public class TokenDto
     /// <summary>
     /// Токен аутентификации
     /// </summary>
-    string AccessToken { get; set; }
+    public string AccessToken { get; set; }
 
     /// <inheritdoc/>
     public TokenDto(string accessToken)

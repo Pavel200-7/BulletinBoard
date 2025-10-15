@@ -4,7 +4,9 @@ using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using BulletinBoard.Contracts.User.AuthDto;
+using BulletinBoard.Domain.Entities.User.Enums;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace BulletinBoard.AppServices.Contexts.User.Services;
 
@@ -23,6 +25,7 @@ public class AuthService : IAuthService
     private IUserService _userService;
     private IUserEmailConformationService _emailConformationService;
     private IMailService _mailService;
+    private ILogger<AuthService> _logger;
 
     /// <inheritdoc/>
     public AuthService
@@ -30,19 +33,23 @@ public class AuthService : IAuthService
         IConfiguration configuration,
         IUserService userService,
         IUserEmailConformationService emailConformationService,
-        IMailService mailService
+        IMailService mailService,
+        ILogger<AuthService> logger
         )
     {
         _configuration = configuration;
         _userService = userService;
         _emailConformationService = emailConformationService;
         _mailService = mailService;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
     public async Task<string> Register(ApplicationUserCreateDto createDto)
     {
         string userId = await _userService.CreateAsync(createDto);
+
+        await _userService.AddRoleAsync(userId, Roles.User);
         ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
 
         string email = userDto.Email;
@@ -57,17 +64,23 @@ public class AuthService : IAuthService
     {
         ApplicationUserDto? userDto = await _userService.GetByEmailAsync(logInDto.Email);
 
+        _logger.LogInformation($"Получена сущность пользователя {JsonSerializer.Serialize(userDto)}.");
+
         if (userDto is null)
         {
+            _logger.LogInformation($"Пользователь не найден.");
             throw new ValidationExeption(GetEmailValidationExeption()); 
         }
 
-        if (await _userService.CheckPassword(logInDto))
+        
+        if (!await _userService.CheckPassword(logInDto))
         {
+            _logger.LogInformation($"Пароль не верен.");
             throw new ValidationExeption(GetPasswordValidationExeption());
         }
 
         TokenDto tokenDto = new TokenDto(GenerateJWTString(userDto));
+        _logger.LogInformation($"Был создан токен jwt {JsonSerializer.Serialize(tokenDto)}.");
 
         return tokenDto;
     }
@@ -78,7 +91,7 @@ public class AuthService : IAuthService
         List<Claim> claims = new();
         claims.Add(new Claim(ClaimTypes.Sid, userDto.Id));
         claims.Add(new Claim(ClaimTypes.Email, userDto.Email));
-        userDto.Roles.ForEach(role =>
+        userDto.Roles?.ForEach(role =>
             claims.Add(new Claim(ClaimTypes.Role, role)));
 
 
@@ -93,7 +106,9 @@ public class AuthService : IAuthService
             signingCredentials: creds
             );
 
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        _logger.LogInformation($"Был создан токен с содержимым {JsonSerializer.Serialize(token)} до перевода в строку.");
+
+        string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
         return tokenString;
     }
 

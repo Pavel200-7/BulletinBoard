@@ -2,6 +2,7 @@
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.AppServices.Repository;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +17,21 @@ public class UserEmailConformationService : IUserEmailConformationService
     private readonly IUserRepositoryAdapter _repositoryAdapter;
     private readonly IUserEmailConfirmationRepositoryAdapter _emailConfirmationRepositoryAdapter;
     private IUnitOfWorkUser _unitOfWork;
+    private ILogger<UserEmailConformationService> _logger;
 
     /// <inheritdoc/>
     public UserEmailConformationService
         (
         IUserRepositoryAdapter repositoryAdapter,
         IUserEmailConfirmationRepositoryAdapter emailConfirmationRepositoryAdapter,
-        IUnitOfWorkUser unitOfWorkUser
+        IUnitOfWorkUser unitOfWorkUser,
+        ILogger<UserEmailConformationService> logger
         )
     {
         _repositoryAdapter = repositoryAdapter;
         _emailConfirmationRepositoryAdapter = emailConfirmationRepositoryAdapter;
         _unitOfWork = unitOfWorkUser;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -47,6 +51,7 @@ public class UserEmailConformationService : IUserEmailConformationService
             }
 
             await _unitOfWork.CommitTransactionAsync();
+            _logger.LogInformation($"Почта пользователя с id {userId} была подтверждена.");
 
             return operationSucceeded;
         }
@@ -60,7 +65,9 @@ public class UserEmailConformationService : IUserEmailConformationService
     /// <inheritdoc/>
     public async Task<string> GetNewEmailConfirmationTokenAsync(string userId)
     {
-        return await _emailConfirmationRepositoryAdapter.GetNewEmailConfirmationTokenAsync(userId);
+        string newToken = await _emailConfirmationRepositoryAdapter.GetNewEmailConfirmationTokenAsync(userId);
+        _logger.LogInformation($"Для пользователя с id {userId} был сгенерирован новый токен подтверждения почты.");
+        return newToken;
     }
 
     /// <inheritdoc/>

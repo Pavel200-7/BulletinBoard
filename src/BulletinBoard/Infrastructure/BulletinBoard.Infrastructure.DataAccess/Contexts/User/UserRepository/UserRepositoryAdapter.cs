@@ -30,8 +30,10 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByIdAsync(userId);
         if (user is null) { return null; }
-        return _autoMapper.Map<ApplicationUserDto>(user);
+        ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
+        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
 
+        return userDto;
     }
 
     /// <inheritdoc/>
@@ -39,7 +41,10 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByNameAsync(username);
         if (user is null) { return null; }
-        return _autoMapper.Map<ApplicationUserDto>(user);
+        ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
+        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+
+        return userDto;
     }
 
     /// <inheritdoc/>
@@ -47,7 +52,10 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByEmailAsync(email);
         if (user is null) { return null; }
-        return _autoMapper.Map<ApplicationUserDto>(user);
+        ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
+        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+
+        return userDto;
     }
 
     /// <inheritdoc/>

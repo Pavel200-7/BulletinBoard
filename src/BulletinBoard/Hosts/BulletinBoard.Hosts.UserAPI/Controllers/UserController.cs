@@ -36,6 +36,8 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="createDto">данные для создания аккаунта.</param>
     /// <returns>результат операции.</returns>
+    [HttpPost]
+    [Route("register")]
     public async Task<IActionResult> Register(ApplicationUserCreateDto createDto)
     {
         var token = await _authService.Register(createDto);

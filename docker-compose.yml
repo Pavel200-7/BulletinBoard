@@ -23,6 +23,7 @@ services:
     depends_on:
       - bulletin_service
       - images_service
+      - user_service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Services__BulletinService=http://bulletin_service:8080
@@ -38,10 +39,10 @@ services:
     ports:
       - "8091:8080"
     depends_on:
-      - postgresql
+      - postgresql_bulletin_service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgresql;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
+      - ConnectionStrings__DefaultConnection=Host=postgresql_bulletin_service;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
       
   images_service:
     build:
@@ -59,7 +60,25 @@ services:
       - MongoDB__ConnectionString=mongodb://dbuser:password@mongodb:27017/
       - MongoDB__DatabaseName=Images
 
-  postgresql:
+  user_service:
+    build:
+      context: .
+      dockerfile: src/BulletinBoard/Hosts/BulletinBoard.Hosts.UserAPI/Dockerfile
+    networks:
+      bulletin_net:
+        ipv4_address: 192.168.0.6
+    ports:
+      - "8093:8080"
+    depends_on:
+      - postgresql_user_service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgresql_user_service;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
+      - JWT__Issuer=http://localhost:8080
+      - JWT__Audience=http://localhost:8080
+      - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
+    
+  postgresql_bulletin_service:
     image: postgres:17
     volumes:
       - postgresql_vol:/var/lib/postgresql/data
@@ -72,7 +91,22 @@ services:
       - "5432:5432"
     networks:
       bulletin_net: 
-        ipv4_address: 192.168.0.6
+        ipv4_address: 192.168.0.7
+
+  postgresql_user_service:
+    image: postgres:17
+    volumes:
+      - postgresql_vol_2:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bulletinboard
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      bulletin_net: 
+        ipv4_address: 192.168.0.8
     
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -83,9 +117,10 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     networks:
       bulletin_net:
-        ipv4_address: 192.168.0.7
+        ipv4_address: 192.168.0.9
     depends_on:
-      - postgresql
+      - postgresql_bulletin_service
+      - postgresql_user_service
 
   mongodb:
     image: mongo:latest
@@ -97,7 +132,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     networks:
       bulletin_net:
-        ipv4_address: 192.168.0.8
+        ipv4_address: 192.168.0.10
   
   mongo-express:
     image: mongo-express:latest
@@ -112,7 +147,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: mongoexpresspass
     networks:
       bulletin_net:
-        ipv4_address: 192.168.0.9
+        ipv4_address: 192.168.0.11
     depends_on:
       - mongodb
 
@@ -126,4 +161,5 @@ networks:
 
 volumes:
   postgresql_vol:
+  postgresql_vol_2:
   mongodb_vol:
