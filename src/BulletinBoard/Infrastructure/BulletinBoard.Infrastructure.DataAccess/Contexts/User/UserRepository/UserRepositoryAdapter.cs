@@ -4,7 +4,10 @@ using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using BulletinBoard.Contracts.User.AuthDto;
 using BulletinBoard.Domain.Entities.User;
+using DnsClient.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -14,15 +17,18 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
 {
     private UserManager<ApplicationUser> _userManager;
     private IMapper _autoMapper;
+    private ILogger<UserRepositoryAdapter> _logger;
 
     public UserRepositoryAdapter
         (
         UserManager<ApplicationUser> userManager,
-        IMapper autoMapper
+        IMapper autoMapper,
+        ILogger<UserRepositoryAdapter> logger
         )
     {
         _userManager = userManager;
         _autoMapper = autoMapper;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -30,8 +36,12 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByIdAsync(userId);
         if (user is null) { return null; }
+        var roles = await _userManager.GetRolesAsync(user);
+
         ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
-        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+        userDto.Roles = roles.ToList();
+
+        _logger.LogInformation($"Пользователь с id {userId} имеет следующие данные {JsonSerializer.Serialize(userDto)}");
 
         return userDto;
     }
@@ -41,8 +51,13 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByNameAsync(username);
         if (user is null) { return null; }
+        var roles = await _userManager.GetRolesAsync(user);
+
         ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
-        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+        userDto.Roles = roles.ToList();
+
+        _logger.LogInformation($"Пользователь с именем {username} имеет следующие данные {JsonSerializer.Serialize(userDto)}");
+
 
         return userDto;
     }
@@ -52,8 +67,12 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     {
         ApplicationUser? user = await _userManager.FindByEmailAsync(email);
         if (user is null) { return null; }
+        var roles = await _userManager.GetRolesAsync(user);
+
         ApplicationUserDto userDto = _autoMapper.Map<ApplicationUserDto>(user);
-        userDto.Roles = (await _userManager.GetRolesAsync(user)).ToList();
+        userDto.Roles = roles.ToList();
+
+        _logger.LogInformation($"Пользователь с email {email} имеет следующие данные {JsonSerializer.Serialize(userDto)}");
 
         return userDto;
     }

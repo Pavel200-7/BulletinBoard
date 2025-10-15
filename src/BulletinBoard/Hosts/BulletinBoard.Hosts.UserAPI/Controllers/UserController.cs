@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.UserAPI.Controllers;
 
@@ -21,14 +23,17 @@ namespace BulletinBoard.Hosts.UserAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private IAuthService _authService;
+    private ILogger<AuthController> _logger;
 
     /// <inheritdoc/>
     public AuthController
         (
-        IAuthService authService
+        IAuthService authService,
+        ILogger<AuthController> logger
         )
     {
         _authService = authService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -77,11 +82,12 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <returns>результат операции.</returns>
     [HttpGet]
+    [Authorize]
     [Route("send_confirmation_email")]
     public async Task<IActionResult> SendNewConfirmationEmailAsync()
     {
-        string userId = User.FindFirst(ClaimTypes.Sid)!.ToString();
-        await _authService.SendNewConfirmationEmailAsync(userId);
+        var sidClaim = User.FindFirst(ClaimTypes.Sid).Value;
+        await _authService.SendNewConfirmationEmailAsync(sidClaim);
         return Ok();
     }
 }

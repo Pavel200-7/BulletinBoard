@@ -127,7 +127,11 @@ public class AuthService : IAuthService
     /// <inheritdoc/>
     public async Task<bool> SendNewConfirmationEmailAsync(string userId)
     {
+        _logger.LogInformation($"Получен идентификатор {userId}.");
+
         ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
+        _logger.LogInformation($"Получена сущность пользователя {JsonSerializer.Serialize(userDto)}.");
+
 
         string email = userDto.Email;
         string emailConfirmToken = await _emailConformationService.GetNewEmailConfirmationTokenAsync(userId);

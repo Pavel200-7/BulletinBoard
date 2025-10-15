@@ -35,6 +35,9 @@ public static class ComponentRegistrar
 
         services.AddScoped<IUnitOfWorkUser, UnitOfWorkUser>();
 
+        services.AddScoped<UserManager<ApplicationUser>>();
+
+
 
         return services;
     }
@@ -49,16 +52,15 @@ public static class ComponentRegistrar
         return services;
     }
 
-    public static IServiceCollection RegistrarUserContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
+    public static IServiceCollection RegistrarUserContexsts(this IServiceCollection services, IConfiguration configuration)
     {
-        // BulletinContext
+        // UserContext
         services.AddDbContext<UserContext>(options =>
-        {
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")
-            );
-        });
+                b => b.MigrationsAssembly("BulletinBoard.Infrastructure.DataAccess")),
+            ServiceLifetime.Scoped
+        );
 
         return services;
     }
