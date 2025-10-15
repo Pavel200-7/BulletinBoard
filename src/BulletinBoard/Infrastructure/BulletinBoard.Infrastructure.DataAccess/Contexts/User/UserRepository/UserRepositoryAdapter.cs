@@ -56,25 +56,13 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
 
         string userId = userData.Id;
         bool succeeded = result.Succeeded;
-        IDictionary<string, string[]> errors = result.Errors
-            .Select(e => (e.Code, new string[] { e.Description }))
-            .ToDictionary();
+        IDictionary<string, string[]> errors = ResultErrorsToDictionary(result.Errors);
 
         return new ApplicationUserCreateResponseDto(userId, succeeded, errors);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> ConfirmMailAsync(string userId, string token)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null) return false;
-
-        var result = await _userManager.ConfirmEmailAsync(user, token);
-        return result.Succeeded;
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> AddRole(string userId, string role)
+    public async Task<bool> AddRoleAsync(string userId, string role)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return false;
@@ -84,12 +72,19 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DeleteRole(string userId, string role)
+    public async Task<bool> DeleteRoleAsync(string userId, string role)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return false;
 
         var result = await _userManager.RemoveFromRoleAsync(user, role);
         return result.Succeeded;
+    }
+
+    private IDictionary<string, string[]> ResultErrorsToDictionary(IEnumerable<IdentityError> errors)
+    {
+        return errors
+            .Select(e => (e.Code, new string[] { e.Description }))
+            .ToDictionary();
     }
 }

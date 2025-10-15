@@ -31,7 +31,7 @@ public interface IUserService
     /// </summary>
     /// <param name="userId">id пользователя.</param>
     /// <returns>id пользователя.</returns>
-    public Task<string> ConfirmMailAsync(Guid userId);
+    public Task<bool> ConfirmMailAsync(string userId);
 
     /// <summary>
     /// Добавить роль.
@@ -39,7 +39,7 @@ public interface IUserService
     /// <param name="userId">id пользователя.</param>
     /// <param name="role">Роль.</param>
     /// <returns>id пользователя.</returns>
-    public Task<string> AddRole(Guid userId, string role);
+    public Task<bool> AddRoleAsync(string userId, string role);
 
     /// <summary>
     /// Удалить роль.
@@ -47,5 +47,5 @@ public interface IUserService
     /// <param name="userId">id пользователя.</param>
     /// <param name="role">Роль.</param>
     /// <returns>id пользователя.</returns>
-    public Task<string> DeleteRole(Guid userId, string role);
+    public Task<bool> DeleteRoleAsync(string userId, string role);
 }

@@ -44,20 +44,12 @@ public interface IUserRepositoryAdapter
     public Task<ApplicationUserCreateResponseDto> CreateAsync(ApplicationUserCreateDto createDto);
 
     /// <summary>
-    /// Подтвердить почту по id и токену подтверждения.
-    /// </summary>
-    /// <param name="userId">id пользователя.</param>
-    /// <param name="token">Токен подтверждения почты.</param>
-    /// <returns>результат операции.</returns>
-    public Task<bool> ConfirmMailAsync(string userId, string token);
-
-    /// <summary>
     /// Добавить роль.
     /// </summary>
     /// <param name="userId">id пользователя.</param>
     /// <param name="role">Роль.</param>
     /// <returns>результат операции.</returns>
-    public Task<bool> AddRole(string userId, string role);
+    public Task<bool> AddRoleAsync(string userId, string role);
 
     /// <summary>
     /// Удалить роль.
@@ -65,5 +57,5 @@ public interface IUserRepositoryAdapter
     /// <param name="userId">id пользователя.</param>
     /// <param name="role">Роль.</param>
     /// <returns>результат операции.</returns>
-    public Task<bool> DeleteRole(string userId, string role);
+    public Task<bool> DeleteRoleAsync(string userId, string role);
 }

@@ -1,4 +1,6 @@
-﻿using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
+﻿using BulletinBoard.AppServices.Contexts.User.Services;
+using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

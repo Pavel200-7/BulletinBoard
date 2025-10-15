@@ -1,29 +1,40 @@
 ﻿using BulletinBoard.AppServices.Contexts.User.Repository;
+using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Domain.Entities.User.Enums;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.User.Services;
 
-
+/// <inheritdoc/>
 public class UserService
 {
     private IUserRepositoryAdapter _repositoryAdapter { get; set; }
+    private IMailService _mailService { get; set; }
 
-    public UserService(IUserRepositoryAdapter repositoryAdapter)
+    /// <inheritdoc/>
+    public UserService
+        (
+        IUserRepositoryAdapter repositoryAdapter,
+        IMailService mailService
+        )
     {
         _repositoryAdapter = repositoryAdapter;
+        _mailService = mailService;
     }
 
     /// <inheritdoc/>
-    public Task<ApplicationUserDto> GetAsync(string userId)
+    public async Task<ApplicationUserDto> GetAsync(string userId)
     {
-        var userDto = _repositoryAdapter.GetByIdAsync(userId);
+        var userDto = await _repositoryAdapter.GetByIdAsync(userId);
         if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
         return userDto!;
     }
@@ -42,31 +53,71 @@ public class UserService
     }
 
     /// <inheritdoc/>
-    public async Task<string> ConfirmMailAsync(string userId, string token)
+    public async Task<bool> ConfirmMailAsync(string userId, string token)
     {
+        var userDto = await _repositoryAdapter.GetByIdAsync(userId);
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+
         bool operationSucceeded = await _repositoryAdapter.ConfirmMailAsync(userId, token);
         if (!operationSucceeded)
         {
-            // отправить новое письмо, выкинуть какую-то ошибку.
-            throw new Exception();
+            string email = userDto.Email;
+            string newToken = 
+
+            await _mailService.SendNewConfirmationEmailAsync(email);
+            throw new EmailConfirmationException(userId, GetEmailConfirmationExceptionMessage(userId));
         }
 
+        return operationSucceeded;
     }
 
     /// <inheritdoc/>
-    public async Task<string> AddRole(Guid userId, string role, CancellationToken cancellationToken)
+    public async Task<bool> AddRoleAsync(string userId, string role, CancellationToken cancellationToken)
     {
+        ValidateRoleThrowValidationExeption(role);
 
+        var userDto = await _repositoryAdapter.GetByIdAsync(userId);
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+
+        return await _repositoryAdapter.AddRoleAsync(userId, role);
     }
 
     /// <inheritdoc/>
-    public Task<string> DeleteRole(Guid userId, string role, CancellationToken cancellationToken)
+    public async Task<bool> DeleteRoleAsync(string userId, string role, CancellationToken cancellationToken)
     {
+        ValidateRoleThrowValidationExeption(role);
 
+        var userDto = await _repositoryAdapter.GetByIdAsync(userId);
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+
+        return await _repositoryAdapter.DeleteRoleAsync(userId, role);
     }
 
-    private string GetNotFoundMessage(string id)
+    private void ValidateRoleThrowValidationExeption(string role)
     {
-        return $"A user with id {id} is not found";
+        List<string> rolesInLowerCase = GetRolesList()
+            .ConvertAll(role => role.ToLower());
+
+        if (!rolesInLowerCase.Contains(role.ToLower()))
+        {
+            IDictionary<string, string[]> error = new Dictionary<string, string[]>() 
+            { 
+                { "Invalid role", new string[] { $"A role named {role} does not exist" } } 
+            }; 
+            throw new ValidationExeption(error);
+        }
     }
+
+    private List<string> GetRolesList()
+    {
+        return typeof(Roles)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(f => f.FieldType == typeof(string))
+            .Select(f => (string)f.GetValue(null)!)
+            .ToList();
+    }
+
+    private string GetNotFoundMessage(string id) => $"A user with id {id} is not found";
+
+    private string GetEmailConfirmationExceptionMessage(string id) => $"Email confirmation failed for user {id}. New confirmation email sent.";
 }
