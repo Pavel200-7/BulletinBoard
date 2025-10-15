@@ -8,7 +8,7 @@ public class ApplicationUserDto
     /// <summary>
     /// Id пользователя.
     /// </summary>
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Логин
@@ -44,4 +44,10 @@ public class ApplicationUserDto
     /// Адрес (наименование местоположения)
     /// </summary>
     public string? FormattedAddress { get; set; }
+
+
+    /// <summary>
+    /// Роли
+    /// </summary>
+    public List<string> Roles { set; get; } = new();
 }

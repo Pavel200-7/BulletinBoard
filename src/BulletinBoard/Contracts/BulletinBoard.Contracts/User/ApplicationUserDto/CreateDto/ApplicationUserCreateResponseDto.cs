@@ -27,7 +27,7 @@ public class ApplicationUserCreateResponseDto
     public IDictionary<string, string[]> Errors { get; set; }
 
     /// <summary>
-    /// Конструктор, неожиданно, да?
+    /// Конструктор
     /// </summary>
     public ApplicationUserCreateResponseDto(string userId, bool succeeded, IDictionary<string, string[]> errors)
     {

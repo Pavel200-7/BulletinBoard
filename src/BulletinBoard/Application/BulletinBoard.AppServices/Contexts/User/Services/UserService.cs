@@ -3,39 +3,40 @@ using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Contracts.User.AuthDto;
 using BulletinBoard.Domain.Entities.User.Enums;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulletinBoard.AppServices.Contexts.User.Services;
 
 /// <inheritdoc/>
-public class UserService
+public class UserService : IUserService
 {
     private IUserRepositoryAdapter _repositoryAdapter { get; set; }
-    private IMailService _mailService { get; set; }
 
     /// <inheritdoc/>
     public UserService
         (
-        IUserRepositoryAdapter repositoryAdapter,
-        IMailService mailService
+        IUserRepositoryAdapter repositoryAdapter
         )
     {
         _repositoryAdapter = repositoryAdapter;
-        _mailService = mailService;
     }
 
     /// <inheritdoc/>
-    public async Task<ApplicationUserDto> GetAsync(string userId)
+    public async Task<ApplicationUserDto> GetByIdAsync(string userId)
     {
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
-        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
+        return userDto!;
+    }
+
+    /// <inheritdoc/>
+    public async Task<ApplicationUserDto> GetByEmailAsync(string email)
+    {
+        var userDto = await _repositoryAdapter.GetByEmailAsync(email);
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
         return userDto!;
     }
 
@@ -53,42 +54,23 @@ public class UserService
     }
 
     /// <inheritdoc/>
-    public async Task<bool> ConfirmMailAsync(string userId, string token)
-    {
-        var userDto = await _repositoryAdapter.GetByIdAsync(userId);
-        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
-
-        bool operationSucceeded = await _repositoryAdapter.ConfirmMailAsync(userId, token);
-        if (!operationSucceeded)
-        {
-            string email = userDto.Email;
-            string newToken = 
-
-            await _mailService.SendNewConfirmationEmailAsync(email);
-            throw new EmailConfirmationException(userId, GetEmailConfirmationExceptionMessage(userId));
-        }
-
-        return operationSucceeded;
-    }
-
-    /// <inheritdoc/>
-    public async Task<bool> AddRoleAsync(string userId, string role, CancellationToken cancellationToken)
+    public async Task<bool> AddRoleAsync(string userId, string role)
     {
         ValidateRoleThrowValidationExeption(role);
 
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
-        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
 
         return await _repositoryAdapter.AddRoleAsync(userId, role);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DeleteRoleAsync(string userId, string role, CancellationToken cancellationToken)
+    public async Task<bool> DeleteRoleAsync(string userId, string role)
     {
         ValidateRoleThrowValidationExeption(role);
 
         var userDto = await _repositoryAdapter.GetByIdAsync(userId);
-        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage(userId)); }
+        if (userDto is null) { throw new NotFoundException(GetNotFoundMessage()); }
 
         return await _repositoryAdapter.DeleteRoleAsync(userId, role);
     }
@@ -108,6 +90,12 @@ public class UserService
         }
     }
 
+    /// <inheritdoc/>
+    public async Task<bool> CheckPassword(LogInDto logInDto)
+    {
+        return await _repositoryAdapter.CheckPassword(logInDto);
+    }
+
     private List<string> GetRolesList()
     {
         return typeof(Roles)
@@ -117,7 +105,5 @@ public class UserService
             .ToList();
     }
 
-    private string GetNotFoundMessage(string id) => $"A user with id {id} is not found";
-
-    private string GetEmailConfirmationExceptionMessage(string id) => $"Email confirmation failed for user {id}. New confirmation email sent.";
+    private string GetNotFoundMessage() => $"User is not found";
 }

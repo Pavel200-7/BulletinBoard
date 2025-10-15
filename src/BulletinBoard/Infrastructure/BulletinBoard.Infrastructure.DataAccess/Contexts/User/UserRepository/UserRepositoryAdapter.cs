@@ -2,8 +2,10 @@
 using BulletinBoard.AppServices.Contexts.User.Repository;
 using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Contracts.User.AuthDto;
 using BulletinBoard.Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.User.UserRepository;
@@ -29,6 +31,7 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
         ApplicationUser? user = await _userManager.FindByIdAsync(userId);
         if (user is null) { return null; }
         return _autoMapper.Map<ApplicationUserDto>(user);
+
     }
 
     /// <inheritdoc/>
@@ -65,9 +68,7 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     public async Task<bool> AddRoleAsync(string userId, string role)
     {
         var user = await _userManager.FindByIdAsync(userId);
-        if (user == null) return false;
-
-        var result = await _userManager.AddToRoleAsync(user, role);
+        var result = await _userManager.AddToRoleAsync(user!, role);
         return result.Succeeded;
     }
 
@@ -75,10 +76,18 @@ public class UserRepositoryAdapter : IUserRepositoryAdapter
     public async Task<bool> DeleteRoleAsync(string userId, string role)
     {
         var user = await _userManager.FindByIdAsync(userId);
-        if (user == null) return false;
-
-        var result = await _userManager.RemoveFromRoleAsync(user, role);
+        var result = await _userManager.RemoveFromRoleAsync(user!, role);
         return result.Succeeded;
+    }
+
+    
+
+    public async Task<bool> CheckPassword(LogInDto logInDto)
+    {
+        ApplicationUser? user = await _userManager.FindByEmailAsync(logInDto.Email);
+        bool result = await _userManager.CheckPasswordAsync(user!, logInDto.Password);
+
+        return result;
     }
 
     private IDictionary<string, string[]> ResultErrorsToDictionary(IEnumerable<IdentityError> errors)

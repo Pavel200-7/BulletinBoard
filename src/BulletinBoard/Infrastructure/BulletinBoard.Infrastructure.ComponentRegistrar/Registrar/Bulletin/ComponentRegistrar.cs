@@ -165,7 +165,7 @@ public static class ComponentRegistrar
         return services;
     }
 
-    public static IServiceCollection RegistrarBulletinContexsts(this IServiceCollection services, IConfiguration configuration, string environment)
+    public static IServiceCollection RegistrarBulletinContexsts(this IServiceCollection services, IConfiguration configuration)
     {
         // BulletinContext
         services.AddDbContext<BulletinContext>(options =>

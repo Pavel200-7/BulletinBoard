@@ -1,11 +1,15 @@
-﻿namespace BulletinBoard.AppServices.Contexts.User.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BulletinBoard.AppServices.Contexts.User.Services.IServices;
 
 /// <summary>
-/// Класс, ответственный за подтверждение электронной почты.
-/// Является адаптером для использования asp.net identity.
-/// Берет на себя всю ответственность за доступ к информации и валидацию.
+/// Сервис для работы со статусом подтверждения почты.
 /// </summary>
-public interface IUserEmailConfirmationRepositoryAdapter
+public interface IUserEmailConformationService
 {
     /// <summary>
     /// Подтвердить почту по id и токену подтверждения.

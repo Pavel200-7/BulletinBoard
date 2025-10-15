@@ -1,6 +1,9 @@
-﻿using BulletinBoard.AppServices.Contexts.User.Services;
+﻿using BulletinBoard.AppServices.Contexts.User.Mapping;
+using BulletinBoard.AppServices.Contexts.User.Repository;
+using BulletinBoard.AppServices.Contexts.User.Services;
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.User.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +17,9 @@ public static class ComponentRegistrar
     public static IServiceCollection RegisterUserServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserEmailConformationService, UserEmailConformationService>();
+        services.AddScoped<IMailService, MailService>();
+        services.AddScoped<IAuthService, AuthService>();
         return services;
     }
 
@@ -22,15 +28,26 @@ public static class ComponentRegistrar
         // Базовый глупый репозиторий.
         //services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
+        services.AddScoped<IUserEmailConfirmationRepositoryAdapter, UserEmailConfirmationRepositoryAdapter>();
+        services.AddScoped<IUserRepositoryAdapter, UserRepositoryAdapter>();
+
+
+
+
+
+
+        services.AddScoped<IUnitOfWorkUser, UnitOfWorkUser>();
+
+
         return services;
     }
 
     public static IServiceCollection RegistrarUserMappers(this IServiceCollection services)
     {
-        //services.AddAutoMapper
-        //    (
-        //        typeof(BulletinMappingProfile)
-        //    );
+        services.AddAutoMapper
+            (
+                typeof(UserMappingProfile)
+            );
 
         return services;
     }

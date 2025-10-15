@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using BulletinBoard.Domain.Entities.User;
 using System;
@@ -20,5 +21,7 @@ public class UserMappingProfile : Profile
     public UserMappingProfile()
     {
         CreateMap<ApplicationUserCreateDto, ApplicationUser>();
+        CreateMap<ApplicationUser, ApplicationUserDto>();
+
     }
 }

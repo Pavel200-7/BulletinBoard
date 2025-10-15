@@ -1,0 +1,123 @@
+﻿using BulletinBoard.AppServices.Contexts.User.Repository;
+using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.Contracts.Errors.Exeptions;
+using BulletinBoard.Contracts.User.ApplicationUserDto;
+using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Contracts.User.AuthDto;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BulletinBoard.AppServices.Contexts.User.Services;
+
+/// <inheritdoc/>
+public class AuthService : IAuthService
+{
+    private IConfiguration _configuration;
+    private IUserService _userService;
+    private IUserEmailConformationService _emailConformationService;
+    private IMailService _mailService;
+
+    /// <inheritdoc/>
+    public AuthService
+        (
+        IConfiguration configuration,
+        IUserService userService,
+        IUserEmailConformationService emailConformationService,
+        IMailService mailService
+        )
+    {
+        _configuration = configuration;
+        _userService = userService;
+        _emailConformationService = emailConformationService;
+        _mailService = mailService;
+    }
+
+    /// <inheritdoc/>
+    public async Task<string> Register(ApplicationUserCreateDto createDto)
+    {
+        string userId = await _userService.CreateAsync(createDto);
+        ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
+
+        string email = userDto.Email;
+        string emailConfirmToken = await _emailConformationService.GetNewEmailConfirmationTokenAsync(userId);
+        await _mailService.SendNewConfirmationEmailAsync(email, emailConfirmToken);
+
+        return userId;
+    }
+
+    /// <inheritdoc/>
+    public async Task<TokenDto> LogIn(LogInDto logInDto)
+    {
+        ApplicationUserDto? userDto = await _userService.GetByEmailAsync(logInDto.Email);
+
+        if (userDto is null)
+        {
+            throw new ValidationExeption(GetEmailValidationExeption()); 
+        }
+
+        if (await _userService.CheckPassword(logInDto))
+        {
+            throw new ValidationExeption(GetPasswordValidationExeption());
+        }
+
+        TokenDto tokenDto = new TokenDto(GenerateJWTString(userDto));
+
+        return tokenDto;
+    }
+
+    /// <inheritdoc/>
+    private string GenerateJWTString(ApplicationUserDto userDto)
+    {
+        List<Claim> claims = new();
+        claims.Add(new Claim(ClaimTypes.Sid, userDto.Id));
+        claims.Add(new Claim(ClaimTypes.Email, userDto.Email));
+        userDto.Roles.ForEach(role =>
+            claims.Add(new Claim(ClaimTypes.Role, role)));
+
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]!));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: _configuration["JWT:Issuer"],
+            audience: _configuration["JWT:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds
+            );
+
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        return tokenString;
+    }
+
+    private IDictionary<string, string[]> GetEmailValidationExeption()
+        => new Dictionary<string, string[]>() { { "Email", new string[] { "User with this email does not exist" } } };
+
+    private IDictionary<string, string[]> GetPasswordValidationExeption()
+        => new Dictionary<string, string[]>() { { "Password", new string[] { "Password is not valid" } } };
+
+    /// <inheritdoc/>
+    public async Task<bool> ConfirmMailAsync(string userId, string token)
+    {
+        return await _emailConformationService.ConfirmMailAsync(userId, token);
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> SendNewConfirmationEmailAsync(string userId)
+    {
+        ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
+
+        string email = userDto.Email;
+        string emailConfirmToken = await _emailConformationService.GetNewEmailConfirmationTokenAsync(userId);
+        await _mailService.SendNewConfirmationEmailAsync(email, emailConfirmToken);
+
+        return true;
+    }
+}

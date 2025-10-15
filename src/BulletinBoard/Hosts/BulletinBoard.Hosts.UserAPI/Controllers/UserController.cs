@@ -1,15 +1,85 @@
-﻿using BulletinBoard.Domain.Entities.User;
+﻿using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Contracts.User.AuthDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BulletinBoard.Hosts.UserAPI.Controllers;
 
-public class UserController
+/// <summary>
+/// Контроллер аутентификации.
+/// </summary>
+[ApiController]
+[Route("api/[controller]")]
+[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+public class AuthController : ControllerBase
 {
-    public UserManager<ApplicationUser> userManager;
+    private IAuthService _authService;
 
-    public bool XUI()
+    /// <inheritdoc/>
+    public AuthController
+        (
+        IAuthService authService
+        )
     {
-        ApplicationUser r = new ApplicationUser();
+        _authService = authService;
+    }
 
+    /// <summary>
+    /// Зарегистрировать пользователя.
+    /// </summary>
+    /// <param name="createDto">данные для создания аккаунта.</param>
+    /// <returns>результат операции.</returns>
+    public async Task<IActionResult> Register(ApplicationUserCreateDto createDto)
+    {
+        var token = await _authService.Register(createDto);
+        return Ok();
+    }
+
+    /// <summary>
+    /// Войти в систему.
+    /// </summary>
+    /// <param name="logInDto">Данные входа в систему.</param>
+    /// <returns>токен доступа.</returns>
+    [HttpPost]
+    [Route("login")]
+    public async Task<IActionResult> LogIn(LogInDto logInDto)
+    {
+        var token = await _authService.LogIn(logInDto);
+        return Ok(token);
+    }
+
+    /// <summary>
+    /// Подтвердить почту.
+    /// </summary>
+    /// <param name="userId">id пользователя</param>
+    /// <param name="token">токен подтверждения.</param>
+    /// <returns>результат операции.</returns>
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("confirm_email")]
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        await _authService.ConfirmMailAsync(userId, token);
+        return Ok();    
+    }
+
+    /// <summary>
+    /// отправить новое сообщение для подтверждения почты.
+    /// </summary>
+    /// <returns>результат операции.</returns>
+    [HttpGet]
+    [Route("send_confirmation_email")]
+    public async Task<IActionResult> SendNewConfirmationEmailAsync()
+    {
+        string userId = User.FindFirst(ClaimTypes.Sid)!.ToString();
+        await _authService.SendNewConfirmationEmailAsync(userId);
+        return Ok();
     }
 }

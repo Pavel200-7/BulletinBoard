@@ -26,4 +26,9 @@ public class ApplicationUser : IdentityUser
     /// Адрес (наименование местоположения)
     /// </summary>
     public string? FormattedAddress { get; set; }
+
+    /// <summary>
+    /// Список ролей
+    /// </summary>
+    public virtual List<IdentityRole> Roles { get; set; }
 }

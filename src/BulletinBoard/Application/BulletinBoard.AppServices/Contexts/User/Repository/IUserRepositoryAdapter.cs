@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Contracts.User.AuthDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,4 +59,11 @@ public interface IUserRepositoryAdapter
     /// <param name="role">Роль.</param>
     /// <returns>результат операции.</returns>
     public Task<bool> DeleteRoleAsync(string userId, string role);
+
+    /// <summary>
+    /// Проверить пароль по почте.
+    /// </summary>
+    /// <param name="logInDto">данные входа в систему</param>
+    /// <returns>результат проверки.</returns>
+    public Task<bool> CheckPassword(LogInDto logInDto);
 }
