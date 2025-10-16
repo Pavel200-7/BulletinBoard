@@ -1,10 +1,36 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /src
-COPY . .
-RUN dotnet publish "src/BulletinBoard/Hosts/BulletinBoard.Hosts.APIGateway/BulletinBoard.Hosts.APIGateway.csproj" -c Release -o /app/publish
+# См. статью по ссылке https://aka.ms/customizecontainer, чтобы узнать как настроить контейнер отладки и как Visual Studio использует этот Dockerfile для создания образов для ускорения отладки.
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+# Этот этап используется при запуске из VS в быстром режиме (по умолчанию для конфигурации отладки)
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+USER $APP_UID
 WORKDIR /app
-COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "BulletinBoard.Hosts.APIGateway.dll"]
+EXPOSE 8080
+EXPOSE 8081
 
+
+# Этот этап используется для сборки проекта службы
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["src/BulletinBoard/Hosts/BulletinBoard.Hosts.APIGateway/BulletinBoard.Hosts.APIGateway.csproj", "src/BulletinBoard/Hosts/BulletinBoard.Hosts.APIGateway/"]
+COPY ["src/BulletinBoard/Application/BulletinBoard.AppServices/BulletinBoard.AppServices.csproj", "src/BulletinBoard/Application/BulletinBoard.AppServices/"]
+COPY ["src/BulletinBoard/Contracts/BulletinBoard.Contracts/BulletinBoard.Contracts.csproj", "src/BulletinBoard/Contracts/BulletinBoard.Contracts/"]
+COPY ["src/BulletinBoard/Domain/BulletinBoard.Domain/BulletinBoard.Domain.csproj", "src/BulletinBoard/Domain/BulletinBoard.Domain/"]
+COPY ["src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure.ComponentRegistrar/BulletinBoard.Infrastructure.ComponentRegistrar.csproj", "src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure.ComponentRegistrar/"]
+COPY ["src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure.DataAccess/BulletinBoard.Infrastructure.DataAccess.csproj", "src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure.DataAccess/"]
+COPY ["src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure/BulletinBoard.Infrastructure.csproj", "src/BulletinBoard/Infrastructure/BulletinBoard.Infrastructure/"]
+RUN dotnet restore "./src/BulletinBoard/Hosts/BulletinBoard.Hosts.APIGateway/BulletinBoard.Hosts.APIGateway.csproj"
+COPY . .
+WORKDIR "/src/src/BulletinBoard/Hosts/BulletinBoard.Hosts.APIGateway"
+RUN dotnet build "./BulletinBoard.Hosts.APIGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./BulletinBoard.Hosts.APIGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "BulletinBoard.Hosts.APIGateway.dll"]

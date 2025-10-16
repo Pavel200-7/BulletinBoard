@@ -23,6 +23,8 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug);
 builder.Services.RegisterUserServices();
 builder.Services.RegisterUserRepositories();
 builder.Services.RegistrarUserMappers();
+builder.Services.RegistrarUserMailSender(builder.Configuration);
+
 builder.Services.RegistrarUserInitializers();
 
 builder.Services.Configure<IdentityOptions>(options =>

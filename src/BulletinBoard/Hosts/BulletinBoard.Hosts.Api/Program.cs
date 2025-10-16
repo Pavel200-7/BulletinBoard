@@ -8,8 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Контекст Entity framework
-var environment = builder.Environment.EnvironmentName;
-builder.Services.RegistrarBulletinContexsts(builder.Configuration, environment);
+builder.Services.RegistrarBulletinContexsts(builder.Configuration);
 
 
 // Сервисы, репозитории, мапперы

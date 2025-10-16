@@ -4,8 +4,10 @@ using BulletinBoard.AppServices.Contexts.User.Services;
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.Domain.Entities.User;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
+using BulletinBoard.Infrastructure.DataAccess.Contexts.User.EmailSender;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User.UserRepository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,7 @@ public static class ComponentRegistrar
         services.AddScoped<IUserEmailConformationService, UserEmailConformationService>();
         services.AddScoped<IMailService, MailService>();
         services.AddScoped<IAuthService, AuthService>();
+
         return services;
     }
 
@@ -36,8 +39,6 @@ public static class ComponentRegistrar
         services.AddScoped<IUnitOfWorkUser, UnitOfWorkUser>();
 
         services.AddScoped<UserManager<ApplicationUser>>();
-
-
 
         return services;
     }
@@ -69,6 +70,14 @@ public static class ComponentRegistrar
     public static IServiceCollection RegistrarUserInitializers(this IServiceCollection services)
     {
         services.AddAsyncInitializer<DbInitializer>();
+        return services;
+    }
+
+    public static IServiceCollection RegistrarUserMailSender(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IEmailSender, YandexSmtpEmailSender>();
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
         return services;
     }
 }
