@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -43,7 +44,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicValue/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -69,7 +70,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristicValue", characteristicValue);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -95,7 +96,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristicValue/{id}", characteristicValue);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -117,7 +118,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristicValue/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -138,6 +139,6 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicValue/byCharacteristic/{characteristicId}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 }

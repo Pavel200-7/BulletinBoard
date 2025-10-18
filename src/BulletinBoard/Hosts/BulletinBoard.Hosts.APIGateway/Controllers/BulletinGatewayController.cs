@@ -7,6 +7,7 @@ using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.Gateway.Controllers
 {
@@ -53,7 +54,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.GetAsync($"/api/Bulletin/{id}");
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.GetAsync($"/api/Bulletin/{id}/Single");
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
 
         /// <summary>
@@ -162,7 +163,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
 
         /// <summary>
@@ -217,7 +218,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.PutAsJsonAsync($"/api/Bulletin/{id}", bulletin);
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
 
         /// <summary>
@@ -239,7 +240,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.DeleteAsync($"/api/Bulletin/{id}");
             var content = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, content);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
         }
     }
 }

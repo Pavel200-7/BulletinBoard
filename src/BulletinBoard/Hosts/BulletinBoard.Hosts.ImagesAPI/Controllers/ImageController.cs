@@ -56,7 +56,7 @@ public class ImagesController : ControllerBase
             Length = (int)file.Length
         };
 
-        var imageId = await _imageService.UploadAsync(createDto, cancellationToken);
+        Guid imageId = await _imageService.UploadAsync(createDto, cancellationToken);
 
         return Ok(imageId);
     }

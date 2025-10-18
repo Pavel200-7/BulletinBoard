@@ -46,6 +46,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgresql_bulletin_service;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
+      - JWT__Issuer=http://localhost:8080
+      - JWT__Audience=http://localhost:8080
+      - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
+
       
   images_service:
     build:
@@ -62,6 +66,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDB__ConnectionString=mongodb://dbuser:password@mongodb:27017/
       - MongoDB__DatabaseName=Images
+      - JWT__Issuer=http://localhost:8080
+      - JWT__Audience=http://localhost:8080
+      - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
+
 
   user_service:
     build:
@@ -83,7 +91,7 @@ services:
       - EmailSettings__SmtpServer=smtp.yandex.ru
       - EmailSettings__Port=587
       - EmailSettings__Username=Pavel200-7@yandex.ru
-      - EmailSettings__Password=secretic
+      - EmailSettings__Password=prvepeophfnvnjlm
       - EmailSettings__FromName=BulletinBoard
       - ApiGatewayPath=localhost:8090
     

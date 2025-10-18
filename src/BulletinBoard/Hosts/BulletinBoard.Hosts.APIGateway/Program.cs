@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +48,13 @@ builder.Services.RegistrarAPIGatewayMappers();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IInmenoryImagesIdHolderServise, InmenoryImagesIdHolderServise>();
 
-builder.Services.AddControllers();
+// настройки для красивого вывода json.
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.WriteIndented = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
 
 builder.Services.AddAuthentication(options =>

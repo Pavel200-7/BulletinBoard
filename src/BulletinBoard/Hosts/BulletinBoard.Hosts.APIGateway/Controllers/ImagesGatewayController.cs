@@ -1,10 +1,17 @@
 ﻿using BulletinBoard.AppServices.Contexts.Apigateway.Services.IServices;
+using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
 using BulletinBoard.Contracts.DTO.Gateway.ImagesIdHolder;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Contracts.Gateway.Images;
+using BulletinBoard.Contracts.Images.Image.CreateDto;
+using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail;
 using System.Security.Claims;
+using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BulletinBoard.Hosts.Gateway.Controllers;
 
@@ -20,16 +27,19 @@ public class ImagesGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IInmenoryImagesIdHolderServise _idHolderServise;
+    private ILogger<ImagesGatewayController> _logger;
 
     /// <inheritdoc/>
     public ImagesGatewayController
         (
         IHttpClientFactory httpClientFactory,
-        IInmenoryImagesIdHolderServise idHolderServise
+        IInmenoryImagesIdHolderServise idHolderServise,
+        ILogger<ImagesGatewayController> logger
         )
     {
         _httpClientFactory = httpClientFactory;
         _idHolderServise = idHolderServise;
+        _logger = logger;
     }
 
     /// <summary>
@@ -78,7 +88,7 @@ public class ImagesGatewayController : ControllerBase
             _idHolderServise.Add(userId, imageIdInfo);
         }
 
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(responseContent));
     }
 
     /// <summary>
@@ -92,11 +102,14 @@ public class ImagesGatewayController : ControllerBase
     ///
     /// </remarks>
     /// <param name="file">Файл изображения.</param>
+    /// <param name="bulletinId">Id объявления.</param>
+    /// <param name="isMain">Является ли объявление главным.</param>
     /// <returns>Идентификатор загруженного изображения.</returns>
     [HttpPost("upload")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadImage(IFormFile file)
+    public async Task<IActionResult> UploadImage(IFormFile file, Guid bulletinId, bool isMain)
     {
         var client = _httpClientFactory.CreateClient("ImageService");
 
@@ -108,8 +121,41 @@ public class ImagesGatewayController : ControllerBase
 
         var response = await client.PostAsync("/api/images/upload", content);
         var responseContent = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            ImageGatewayCreateDto createDto = new ImageGatewayCreateDto()
+            {
+                BulletinId = bulletinId,
+                IsMain = isMain
+            };
+
+
+            Guid imageId = Guid.Parse(responseContent.Trim('"'));
+            await CreateImageInBulletinDomain(imageId, createDto);
+        }
+
+        return StatusCode((int)response.StatusCode, responseContent);
     }
+
+    /// <summary>
+    /// Создать изображение в домене объявлений.
+    /// </summary>
+    /// <returns></returns>
+    private async Task CreateImageInBulletinDomain(Guid imageId, ImageGatewayCreateDto gatewayCreateDto)
+    {
+        var client = _httpClientFactory.CreateClient("BulletinService");
+
+        BulletinImageCreateDto createDto = new BulletinImageCreateDto()
+        {
+            Id = imageId,
+            BulletinId = gatewayCreateDto.BulletinId,
+            IsMain = gatewayCreateDto.IsMain
+        };
+        var response = await client.PostAsJsonAsync($"/api/BulletinImage", createDto);
+    }
+
 
     /// <summary>
     /// Скачать изображение.
@@ -140,7 +186,7 @@ public class ImagesGatewayController : ControllerBase
         }
 
         var errorContent = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, errorContent);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
     }
 
     /// <summary>
@@ -162,7 +208,7 @@ public class ImagesGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("ImageService");
         var response = await client.GetAsync($"/api/images/{id}/metadata");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -181,10 +227,26 @@ public class ImagesGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteImage(Guid id)
     {
+        var client = _httpClientFactory.CreateClient("BulletinService");
+        var response = await client.DeleteAsync($"/api/BulletinImage/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            await DeleteImageInImageDomain(id);
+        }
+
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+    }
+
+    /// <summary>
+    /// Удаляет изображение в домене изображений.
+    /// </summary>
+    /// <returns></returns>
+    private async Task DeleteImageInImageDomain(Guid id)
+    {
         var client = _httpClientFactory.CreateClient("ImageService");
         var response = await client.DeleteAsync($"/api/images/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -222,7 +284,7 @@ public class ImagesGatewayController : ControllerBase
             _idHolderServise.Delete(userId, clientId);
         }
 
-        var responseContent = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, responseContent);
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 }

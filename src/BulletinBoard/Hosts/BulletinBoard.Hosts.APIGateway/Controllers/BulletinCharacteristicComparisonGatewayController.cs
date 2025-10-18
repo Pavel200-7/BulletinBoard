@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDt
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -43,7 +44,7 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicComparison/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -70,7 +71,7 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristicComparison", comparison);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -96,7 +97,7 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristicComparison/{id}", comparison);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -118,6 +119,6 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristicComparison/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 }

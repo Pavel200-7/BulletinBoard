@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.APIGateway.Controllers;
 
@@ -55,7 +56,8 @@ public class UserGatewayController : ControllerBase
             await CreateUserInBulletinDomain(userId, createDto);
         }
 
-        return StatusCode((int)response.StatusCode, userId);
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -86,7 +88,7 @@ public class UserGatewayController : ControllerBase
         var response = await client.PostAsJsonAsync($"/api/auth/login", logInDto);
         var content = await response.Content.ReadAsStringAsync();
 
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -110,7 +112,7 @@ public class UserGatewayController : ControllerBase
         else
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, errorContent);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
         }
     }
 
@@ -140,7 +142,7 @@ public class UserGatewayController : ControllerBase
         else
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, errorContent);
+            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
         }
     }
 }

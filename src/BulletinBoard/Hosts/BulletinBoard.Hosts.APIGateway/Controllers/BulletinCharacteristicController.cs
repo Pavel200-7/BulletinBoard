@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -43,7 +44,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristic/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -69,7 +70,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristic", characteristic);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -95,7 +96,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristic/{id}", characteristic);
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 
     /// <summary>
@@ -117,6 +118,6 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristic/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
     }
 }
