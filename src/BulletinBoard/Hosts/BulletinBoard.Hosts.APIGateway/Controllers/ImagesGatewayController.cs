@@ -1,6 +1,10 @@
 ﻿using BulletinBoard.AppServices.Contexts.Apigateway.Services.IServices;
 using BulletinBoard.Contracts.DTO.Gateway.ImagesIdHolder;
+using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SendGrid.Helpers.Mail;
+using System.Security.Claims;
 
 namespace BulletinBoard.Hosts.Gateway.Controllers;
 
@@ -9,6 +13,9 @@ namespace BulletinBoard.Hosts.Gateway.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/images")]
+[Authorize]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class ImagesGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -45,8 +52,8 @@ public class ImagesGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UploadImageWhileBulletin(IFormFile file, [FromForm] ImagesIdRequestDto imagesIdRequest)
     {
-        // TODO: это фейковый id сесии. На его месте должны быть данные из jwt
-        Guid sessionId = Guid.Parse("04d28d48-8723-4b96-a070-5155f73545c4");
+        string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
+        Guid userId = Guid.Parse(userIdSring);
 
         var client = _httpClientFactory.CreateClient("ImageService");
 
@@ -68,10 +75,10 @@ public class ImagesGatewayController : ControllerBase
                 ClientImageId = imagesIdRequest.clientImageId,
                 IsMain = imagesIdRequest.IsMain
             };
-            _idHolderServise.Add(sessionId, imageIdInfo);
+            _idHolderServise.Add(userId, imageIdInfo);
         }
 
-        return Content(responseContent, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -101,7 +108,7 @@ public class ImagesGatewayController : ControllerBase
 
         var response = await client.PostAsync("/api/images/upload", content);
         var responseContent = await response.Content.ReadAsStringAsync();
-        return Content(responseContent, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -133,7 +140,7 @@ public class ImagesGatewayController : ControllerBase
         }
 
         var errorContent = await response.Content.ReadAsStringAsync();
-        return Content(errorContent, "application/json");
+        return StatusCode((int)response.StatusCode, errorContent);
     }
 
     /// <summary>
@@ -155,7 +162,7 @@ public class ImagesGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("ImageService");
         var response = await client.GetAsync($"/api/images/{id}/metadata");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -177,7 +184,7 @@ public class ImagesGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("ImageService");
         var response = await client.DeleteAsync($"/api/images/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -199,11 +206,12 @@ public class ImagesGatewayController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteImageWhileBulletin(string clientId)
     {
-        // TODO: это фейковый id сесии. На его месте должны быть данные из jwt
-        Guid sessionId = Guid.Parse("04d28d48-8723-4b96-a070-5155f73545c4");
+        string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
+        Guid userId = Guid.Parse(userIdSring);
+
         var client = _httpClientFactory.CreateClient("ImageService");
 
-        var imageInfo = _idHolderServise.GetByClientId(sessionId, clientId);
+        var imageInfo = _idHolderServise.GetByClientId(userId, clientId);
 
         if (imageInfo is null) { return Ok(false); }
 
@@ -211,10 +219,10 @@ public class ImagesGatewayController : ControllerBase
         var response = await client.DeleteAsync($"/api/images/{imageId}");
         if (response.IsSuccessStatusCode)
         {
-            _idHolderServise.Delete(sessionId, clientId);
+            _idHolderServise.Delete(userId, clientId);
         }
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        return Content(responseContent, "application/json");
+        return StatusCode((int)response.StatusCode, responseContent);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Images.Repository;
 using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
 using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.User.Validators.UserValidator.IValidators;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using BulletinBoard.Contracts.Images.Image.ReadDto;

@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -10,6 +11,8 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/characteristic")]
+[Authorize]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicGatewayController : ControllerBase
 {
@@ -40,7 +43,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristic/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -66,7 +69,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristic", characteristic);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -92,7 +95,7 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristic/{id}", characteristic);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -114,6 +117,6 @@ public class BulletinCharacteristicGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristic/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 }

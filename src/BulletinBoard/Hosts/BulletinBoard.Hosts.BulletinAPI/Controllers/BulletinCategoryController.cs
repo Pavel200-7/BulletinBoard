@@ -4,6 +4,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -13,6 +14,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// Контроллер для работы с категориями объявлений.
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCategoryController : ControllerBase
@@ -70,6 +72,7 @@ public class BulletinCategoryController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных категории.</returns>
     [HttpPost]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBulletinCategory(BulletinCategoryCreateDto category, CancellationToken cancellationToken)
@@ -102,6 +105,7 @@ public class BulletinCategoryController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных категории.</returns>
     [HttpPut("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category, CancellationToken cancellationToken)
@@ -123,6 +127,7 @@ public class BulletinCategoryController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>true если все прошло успешно.</returns>
     [HttpDelete("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBulletinCategory(Guid id, CancellationToken cancellationToken)

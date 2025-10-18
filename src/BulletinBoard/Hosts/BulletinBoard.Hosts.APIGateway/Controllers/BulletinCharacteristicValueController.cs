@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -10,6 +11,8 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/characteristic-value")]
+[Authorize]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicValueGatewayController : ControllerBase
 {
@@ -40,7 +43,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicValue/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -66,7 +69,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristicValue", characteristicValue);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -92,7 +95,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristicValue/{id}", characteristicValue);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -114,7 +117,7 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristicValue/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -135,6 +138,6 @@ public class BulletinCharacteristicValueGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicValue/byCharacteristic/{characteristicId}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 }

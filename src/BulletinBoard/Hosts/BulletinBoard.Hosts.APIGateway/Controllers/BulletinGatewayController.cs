@@ -3,7 +3,10 @@ using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
+using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BulletinBoard.Hosts.Gateway.Controllers
 {
@@ -12,6 +15,9 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
     /// </summary>
     [ApiController]
     [Route("api/bulletin")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
     public class BulletinGatewayController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -47,7 +53,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.GetAsync($"/api/Bulletin/{id}");
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.GetAsync($"/api/Bulletin/{id}/Single");
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
 
         /// <summary>
@@ -104,7 +110,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
 
         /// <summary>
@@ -140,11 +146,11 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateBulletin([FromBody] BulletinCreateDtoRequest bulletin)
         {
-            // TODO: это фейковый id сесии. На его месте должны быть данные из jwt
-            Guid sessionId = Guid.Parse("04d28d48-8723-4b96-a070-5155f73545c4");
+            string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
+            Guid userId = Guid.Parse(userIdSring);
 
             var bulletinCreateDto = new BulletinCreateDtoController(bulletin);
-            var imagesCreateDto = GetImagesIdList(sessionId);
+            var imagesCreateDto = GetImagesIdList(userId);
             bulletinCreateDto.AddImages(imagesCreateDto);
 
             var client = _httpClientFactory.CreateClient("BulletinService");
@@ -152,11 +158,11 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             
             if (response.IsSuccessStatusCode)
             {
-                _idHolderServise.Clear(sessionId);
+                _idHolderServise.Clear(userId);
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
 
         /// <summary>
@@ -211,7 +217,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.PutAsJsonAsync($"/api/Bulletin/{id}", bulletin);
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
 
         /// <summary>
@@ -233,7 +239,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers
             var client = _httpClientFactory.CreateClient("BulletinService");
             var response = await client.DeleteAsync($"/api/Bulletin/{id}");
             var content = await response.Content.ReadAsStringAsync();
-            return Content(content, "application/json");
+            return StatusCode((int)response.StatusCode, content);
         }
     }
 }

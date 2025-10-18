@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -13,6 +14,8 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/category")]
+//[Authorize]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCategoryGatewayController : ControllerBase
 {
@@ -43,7 +46,7 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCategory/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -70,7 +73,7 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCategory", category);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -97,7 +100,7 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCategory/{id}", category);
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -119,7 +122,7 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCategory/{id}");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -139,7 +142,7 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync("/api/BulletinCategory");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 
     /// <summary>
@@ -159,6 +162,6 @@ public class BulletinCategoryGatewayController : ControllerBase
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCategory/{id}/SingleChain");
         var content = await response.Content.ReadAsStringAsync();
-        return Content(content, "application/json");
+        return StatusCode((int)response.StatusCode, content);
     }
 }

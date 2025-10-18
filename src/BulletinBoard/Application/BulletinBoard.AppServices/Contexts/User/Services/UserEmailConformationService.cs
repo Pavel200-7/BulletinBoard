@@ -2,12 +2,18 @@
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
 using BulletinBoard.AppServices.Repository;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BulletinBoard.AppServices.EmailSender;
+using BulletinBoard.Contracts.User.ApplicationUserDto;
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace BulletinBoard.AppServices.Contexts.User.Services;
 
@@ -16,7 +22,9 @@ public class UserEmailConformationService : IUserEmailConformationService
 {
     private readonly IUserRepositoryAdapter _repositoryAdapter;
     private readonly IUserEmailConfirmationRepositoryAdapter _emailConfirmationRepositoryAdapter;
+    private IEmailSender _emailSender;
     private IUnitOfWorkUser _unitOfWork;
+    private IConfiguration _configuration;
     private ILogger<UserEmailConformationService> _logger;
 
     /// <inheritdoc/>
@@ -25,13 +33,34 @@ public class UserEmailConformationService : IUserEmailConformationService
         IUserRepositoryAdapter repositoryAdapter,
         IUserEmailConfirmationRepositoryAdapter emailConfirmationRepositoryAdapter,
         IUnitOfWorkUser unitOfWorkUser,
+        IEmailSender emailSender,
+        IConfiguration configuration,
         ILogger<UserEmailConformationService> logger
         )
     {
         _repositoryAdapter = repositoryAdapter;
         _emailConfirmationRepositoryAdapter = emailConfirmationRepositoryAdapter;
         _unitOfWork = unitOfWorkUser;
+        _emailSender = emailSender;
+        _configuration = configuration;
         _logger = logger;
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> SendNewConfirmationEmailAsync(ApplicationUserDto userDto)
+    {
+        string emailConfirmationToken = await GetNewEmailConfirmationTokenAsync(userDto.Id);
+
+
+        string domainPath = _configuration.GetSection("ApiGatewayPath").Value;
+
+        string callbackUrl = $"http://{domainPath}/api/auth/confirm_email?userId={userDto.Id}&token={WebUtility.UrlEncode(emailConfirmationToken)}";
+
+        string subject = "Email confirm";
+        await _emailSender.SendEmailAsync(userDto.Email, subject, callbackUrl);
+
+        _logger.LogInformation("Сообщение для подтверждения почты отправленно.");
+        return true;
     }
 
     /// <inheritdoc/>
@@ -63,7 +92,7 @@ public class UserEmailConformationService : IUserEmailConformationService
     }
 
     /// <inheritdoc/>
-    public async Task<string> GetNewEmailConfirmationTokenAsync(string userId)
+    private async Task<string> GetNewEmailConfirmationTokenAsync(string userId)
     {
         string newToken = await _emailConfirmationRepositoryAdapter.GetNewEmailConfirmationTokenAsync(userId);
         _logger.LogInformation($"Для пользователя с id {userId} был сгенерирован новый токен подтверждения почты.");

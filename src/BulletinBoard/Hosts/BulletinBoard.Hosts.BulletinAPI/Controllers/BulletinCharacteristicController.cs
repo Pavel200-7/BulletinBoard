@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -11,6 +12,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// Контроллер для работы с характеристиками.
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicController : ControllerBase
@@ -61,6 +63,7 @@ public class BulletinCharacteristicController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPost]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCharacteristic(BulletinCharacteristicCreateDto characteristic, CancellationToken cancellationToken)
@@ -86,6 +89,7 @@ public class BulletinCharacteristicController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPut("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateCharacteristic(Guid id, BulletinCharacteristicUpdateDto characteristic, CancellationToken cancellationToken)
@@ -107,6 +111,7 @@ public class BulletinCharacteristicController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteCharacteristic(Guid id, CancellationToken cancellationToken)

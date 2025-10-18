@@ -4,6 +4,7 @@ using BulletinBoard.AppServices.Contexts.Images.Sercices;
 using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
 using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator;
 using BulletinBoard.AppServices.Contexts.Images.Validators.ImageValidator.IValidators;
+using BulletinBoard.AppServices.Contexts.User.Validators.UserValidator.IValidators;
 using BulletinBoard.Domain.Base;
 using BulletinBoard.Infrastructure.ComponentRegistrar.DBSettings;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.Images.ImagesRepository;

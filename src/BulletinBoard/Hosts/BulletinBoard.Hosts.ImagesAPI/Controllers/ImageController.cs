@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.AppServices.Contexts.Images.Sercices.IServices;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using BulletinBoard.Contracts.Images.Image.ReadDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -9,6 +10,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// Контроллер для работы с временным хранилищем изображений.
 /// </summary>
 [ApiController]
+[Authorize]
 [Route("api/images")]
 public class ImagesController : ControllerBase
 {

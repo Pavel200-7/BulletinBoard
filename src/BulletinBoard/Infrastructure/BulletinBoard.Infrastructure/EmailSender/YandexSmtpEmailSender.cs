@@ -1,9 +1,10 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using BulletinBoard.Infrastructure.EmailSender;
+using BulletinBoard.AppServices.EmailSender;
 
 namespace BulletinBoard.Infrastructure.DataAccess.Contexts.User.EmailSender;
 
@@ -38,25 +39,23 @@ public class YandexSmtpEmailSender : IEmailSender
 
             using var client = new MailKit.Net.Smtp.SmtpClient();
 
-            // ПОДКЛЮЧЕНИЕ С AUTH
             await client.ConnectAsync(_settings.SmtpServer, _settings.Port, SecureSocketOptions.StartTls);
             _logger.LogInformation("Connected to SMTP server");
 
-            // АУТЕНТИФИКАЦИЯ
             await client.AuthenticateAsync(_settings.Username, _settings.Password);
             _logger.LogInformation("Authenticated successfully");
 
-            // ОТПРАВКА
-            await client.SendAsync(emailMessage);
+            string answer = await client.SendAsync(emailMessage);
+            _logger.LogInformation($"answer {answer}");
             _logger.LogInformation("Email sent to server");
 
             await client.DisconnectAsync(true);
 
-            _logger.LogInformation($"✅ Email sent successfully to: {toEmail}");
+            _logger.LogInformation($"Email sent successfully to: {toEmail}");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"❌ Failed to send email to: {toEmail}");
+            _logger.LogError(ex, $"Failed to send email to: {toEmail}");
             throw new Exception($"Failed to send email: {ex.Message}", ex);
         }
     }

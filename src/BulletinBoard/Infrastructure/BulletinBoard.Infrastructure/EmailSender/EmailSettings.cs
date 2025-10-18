@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BulletinBoard.Infrastructure.DataAccess.Contexts.User.EmailSender;
+namespace BulletinBoard.Infrastructure.EmailSender;
 
 public class EmailSettings
 {

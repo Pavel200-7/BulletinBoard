@@ -2,12 +2,15 @@
 using BulletinBoard.AppServices.Contexts.User.Repository;
 using BulletinBoard.AppServices.Contexts.User.Services;
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.AppServices.Contexts.User.Validators.UserValidator;
+using BulletinBoard.AppServices.Contexts.User.Validators.UserValidator.IValidators;
+using BulletinBoard.AppServices.EmailSender;
 using BulletinBoard.Domain.Entities.User;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User.EmailSender;
 using BulletinBoard.Infrastructure.DataAccess.Contexts.User.UserRepository;
+using BulletinBoard.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +25,11 @@ public static class ComponentRegistrar
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserEmailConformationService, UserEmailConformationService>();
-        services.AddScoped<IMailService, MailService>();
         services.AddScoped<IAuthService, AuthService>();
+
+        services.AddScoped<IUserCreateDtoValidator, UserCreateDtoValidator>();
+        services.AddScoped<IUserValidatorFacade, UserValidatorFacade>();
+
 
         return services;
     }
@@ -76,7 +82,7 @@ public static class ComponentRegistrar
     public static IServiceCollection RegistrarUserMailSender(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IEmailSender, YandexSmtpEmailSender>();
-        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.Configure<EmailSettings>(options => configuration.GetSection("EmailSettings").Bind(options));
 
         return services;
     }

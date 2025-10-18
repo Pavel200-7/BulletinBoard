@@ -24,7 +24,6 @@ public class AuthService : IAuthService
     private IConfiguration _configuration;
     private IUserService _userService;
     private IUserEmailConformationService _emailConformationService;
-    private IMailService _mailService;
     private ILogger<AuthService> _logger;
 
     /// <inheritdoc/>
@@ -33,14 +32,12 @@ public class AuthService : IAuthService
         IConfiguration configuration,
         IUserService userService,
         IUserEmailConformationService emailConformationService,
-        IMailService mailService,
         ILogger<AuthService> logger
         )
     {
         _configuration = configuration;
         _userService = userService;
         _emailConformationService = emailConformationService;
-        _mailService = mailService;
         _logger = logger;
     }
 
@@ -50,11 +47,9 @@ public class AuthService : IAuthService
         string userId = await _userService.CreateAsync(createDto);
 
         await _userService.AddRoleAsync(userId, Roles.User);
-        ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
 
-        string email = userDto.Email;
-        string emailConfirmToken = await _emailConformationService.GetNewEmailConfirmationTokenAsync(userId);
-        await _mailService.SendNewConfirmationEmailAsync(email, emailConfirmToken);
+        ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
+        await _emailConformationService.SendNewConfirmationEmailAsync(userDto);
 
         return userId;
     }
@@ -131,11 +126,7 @@ public class AuthService : IAuthService
 
         ApplicationUserDto userDto = await _userService.GetByIdAsync(userId);
         _logger.LogInformation($"Получена сущность пользователя {JsonSerializer.Serialize(userDto)}.");
-
-
-        string email = userDto.Email;
-        string emailConfirmToken = await _emailConformationService.GetNewEmailConfirmationTokenAsync(userId);
-        await _mailService.SendNewConfirmationEmailAsync(email, emailConfirmToken);
+        await _emailConformationService.SendNewConfirmationEmailAsync(userDto);
 
         return true;
     }

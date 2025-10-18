@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
@@ -61,6 +62,7 @@ public class BulletinCharacteristicValueController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Формат данных значения характеристики.</returns>
     [HttpPost]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicValueDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] BulletinCharacteristicValueCreateDto createDto, CancellationToken cancellationToken)
     {
@@ -106,6 +108,7 @@ public class BulletinCharacteristicValueController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)

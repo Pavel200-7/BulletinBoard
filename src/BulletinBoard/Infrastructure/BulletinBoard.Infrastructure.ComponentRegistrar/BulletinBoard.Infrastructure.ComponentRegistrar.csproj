@@ -10,13 +10,14 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Extensions.Hosting.AsyncInitialization" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.7.25380.108" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\BulletinBoard.AppServices\BulletinBoard.AppServices.csproj" />
     <ProjectReference Include="..\..\Domain\BulletinBoard.Domain\BulletinBoard.Domain.csproj" />
     <ProjectReference Include="..\BulletinBoard.Infrastructure.DataAccess\BulletinBoard.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\BulletinBoard.Infrastructure\BulletinBoard.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

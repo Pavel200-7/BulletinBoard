@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.AppServices.Contexts.User.Repository;
 using BulletinBoard.AppServices.Contexts.User.Services.IServices;
+using BulletinBoard.AppServices.Contexts.User.Validators.UserValidator.IValidators;
 using BulletinBoard.Contracts.Errors.Exeptions;
 using BulletinBoard.Contracts.User.ApplicationUserDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
@@ -15,16 +16,19 @@ namespace BulletinBoard.AppServices.Contexts.User.Services;
 public class UserService : IUserService
 {
     private IUserRepositoryAdapter _repositoryAdapter { get; set; }
+    private IUserValidatorFacade _validator;
     private ILogger<UserService> _logger { get; set; }
 
     /// <inheritdoc/>
     public UserService
         (
         IUserRepositoryAdapter repositoryAdapter,
+        IUserValidatorFacade validator,
         ILogger<UserService> logger
         )
     {
         _repositoryAdapter = repositoryAdapter;
+        _validator = validator;
         _logger = logger;
     }
 
@@ -48,6 +52,7 @@ public class UserService : IUserService
     /// <inheritdoc/>
     public async Task<string> CreateAsync(ApplicationUserCreateDto createDto)
     {
+        await _validator.ValidateThrowValidationExeptionAsync(createDto);
         ApplicationUserCreateResponseDto result = await _repositoryAdapter.CreateAsync(createDto);
 
         if (!result.Succeeded)

@@ -1,5 +1,8 @@
 using BulletinBoard.Infrastructure.ComponentRegistrar.Registrar.Bulletin;
 using BulletinBoard.Infrastructure.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +20,31 @@ builder.Services.RegistrarBulletinInitializers();
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = false,
+            ValidateAudience = false, 
+            ValidateIssuer = false    
+        };
+    });
+
+builder.Services.AddAuthorization(options => 
+{
+    options.AddPolicy("RequireAdminRole", policy => 
+        policy.RequireClaim(ClaimTypes.Role, "Admin"));
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 // Подключает Swagger с документацией
 builder.Services.AddSwaggerWithXmlComments();
+
+
 
 var app = builder.Build();
 
@@ -36,6 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

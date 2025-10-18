@@ -16,8 +16,8 @@ public interface IAuthService
     /// <summary>
     /// Зарегистрировать и отправить на почту ссылку ее подтверждения.
     /// </summary>
-    /// <param name="createDto"></param>
-    /// <returns></returns>
+    /// <param name="createDto">данные пользователя.</param>
+    /// <returns>id пользователя</returns>
     public Task<string> Register(ApplicationUserCreateDto createDto);
 
     /// <summary>

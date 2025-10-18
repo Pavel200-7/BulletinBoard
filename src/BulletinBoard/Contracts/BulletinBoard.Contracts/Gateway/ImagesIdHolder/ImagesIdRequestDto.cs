@@ -8,7 +8,6 @@ namespace BulletinBoard.Contracts.DTO.Gateway.ImagesIdHolder;
 
 /// <summary>
 /// Структура данных, для создания запроса создания изображения
-
 /// </summary>
 public class ImagesIdRequestDto
 {

@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="JsonConverter.Newtonsoft.Json" Version="0.7.2" />
+    <PackageReference Include="MailKit" Version="4.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0-preview.7.25380.108" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\BulletinBoard.AppServices\BulletinBoard.AppServices.csproj" />
     <ProjectReference Include="..\..\Contracts\BulletinBoard.Contracts\BulletinBoard.Contracts.csproj" />
   </ItemGroup>
 

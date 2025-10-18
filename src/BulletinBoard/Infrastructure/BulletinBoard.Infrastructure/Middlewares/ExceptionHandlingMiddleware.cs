@@ -84,7 +84,7 @@ namespace BulletinBoard.Infrastructure.Middlewares
             var response = new ErrorDto
             {
                 StatusCode = context.Response.StatusCode,
-                Message = exception.Message, //"Что-то пошло не так. Попробуйте позже.",
+                Message = "Что-то пошло не так. Попробуйте позже.",
                 TraceId = context.TraceIdentifier
             };
 
