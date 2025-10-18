@@ -94,8 +94,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-await app.RunAsync();
-//await app.InitAndRunAsync();
+//await app.RunAsync();
+await app.InitAndRunAsync();
 
 public partial class Program
 { }

@@ -8,6 +8,7 @@ using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using BulletinBoard.Domain.Base;
 using BulletinBoard.Domain.Entities.Bulletin;
 
 
@@ -46,8 +47,12 @@ public class BulletinService : IBulletinService
         BulletinDto? outputDto = await _bulletinReposotory.GetByIdAsync(id);
         if (outputDto is null) 
         {
-            string message = $"The bulletin with id {id} is not found.";
-            throw new NotFoundException(message); 
+            throw new NotFoundException(GetNotFoundIdMessage(id)); 
+        }
+
+        if (outputDto.Main.Blocked)
+        {
+            throw new NotFoundException(GetNotFoundIdMessage(id));
         }
 
         return outputDto;
@@ -59,8 +64,12 @@ public class BulletinService : IBulletinService
         BulletinReadSingleDto? outputDto = await _bulletinReposotory.GetByIdReadSingleAsync(id);
         if (outputDto is null)
         {
-            string message = $"The bulletin with id {id} is not found.";
-            throw new NotFoundException(message);
+            throw new NotFoundException(GetNotFoundIdMessage(id));
+        }
+
+        if (outputDto.Main.Blocked)
+        {
+            throw new NotFoundException(GetNotFoundIdMessage(id));
         }
 
         return outputDto;
@@ -71,6 +80,7 @@ public class BulletinService : IBulletinService
         await _validator.ValidateThrowValidationExeptionAsync(requestDto);
 
         var specification = _specificationBuilder
+            .WhereBlocked(false)
             .WhereCategoryId(requestDto.CategoryId)
             .WherePriceRange(requestDto.MinPrice, requestDto.MaxPrice)
             .WhereTitleContains(requestDto.SearchText)
@@ -129,5 +139,15 @@ public class BulletinService : IBulletinService
             await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
+    }
+
+    /// <summary>
+    ///  Выдать сообщение о том, что сущность с данным id не найдена.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    protected string GetNotFoundIdMessage(Guid id)
+    {
+        return $"The bulletin with id {id} is not found.";
     }
 }

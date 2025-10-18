@@ -104,6 +104,8 @@ public class BulletinMappingProfile : Profile
         CreateMap<BulletinMainDto, BulletinMainUpdateDtoForValidating>();
         CreateMap<BulletinMainDto, BulletinMainBulletinReadDto>();
         CreateMap<BulletinMain, BulletinMainBulletinReadDto>();
+        CreateMap<BulletinMainDto, BulletinMainUpdateDto>().ReverseMap();
+
 
 
         // BulletinRating

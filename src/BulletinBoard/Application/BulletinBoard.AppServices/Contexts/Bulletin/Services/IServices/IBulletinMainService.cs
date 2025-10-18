@@ -16,4 +16,19 @@ public interface IBulletinMainService : IBaseCRUDService
     BulletinMainUpdateDto
     >
 {
+    /// <summary>
+    /// Заблокировать объявление
+    /// </summary>
+    /// <param name="id">id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    public Task<BulletinMainDto> BlockBulletin(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Разблокировать объявление.
+    /// </summary>
+    /// <param name="id">id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    public Task<BulletinMainDto> UnBlockBulletin(Guid id, CancellationToken cancellationToken);
 }

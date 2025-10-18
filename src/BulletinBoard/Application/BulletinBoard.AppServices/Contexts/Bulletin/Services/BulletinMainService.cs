@@ -8,6 +8,7 @@ using BulletinBoard.Contracts.Bulletin.BelletinMain.UpdateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
+using BulletinBoard.Contracts.Errors.Exeptions;
 
 
 
@@ -46,5 +47,33 @@ public class BulletinMainService : BaseCRUDService
     {
         var validatinoDto = _autoMapper.Map<BulletinMainUpdateDtoForValidating>(updateDto);
         return Task.FromResult(validatinoDto);
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinMainDto> BlockBulletin(Guid id, CancellationToken cancellationToken)
+    {
+        BulletinMainDto bulletinDto = await _repository.GetByIdAsync(id);
+        if (bulletinDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+
+        BulletinMainUpdateDto updateDto = _autoMapper.Map<BulletinMainUpdateDto>(bulletinDto);
+        updateDto.Blocked = true;
+
+        bulletinDto = await _repository.UpdateAsync(id, updateDto, cancellationToken);
+
+        return bulletinDto;
+    }
+
+    /// <inheritdoc/>
+    public async Task<BulletinMainDto> UnBlockBulletin(Guid id, CancellationToken cancellationToken)
+    {
+        BulletinMainDto bulletinDto = await _repository.GetByIdAsync(id);
+        if (bulletinDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+
+        BulletinMainUpdateDto updateDto = _autoMapper.Map<BulletinMainUpdateDto>(bulletinDto);
+        updateDto.Blocked = false;
+
+        bulletinDto = await _repository.UpdateAsync(id, updateDto, cancellationToken);
+
+        return bulletinDto;
     }
 }

@@ -19,4 +19,9 @@ public class BulletinMainUpdateDto
     /// Цена товара или услуги, указанного в объявлении
     /// </summary>
     public decimal Price { get; set; }
+
+    /// <summary>
+    /// Заблокировано ли.
+    /// </summary>
+    public bool Blocked { get; set; }
 }

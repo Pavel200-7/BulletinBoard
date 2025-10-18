@@ -54,10 +54,19 @@ public class BulletinViewsCountService : BaseCRUDService
         BulletinViewsCountDto? viewsCountDto = await _repository.IncreaseViewsCountAsync(bulletinId, cancellationToken);
         if (viewsCountDto is null)
         {
-            string errorMessage = $"The {EntityName} with bulletin id {bulletinId} is not found.";
-            throw new NotFoundException(errorMessage);
+            throw new NotFoundException(GetNotFoundIdMessage(bulletinId));
         }
 
         return viewsCountDto;
+    }
+
+    /// <summary>
+    ///  Выдать сообщение о том, что сущность с данным id не найдена.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    protected new string GetNotFoundIdMessage(Guid id)
+    {
+        return $"The {EntityName} with bulletin id {id} is not found.";
     }
 }

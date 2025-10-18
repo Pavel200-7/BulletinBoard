@@ -5,10 +5,13 @@ using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicValue;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
+using BulletinBoard.Contracts.Bulletin.BulletinMain;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Threading;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -204,6 +207,51 @@ public class BulletinController : ControllerBase
     public async Task<IActionResult> DeleteBulletin(Guid id, CancellationToken cancellationToken)
     {
         bool result = await _bulletinMainService.DeleteAsync(id, cancellationToken);
+        return Ok(result);
+    }
+
+
+    /// <summary>
+    /// Заблокировать объявление.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    PUT /api/bulletin/block/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///
+    /// </remarks>
+    /// <param name="id">Id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Id объявления.</returns>
+    [HttpPut("block/{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BlockBulletin(Guid id, CancellationToken cancellationToken)
+    {
+        BulletinMainDto result = await _bulletinMainService.BlockBulletin(id, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Разблокировать объявление.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    PUT /api/bulletin/unblock/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///
+    /// </remarks>
+    /// <param name="id">Id объявления.</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Id объявления.</returns>
+    [HttpPut("unblock/{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UnBlockBulletin(Guid id, CancellationToken cancellationToken)
+    {
+        BulletinMainDto result = await _bulletinMainService.UnBlockBulletin(id, cancellationToken);
         return Ok(result);
     }
 }

@@ -94,6 +94,10 @@ services:
       - EmailSettings__Password=prvepeophfnvnjlm
       - EmailSettings__FromName=BulletinBoard
       - ApiGatewayPath=localhost:8090
+      - DefaultAdmin__UserName=admin
+      - DefaultAdmin__Email=admin@mail.ru
+      - DefaultAdmin__Password=Admin_783
+  
     
   postgresql_bulletin_service:
     image: postgres:17
