@@ -13,6 +13,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// Контроллер для работы с возможными значениями характеристик.
 /// </summary>
 [ApiController]
+[Authorize(Policy = "RequireAdminRole")]
 [Route("api/[controller]")]
 [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicValueController : ControllerBase

@@ -16,4 +16,9 @@ public class ValidationExeption : Exception
     {
         ValidationErrors = errors;
     }
+
+    /// <inheritdoc/>
+    public ValidationExeption()
+    {
+    }
 }

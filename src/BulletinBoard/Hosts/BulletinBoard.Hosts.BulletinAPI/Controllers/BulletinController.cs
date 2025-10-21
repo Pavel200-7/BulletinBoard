@@ -217,13 +217,13 @@ public class BulletinController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    PUT /api/bulletin/block/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///    Patch /api/bulletin/block/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <param name="id">Id объявления.</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Id объявления.</returns>
-    [HttpPut("block/{id}")]
+    [HttpPatch("block/{id}")]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -239,13 +239,13 @@ public class BulletinController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    PUT /api/bulletin/unblock/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///    Patch /api/bulletin/unblock/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <param name="id">Id объявления.</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Id объявления.</returns>
-    [HttpPut("unblock/{id}")]
+    [HttpPatch("unblock/{id}")]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

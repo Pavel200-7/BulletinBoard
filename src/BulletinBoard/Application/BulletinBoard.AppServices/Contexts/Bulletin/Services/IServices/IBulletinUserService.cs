@@ -18,13 +18,6 @@ public interface IBulletinUserService : IBaseCRUDService
     >
 {
     /// <summary>
-    /// Получить список пользователей по фильтру.
-    /// </summary>
-    /// <param name="userFilterDto">Формат данных для фильтрации пользователей.</param>
-    /// <returns>Коллекция базового формата данных пользователя - владельца объявления.</returns>
-    public Task<IReadOnlyCollection<BulletinUserDto>> GetAsync(BulletinUserFilterDto userFilterDto);
-
-    /// <summary>
     /// Изменить имя по id.
     /// </summary>
     /// <param name="id">Id пользователя.</param>

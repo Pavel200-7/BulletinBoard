@@ -26,10 +26,10 @@ services:
       - user_service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Services__BulletinService=http://bulletin_service:8080
-      - Services__ImageService=http://images_service:8080
-      - JWT__Issuer=http://localhost:8080
-      - JWT__Audience=http://localhost:8080
+      - Services__BulletinService=http://bulletin_service:8085
+      - Services__ImageService=http://images_service:8085
+      - JWT__Issuer=http://localhost:8085
+      - JWT__Audience=http://localhost:8085
       - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
 
   bulletin_service:
@@ -46,8 +46,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgresql_bulletin_service;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
-      - JWT__Issuer=http://localhost:8080
-      - JWT__Audience=http://localhost:8080
+      - JWT__Issuer=http://localhost:8085
+      - JWT__Audience=http://localhost:8085
       - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
 
       
@@ -66,8 +66,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDB__ConnectionString=mongodb://dbuser:password@mongodb:27017/
       - MongoDB__DatabaseName=Images
-      - JWT__Issuer=http://localhost:8080
-      - JWT__Audience=http://localhost:8080
+      - JWT__Issuer=http://localhost:8085
+      - JWT__Audience=http://localhost:8085
       - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
 
 
@@ -85,8 +85,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgresql_user_service;Port=5432;Database=bulletinboard;Username=dbuser;Password=password
-      - JWT__Issuer=http://localhost:8080
-      - JWT__Audience=http://localhost:8080
+      - JWT__Issuer=http://localhost:8085
+      - JWT__Audience=http://localhost:8085
       - JWT__Key=ultwreqqwddewQWDFAERHRTSDZFXCVBCKJSZFZra_string_guid_key87tg287hd8731g87qfwaua7q834wegfyloakwbpgfioewe
       - EmailSettings__SmtpServer=smtp.yandex.ru
       - EmailSettings__Port=587

@@ -252,18 +252,18 @@ public class BulletinGatewayController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    PUT /api/bulletin/block/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///    Patch /api/bulletin/block/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <param name="id">Id объявления.</param>
     /// <returns>Id объявления.</returns>
-    [HttpPut("block/{id}")]
+    [HttpPatch("block/{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> BlockBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
-        var response = await client.PutAsync($"/api/Bulletin/block/{id}", null);
+        var response = await client.PatchAsync($"/api/Bulletin/block/{id}", null);
         var content = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
@@ -281,18 +281,18 @@ public class BulletinGatewayController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///    PUT /api/bulletin/unblock/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///    Patch /api/bulletin/unblock/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <param name="id">Id объявления.</param>
     /// <returns>Id объявления.</returns>
-    [HttpPut("unblock/{id}")]
+    [HttpPatch("unblock/{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UnBlockBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
-        var response = await client.PutAsync($"/api/Bulletin/unblock/{id}", null);
+        var response = await client.PatchAsync($"/api/Bulletin/unblock/{id}", null);
         var content = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
