@@ -3,8 +3,10 @@ using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Domain.Entities.Bulletin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BulletinBoard.Hosts.Api.Controllers;
 
@@ -13,9 +15,9 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// </summary>
 [ApiController]
 [Authorize]
-[Authorize(Policy = "RequireAdminRole")]
 [Route("api/[controller]")]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicController : ControllerBase
 {
     private readonly IBulletinCharacteristicService _bulletinCharacteristicService;
@@ -93,6 +95,7 @@ public class BulletinCharacteristicController : ControllerBase
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateCharacteristic(Guid id, BulletinCharacteristicUpdateDto characteristic, CancellationToken cancellationToken)
     {
         var updetedCharacteristic = await _bulletinCharacteristicService.UpdateAsync(id, characteristic, cancellationToken);
@@ -114,10 +117,30 @@ public class BulletinCharacteristicController : ControllerBase
     [HttpDelete("{id}")]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteCharacteristic(Guid id, CancellationToken cancellationToken)
     {
         var result = await _bulletinCharacteristicService.DeleteAsync(id, cancellationToken);
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Получение характеристики по id категории.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    GET /api/BulletinCharacteristic/bycategory/01992529-1ec8-766f-a03d-a7ac4f0996b9
+    ///
+    /// </remarks>
+    /// <param name="category_id">Идентификатор связанной категории.</param>
+    /// <returns>Базовый формат данных характеристики.</returns>
+    [HttpGet("byCategory/{category_id}")]
+    [ProducesResponseType(typeof(IReadOnlyCollection<BulletinCharacteristic>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByCategoryId(Guid category_id)
+    {
+        var characteristics = await _bulletinCharacteristicService.GetByCategoryFilter(category_id);
+        return Ok(characteristics);
     }
 }

@@ -5,6 +5,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinUser.CreateDto;
 using BulletinBoard.Contracts.Errors;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
 using BulletinBoard.Contracts.User.AuthDto;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail;
@@ -19,7 +20,7 @@ namespace BulletinBoard.Hosts.APIGateway.Controllers;
 [ApiController]
 [Route("api/auth")]
 [Authorize]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class UserGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -44,6 +45,7 @@ public class UserGatewayController : ControllerBase
     [HttpPost]
     [Route("register")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(ApplicationUserCreateDto createDto)
     {
         var client = _httpClientFactory.CreateClient("UserService");
@@ -56,8 +58,7 @@ public class UserGatewayController : ControllerBase
             await CreateUserInBulletinDomain(userId, createDto);
         }
 
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -82,13 +83,13 @@ public class UserGatewayController : ControllerBase
     [Route("login")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> LogIn(LogInDto logInDto)
     {
         var client = _httpClientFactory.CreateClient("UserService");
         var response = await client.PostAsJsonAsync($"/api/auth/login", logInDto);
-        var content = await response.Content.ReadAsStringAsync();
-
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -111,8 +112,7 @@ public class UserGatewayController : ControllerBase
         }
         else
         {
-            var errorContent = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
+            return await response.ToActionResult();
         }
     }
 
@@ -141,8 +141,7 @@ public class UserGatewayController : ControllerBase
         }
         else
         {
-            var errorContent = await response.Content.ReadAsStringAsync();
-            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
+            return await response.ToActionResult();
         }
     }
 }

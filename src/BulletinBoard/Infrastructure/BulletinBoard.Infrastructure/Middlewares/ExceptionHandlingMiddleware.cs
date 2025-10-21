@@ -31,17 +31,17 @@ namespace BulletinBoard.Infrastructure.Middlewares
             }
             catch (NotFoundException e) 
             {
-                _logger.LogError(e, "Что-то пошло не так");
+                _logger.LogError(e, e.Message);
                 await HandleNotFoundExceptionAsync(context, e);
             }
             catch (ValidationExeption e)
             {
-                _logger.LogError(e, "Что-то пошло не так");
+                _logger.LogError(e, e.Message);
                 await HandleValidatioExceptionAsync(context, e);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Что-то пошло не так");
+                _logger.LogError(e, e.Message);
                 await HandleExceptionAsync(context, e);
             }
         }

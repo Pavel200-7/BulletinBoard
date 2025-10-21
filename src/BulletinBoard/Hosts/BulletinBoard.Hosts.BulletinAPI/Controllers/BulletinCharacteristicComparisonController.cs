@@ -14,7 +14,8 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicComparisonController : ControllerBase
 {
     private readonly IBulletinCharacteristicComparisonService _characteristicComparisonService;
@@ -90,6 +91,7 @@ public class BulletinCharacteristicComparisonController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinCharacteristicComparisonDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid id, [FromBody] BulletinCharacteristicComparisonUpdateDto updateDto, CancellationToken cancellationToken)
     {
         var updated = await _characteristicComparisonService.UpdateAsync(id, updateDto, cancellationToken);

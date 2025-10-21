@@ -15,7 +15,8 @@ namespace BulletinBoard.Hosts.BulletinAPI.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinUserController : ControllerBase
 {
     private readonly IBulletinUserService _userService;

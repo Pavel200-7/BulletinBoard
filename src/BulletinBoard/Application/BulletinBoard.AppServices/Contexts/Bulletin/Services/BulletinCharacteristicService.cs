@@ -95,4 +95,7 @@ public class BulletinCharacteristicService : BaseCRUDService
 
         return characteristicDtoCollection;
     }
+
+
+
 }

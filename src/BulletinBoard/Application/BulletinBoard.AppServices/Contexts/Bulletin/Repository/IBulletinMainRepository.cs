@@ -18,4 +18,12 @@ public interface IBulletinMainRepository : IBaseRepository
     BulletinMainUpdateDto
     >
 {
+    /// <summary>
+    /// Выставить статус блокировки объявления.
+    /// </summary>
+    /// <param name="id">id объявления.</param>
+    /// <param name="blockStatus">статус (заблокировано)</param>
+    /// <param name="cancellation">Токен отмены</param>
+    /// <returns></returns>
+    public Task<BulletinMainDto?> SetBulletinBlockStatusAsync(Guid id, bool blockStatus, CancellationToken cancellation);
 }

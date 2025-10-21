@@ -4,6 +4,7 @@ using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
@@ -19,7 +20,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers;
 [Route("api/bulletin")]
 [Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -54,8 +55,7 @@ public class BulletinGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/Bulletin/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -76,8 +76,7 @@ public class BulletinGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/Bulletin/{id}/Single");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -106,13 +105,12 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Коллекция данных объявления.</returns>
     [HttpPost("search")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchBulletins([FromBody] BulletinPaginationRequestDto request)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/Bulletin/Bulletins", request);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -145,7 +143,7 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Id объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBulletin([FromBody] BulletinCreateDtoRequest bulletin)
     {
         string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
@@ -163,8 +161,7 @@ public class BulletinGatewayController : ControllerBase
             _idHolderServise.Clear(userId);
         }
 
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -213,13 +210,13 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Id объявления.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateBulletin(Guid id, [FromBody] BulletinMainUpdateDto bulletin)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/Bulletin/{id}", bulletin);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -235,13 +232,13 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/Bulletin/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
 
         // Todo: надо бы как-то изображения до кучи удалять.
     }
@@ -259,20 +256,13 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Id объявления.</returns>
     [HttpPatch("block/{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> BlockBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PatchAsync($"/api/Bulletin/block/{id}", null);
-        var content = await response.Content.ReadAsStringAsync();
-        if (response.IsSuccessStatusCode)
-        {
-            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
-        }
-        else
-        {
-            return StatusCode((int)response.StatusCode, content);
-        }
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -288,20 +278,12 @@ public class BulletinGatewayController : ControllerBase
     /// <returns>Id объявления.</returns>
     [HttpPatch("unblock/{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UnBlockBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PatchAsync($"/api/Bulletin/unblock/{id}", null);
-        var content = await response.Content.ReadAsStringAsync();
-
-        if (response.IsSuccessStatusCode)
-        {
-            return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
-        }
-        else 
-        {
-            return StatusCode((int)response.StatusCode, content);
-        }
+        return await response.ToActionResult();
     }
 }

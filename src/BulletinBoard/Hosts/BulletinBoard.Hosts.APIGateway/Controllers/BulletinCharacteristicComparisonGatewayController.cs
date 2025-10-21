@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristicComparison.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -14,7 +15,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [Route("api/characteristic-comparison")]
 [Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicComparisonGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -43,8 +44,7 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristicComparison/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -65,13 +65,12 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
     /// <returns>Базовый формат данных сопоставления.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCharacteristicComparison([FromBody] BulletinCharacteristicComparisonCreateDto comparison)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristicComparison", comparison);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -91,13 +90,13 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
     /// <returns>Базовый формат данных сопоставления.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCharacteristicComparison(Guid id, [FromBody] BulletinCharacteristicComparisonUpdateDto comparison)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristicComparison/{id}", comparison);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -118,7 +117,6 @@ public class BulletinCharacteristicComparisonGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristicComparison/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 }

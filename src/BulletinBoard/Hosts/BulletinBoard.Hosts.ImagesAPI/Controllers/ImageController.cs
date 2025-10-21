@@ -12,6 +12,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/images")]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class ImagesController : ControllerBase
 {
     private readonly IImageServise _imageService;

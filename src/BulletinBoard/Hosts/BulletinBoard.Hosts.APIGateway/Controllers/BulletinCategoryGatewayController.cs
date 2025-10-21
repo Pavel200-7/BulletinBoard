@@ -3,6 +3,7 @@ using BulletinBoard.Contracts.Bulletin.BulletinCategory.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCategory.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail;
@@ -17,7 +18,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [Route("api/category")]
 [Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCategoryGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -46,8 +47,7 @@ public class BulletinCategoryGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCategory/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -68,13 +68,12 @@ public class BulletinCategoryGatewayController : ControllerBase
     /// <returns>Базовый формат данных категории.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCategory([FromBody] BulletinCategoryCreateDto category)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCategory", category);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -96,12 +95,12 @@ public class BulletinCategoryGatewayController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateCategory(Guid id, [FromBody] BulletinCategoryUpdateDto category)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCategory/{id}", category);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -118,12 +117,12 @@ public class BulletinCategoryGatewayController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCategory/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -142,8 +141,7 @@ public class BulletinCategoryGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync("/api/BulletinCategory");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -158,11 +156,11 @@ public class BulletinCategoryGatewayController : ControllerBase
     /// <returns>Формат данных для вывода одной карегории в виде древовидной струкруры от самого корня.</returns>
     [HttpGet("{id}/singlechain")]
     [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCategorySingleChain(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCategory/{id}/SingleChain");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 }

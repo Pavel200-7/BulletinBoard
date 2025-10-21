@@ -1,6 +1,9 @@
-﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
+﻿using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic;
+using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinCharacteristic.UpdateDto;
 using BulletinBoard.Contracts.Errors;
+using BulletinBoard.Domain.Entities.Bulletin;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -14,7 +17,7 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [Route("api/characteristic")]
 [Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -37,14 +40,12 @@ public class BulletinCharacteristicGatewayController : ControllerBase
     /// <param name="id">Идентификатор характеристики.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCharacteristic(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.GetAsync($"/api/BulletinCharacteristic/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -63,14 +64,13 @@ public class BulletinCharacteristicGatewayController : ControllerBase
     /// <param name="characteristic">Формат данных создания характеристики.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCharacteristic([FromBody] BulletinCharacteristicCreateDto characteristic)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PostAsJsonAsync("/api/BulletinCharacteristic", characteristic);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class BulletinCharacteristicGatewayController : ControllerBase
     /// <param name="characteristic">Формат данных обновления характеристики.</param>
     /// <returns>Базовый формат данных характеристики.</returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BulletinCharacteristicDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCharacteristic(Guid id, [FromBody] BulletinCharacteristicUpdateDto characteristic)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.PutAsJsonAsync($"/api/BulletinCharacteristic/{id}", characteristic);
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -112,12 +112,33 @@ public class BulletinCharacteristicGatewayController : ControllerBase
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteCharacteristic(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
         var response = await client.DeleteAsync($"/api/BulletinCharacteristic/{id}");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
+    }
+
+    /// <summary>
+    /// Получение характеристики по id категории.
+    /// </summary>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///    GET /api/characteristic/bycategory/01992529-1ec8-766f-a03d-a7ac4f0996b9
+    ///
+    /// </remarks>
+    /// <param name="category_id">Идентификатор связанной категории.</param>
+    /// <returns>Базовый формат данных характеристики.</returns>
+    [HttpGet("byCategory/{category_id}")]
+    [ProducesResponseType(typeof(IReadOnlyCollection<BulletinCharacteristic>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByCategoryId(Guid category_id)
+    {
+        var client = _httpClientFactory.CreateClient("BulletinService");
+        var response = await client.GetAsync($"/api/BulletinCharacteristic/byCategory/{category_id}");
+        return await response.ToActionResult();
     }
 }

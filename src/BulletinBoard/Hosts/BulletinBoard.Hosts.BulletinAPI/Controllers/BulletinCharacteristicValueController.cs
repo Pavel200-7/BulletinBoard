@@ -13,9 +13,9 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// Контроллер для работы с возможными значениями характеристик.
 /// </summary>
 [ApiController]
-[Authorize(Policy = "RequireAdminRole")]
 [Route("api/[controller]")]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCharacteristicValueController : ControllerBase
 {
     private readonly IBulletinCharacteristicValueService _characteristicValueService;
@@ -65,6 +65,7 @@ public class BulletinCharacteristicValueController : ControllerBase
     [HttpPost]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicValueDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] BulletinCharacteristicValueCreateDto createDto, CancellationToken cancellationToken)
     {
         var created = await _characteristicValueService.CreateAsync(createDto, cancellationToken);
@@ -88,8 +89,10 @@ public class BulletinCharacteristicValueController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Формат данных значения характеристики.</returns>
     [HttpPut("{id}")]
+    [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCharacteristicValueDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid id, [FromBody] BulletinCharacteristicValueUpdateDto updateDto, CancellationToken cancellationToken)
     {
         var updated = await _characteristicValueService.UpdateAsync(id, updateDto, cancellationToken);
@@ -112,6 +115,7 @@ public class BulletinCharacteristicValueController : ControllerBase
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await _characteristicValueService.DeleteAsync(id, cancellationToken);

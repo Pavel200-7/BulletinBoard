@@ -15,9 +15,9 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 /// </summary>
 [ApiController]
 [Authorize]
-[Authorize(Policy = "RequireAdminRole")]
 [Route("api/[controller]")]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinCategoryController : ControllerBase
 {
     private readonly IBulletinCategoryService _bulletinCategoryService;
@@ -109,6 +109,7 @@ public class BulletinCategoryController : ControllerBase
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(BulletinCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBulletinCategory(Guid id, BulletinCategoryUpdateDto category, CancellationToken cancellationToken)
     {
         var updetedCategory = await _bulletinCategoryService.UpdateAsync(id, category, cancellationToken);
@@ -131,6 +132,7 @@ public class BulletinCategoryController : ControllerBase
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteBulletinCategory(Guid id, CancellationToken cancellationToken)
     {
         bool isDeleted = await _bulletinCategoryService.DeleteAsync(id, cancellationToken);
@@ -168,6 +170,8 @@ public class BulletinCategoryController : ControllerBase
     /// <returns>Формат данных для вывода одной карегории в виде древовидной струкруры от самого корня.</returns>
     [HttpGet("{id}/SingleChain")]
     [ProducesResponseType(typeof(BulletinCategoryReadAllDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> GetsingleBulletinCategory(Guid id)
     {
         var categoryDto = await _bulletinCategoryService.GetSingleAsync(id);

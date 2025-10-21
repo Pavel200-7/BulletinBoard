@@ -33,15 +33,16 @@ public class BulletinPaginationRequestDtoValidator : AbstractValidator<BulletinP
                 .WithMessage("SortOrder must be 'asc' or 'desc'");
 
         RuleFor(requestDto => requestDto.MinPrice)
-           .GreaterThan(0).WithMessage("Must be not negative number");
+           .GreaterThanOrEqualTo(0).WithMessage("Must be not negative number");
 
         RuleFor(requestDto => requestDto.MaxPrice)
-            .GreaterThan(0).WithMessage("Must be not negative number");
+            .GreaterThanOrEqualTo(0).WithMessage("Must be not negative number");
 
         // Price validation
         RuleFor(requestDto => requestDto)
-            .Must(requestDto => (!requestDto.MinPrice.HasValue && !requestDto.MaxPrice.HasValue) || requestDto.MaxPrice >= requestDto.MinPrice)
-                .WithMessage("Max price must be greater or equat to min price.");
+            .Must(requestDto => requestDto.MaxPrice >= requestDto.MinPrice)
+                .WithMessage("Max price must be greater or equat to min price.")
+                .When(requestDto => (requestDto.MinPrice.HasValue && requestDto.MaxPrice.HasValue));
         
         RuleFor(requestDto => requestDto.SearchText)
             .MaximumLength(100)

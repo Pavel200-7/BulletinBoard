@@ -88,6 +88,7 @@ public class AuthController : ControllerBase
     [HttpGet]
     [Authorize]
     [Route("send_confirmation_email")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> SendNewConfirmationEmailAsync()
     {
         var sidClaim = User.FindFirst(ClaimTypes.Sid).Value;

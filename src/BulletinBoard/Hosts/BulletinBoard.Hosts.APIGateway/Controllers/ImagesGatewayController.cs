@@ -6,6 +6,7 @@ using BulletinBoard.Contracts.Errors;
 using BulletinBoard.Contracts.Gateway.Images;
 using BulletinBoard.Contracts.Images.Image.CreateDto;
 using BulletinBoard.Contracts.User.ApplicationUserDto.CreateDto;
+using BulletinBoard.Hosts.APIGateway.Controllers.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail;
@@ -22,7 +23,7 @@ namespace BulletinBoard.Hosts.Gateway.Controllers;
 [Route("api/images")]
 [Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class ImagesGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -59,7 +60,7 @@ public class ImagesGatewayController : ControllerBase
     /// <returns>Идентификатор загруженного изображения.</returns>
     [HttpPost("while_bulletin")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UploadImageWhileBulletin(IFormFile file, [FromForm] ImagesIdRequestDto imagesIdRequest)
     {
         string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
@@ -88,7 +89,7 @@ public class ImagesGatewayController : ControllerBase
             _idHolderServise.Add(userId, imageIdInfo);
         }
 
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(responseContent));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -108,7 +109,7 @@ public class ImagesGatewayController : ControllerBase
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UploadImage(IFormFile file, Guid bulletinId, bool isMain)
     {
         var client = _httpClientFactory.CreateClient("ImageService");
@@ -121,7 +122,6 @@ public class ImagesGatewayController : ControllerBase
 
         var response = await client.PostAsync("/api/images/upload", content);
         var responseContent = await response.Content.ReadAsStringAsync();
-
 
         if (response.IsSuccessStatusCode)
         {
@@ -136,7 +136,7 @@ public class ImagesGatewayController : ControllerBase
             await CreateImageInBulletinDomain(imageId, createDto);
         }
 
-        return StatusCode((int)response.StatusCode, responseContent);
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -185,8 +185,7 @@ public class ImagesGatewayController : ControllerBase
             return File(content, contentType, fileName);
         }
 
-        var errorContent = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(errorContent));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -207,8 +206,7 @@ public class ImagesGatewayController : ControllerBase
     {
         var client = _httpClientFactory.CreateClient("ImageService");
         var response = await client.GetAsync($"/api/images/{id}/metadata");
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -235,8 +233,7 @@ public class ImagesGatewayController : ControllerBase
             await DeleteImageInImageDomain(id);
         }
 
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 
     /// <summary>
@@ -256,17 +253,16 @@ public class ImagesGatewayController : ControllerBase
     /// Пример запроса:
     ///
     ///     Delete /api/images/while_bulletin
-    ///     FormData: file
-    ///     IsMain: true
-    ///     clientImageId: "0199d7dc-d68a-7b2d-9d0f-d7285388f189"
-    ///
+    ///     {
+    ///         clientId: "0199d7dc-d68a-7b2d-9d0f-d7285388f189"
+    ///     }
     /// </remarks>
     /// <param name="clientId">Клиентский я id изображения.</param>
     /// <returns>Результат операции.</returns>
     [HttpDelete("while_bulletin")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteImageWhileBulletin(string clientId)
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeleteImageWhileBulletin([FromBody] string clientId)
     {
         string userIdSring = User.FindFirst(ClaimTypes.Sid).Value;
         Guid userId = Guid.Parse(userIdSring);
@@ -284,7 +280,6 @@ public class ImagesGatewayController : ControllerBase
             _idHolderServise.Delete(userId, clientId);
         }
 
-        var content = await response.Content.ReadAsStringAsync();
-        return StatusCode((int)response.StatusCode, JsonSerializer.Deserialize<JsonElement>(content));
+        return await response.ToActionResult();
     }
 }

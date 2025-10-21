@@ -21,7 +21,8 @@ namespace BulletinBoard.Hosts.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-[ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulletinController : ControllerBase
 {
     private readonly IBulletinMainService _bulletinMainService;
@@ -107,7 +108,7 @@ public class BulletinController : ControllerBase
     /// <returns>Коллекция данных объявления.</returns>
     [HttpPost("Bulletins")]
     [ProducesResponseType(typeof(BulletinReadPagenatedDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetBulletins(BulletinPaginationRequestDto request)
     {
         var dto = await _bulletinService.GetBulletinsAsync(request);
@@ -182,6 +183,7 @@ public class BulletinController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBulletin(Guid id, BulletinMainUpdateDto updateDto, CancellationToken cancellationToken)
     {
         var bulletinDto = await _bulletinMainService.UpdateAsync(id, updateDto, cancellationToken);
@@ -203,7 +205,7 @@ public class BulletinController : ControllerBase
     /// <returns>Результат удаления.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBulletin(Guid id, CancellationToken cancellationToken)
     {
         bool result = await _bulletinMainService.DeleteAsync(id, cancellationToken);
@@ -226,7 +228,7 @@ public class BulletinController : ControllerBase
     [HttpPatch("block/{id}")]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> BlockBulletin(Guid id, CancellationToken cancellationToken)
     {
         BulletinMainDto result = await _bulletinMainService.BlockBulletin(id, cancellationToken);
@@ -248,7 +250,7 @@ public class BulletinController : ControllerBase
     [HttpPatch("unblock/{id}")]
     [Authorize(Policy = "RequireAdminRole")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UnBlockBulletin(Guid id, CancellationToken cancellationToken)
     {
         BulletinMainDto result = await _bulletinMainService.UnBlockBulletin(id, cancellationToken);

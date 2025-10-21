@@ -54,11 +54,9 @@ public class BulletinMainService : BaseCRUDService
     {
         BulletinMainDto bulletinDto = await _repository.GetByIdAsync(id);
         if (bulletinDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
+        bool blocked = true;
+        bulletinDto = await _repository.SetBulletinBlockStatusAsync(id, blocked, cancellationToken);
 
-        BulletinMainUpdateDto updateDto = _autoMapper.Map<BulletinMainUpdateDto>(bulletinDto);
-        updateDto.Blocked = true;
-
-        bulletinDto = await _repository.UpdateAsync(id, updateDto, cancellationToken);
 
         return bulletinDto;
     }
@@ -68,11 +66,8 @@ public class BulletinMainService : BaseCRUDService
     {
         BulletinMainDto bulletinDto = await _repository.GetByIdAsync(id);
         if (bulletinDto is null) { throw new NotFoundException(GetNotFoundIdMessage(id)); }
-
-        BulletinMainUpdateDto updateDto = _autoMapper.Map<BulletinMainUpdateDto>(bulletinDto);
-        updateDto.Blocked = false;
-
-        bulletinDto = await _repository.UpdateAsync(id, updateDto, cancellationToken);
+        bool blocked = false;
+        bulletinDto = await _repository.SetBulletinBlockStatusAsync(id, blocked, cancellationToken);
 
         return bulletinDto;
     }
