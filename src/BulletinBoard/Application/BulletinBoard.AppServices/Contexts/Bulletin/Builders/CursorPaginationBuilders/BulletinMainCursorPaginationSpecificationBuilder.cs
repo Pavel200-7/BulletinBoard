@@ -23,70 +23,56 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) >= 0 || (b.Title == lastTitle && b.Id >= lastId));
+                _specification.Add(b =>
+                    b.Title.CompareTo(lastTitle) > 0 ||
+                    (b.Title == lastTitle && b.Id.CompareTo(lastId.Value) > 0)
+                );
             }
             else
             {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) <= 0 || (b.Title == lastTitle && b.Id <= lastId));
+                _specification.Add(b =>
+                    b.Title.CompareTo(lastTitle) < 0 ||
+                    (b.Title == lastTitle && b.Id.CompareTo(lastId.Value) < 0)
+                );
             }
         }
-
 
         Expression<Func<BulletinMain, object>> titleOrderByExpression = b => b.Title;
         _specification.AddOrderBy(titleOrderByExpression, ascending);
 
         Expression<Func<BulletinMain, object>> idOrderByExpression = b => b.Id;
         _specification.AddOrderBy(idOrderByExpression, ascending);
-        return this;
-    }
 
-    /// <inheritdoc/>
-    public IBulletinMainCursorPaginationSpecificationBuilder PaginateByDate(Guid? lastId, string? lastTitle, bool ascending)
-    {
-
-        if (lastId.HasValue && !string.IsNullOrEmpty(lastTitle))
-        {
-            if (ascending)
-            {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) >= 0 || (b.Title == lastTitle && b.Id >= lastId));
-            }
-            else
-            {
-                _specification.Add(b => b.Title.CompareTo(lastTitle) <= 0 || (b.Title == lastTitle && b.Id <= lastId));
-            }
-        }
-
-
-        Expression<Func<BulletinMain, object>> titleOrderByExpression = b => b.Title;
-        _specification.AddOrderBy(titleOrderByExpression, ascending);
-
-        Expression<Func<BulletinMain, object>> idOrderByExpression = b => b.Id;
-        _specification.AddOrderBy(idOrderByExpression, ascending);
         return this;
     }
 
     /// <inheritdoc/>
     public IBulletinMainCursorPaginationSpecificationBuilder PaginateByDate(Guid? lastId, DateTime? lastDate, bool ascending)
     {
-
         if (lastId.HasValue && lastDate.HasValue)
         {
             if (ascending)
             {
-                _specification.Add(b => b.CreatedAt >= lastDate || (b.CreatedAt == lastDate && b.Id >= lastId));
+                _specification.Add(b =>
+                    b.CreatedAt > lastDate ||
+                    (b.CreatedAt == lastDate && b.Id.CompareTo(lastId.Value) > 0)
+                );
             }
             else
             {
-                _specification.Add(b => b.CreatedAt <= lastDate || (b.CreatedAt == lastDate && b.Id <= lastId));
+                _specification.Add(b =>
+                    b.CreatedAt < lastDate ||
+                    (b.CreatedAt == lastDate && b.Id.CompareTo(lastId.Value) < 0)
+                );
             }
         }
-
 
         Expression<Func<BulletinMain, object>> dateOrderByExpression = b => b.CreatedAt;
         _specification.AddOrderBy(dateOrderByExpression, ascending);
 
         Expression<Func<BulletinMain, object>> idOrderByExpression = b => b.Id;
         _specification.AddOrderBy(idOrderByExpression, ascending);
+
         return this;
     }
 
@@ -98,20 +84,26 @@ public class BulletinMainCursorPaginationSpecificationBuilder : CursorPagination
         {
             if (ascending)
             {
-                _specification.Add(b => b.Price >= lastPrice || (b.Price == lastPrice && b.Id >= lastId));
+                _specification.Add(b =>
+                    b.Price > lastPrice ||
+                    (b.Price == lastPrice && b.Id.CompareTo(lastId.Value) > 0)
+                );
             }
             else
             {
-                _specification.Add(b => b.Price <= lastPrice || (b.Price == lastPrice && b.Id <= lastId));
+                _specification.Add(b =>
+                    b.Price < lastPrice ||
+                    (b.Price == lastPrice && b.Id.CompareTo(lastId.Value) < 0)
+                );
             }
         }
-
 
         Expression<Func<BulletinMain, object>> priceOrderByExpression = b => b.Price;
         _specification.AddOrderBy(priceOrderByExpression, ascending);
 
         Expression<Func<BulletinMain, object>> idOrderByExpression = b => b.Id;
         _specification.AddOrderBy(idOrderByExpression, ascending);
+
         return this;
     }
 }
