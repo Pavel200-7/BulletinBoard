@@ -1,6 +1,8 @@
 ﻿using BulletinBoard.AppServices.Contexts.Apigateway.Services.IServices;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.CreateDto;
 using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.FilterDto;
+using BulletinBoard.Contracts.Bulletin.Aggregates.Bulletin.ReadDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinMain.UpdateDto;
 using BulletinBoard.Contracts.Errors;
@@ -25,16 +27,19 @@ public class BulletinGatewayController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IInmenoryImagesIdHolderServise _idHolderServise;
+    private readonly ILogger<BulletinGatewayController> _logger;
 
     /// <inheritdoc/>
     public BulletinGatewayController
         (
         IHttpClientFactory httpClientFactory,
-        IInmenoryImagesIdHolderServise idHolderServise
+        IInmenoryImagesIdHolderServise idHolderServise,
+        ILogger<BulletinGatewayController> logger
         )
     {
         _httpClientFactory = httpClientFactory;
         _idHolderServise = idHolderServise;
+        _logger = logger;
     }
 
     /// <summary>
@@ -49,7 +54,7 @@ public class BulletinGatewayController : ControllerBase
     /// <param name="id">Идентификатор объявления.</param>
     /// <returns>Данные объявления.</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BulletinDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBulletin(Guid id)
     {
@@ -70,7 +75,7 @@ public class BulletinGatewayController : ControllerBase
     /// <param name="id">Идентификатор объявления.</param>
     /// <returns>Данные объявления.</returns>
     [HttpGet("{id}/single")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BulletinReadSingleDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBulletinSingle(Guid id)
     {
@@ -237,10 +242,67 @@ public class BulletinGatewayController : ControllerBase
     public async Task<IActionResult> DeleteBulletin(Guid id)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
-        var response = await client.DeleteAsync($"/api/Bulletin/{id}");
-        return await response.ToActionResult();
 
-        // Todo: надо бы как-то изображения до кучи удалять.
+        var bulletinDataResponse = await client.GetAsync($"/api/Bulletin/{id}/Single");
+        if (!bulletinDataResponse.IsSuccessStatusCode)
+        {
+            return await bulletinDataResponse.ToActionResult();
+        }
+
+        var response = await client.DeleteAsync($"/api/Bulletin/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            string jsonString = await bulletinDataResponse.Content.ReadAsStringAsync();
+            _logger.LogInformation($"На десериализацию переданы json строка {jsonString}");
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+            var bulletinSingleDto = JsonSerializer.Deserialize<BulletinReadSingleDto>(jsonString, options);
+            _logger.LogInformation($"На удаление изображений переданы id объявления с данными {JsonSerializer.Serialize(bulletinSingleDto)}");
+            await DeleteImagesWhileDeletingBulletin(bulletinSingleDto);
+        }
+
+        return await response.ToActionResult();
+    }
+
+
+    /// <summary>
+    /// Удалить изображения во время удаления объявления.
+    /// </summary>
+    /// <param name="bulletinDto">сущность с id связанных изображений.</param>
+    /// <returns></returns>
+    private async Task DeleteImagesWhileDeletingBulletin(BulletinReadSingleDto bulletinDto)
+    {
+        var client = _httpClientFactory.CreateClient("ImageService");
+        var semaphore = new SemaphoreSlim(5); 
+
+        var deleteTasks = bulletinDto.Images.Select(async image =>
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                var response = await client.DeleteAsync($"/api/images/{image.Id}");
+                
+  
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }).ToList();
+
+        await Task.WhenAll(deleteTasks);
     }
 
     /// <summary>

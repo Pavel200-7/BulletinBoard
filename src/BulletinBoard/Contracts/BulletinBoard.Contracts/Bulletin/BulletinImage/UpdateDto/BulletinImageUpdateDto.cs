@@ -5,5 +5,8 @@
 /// </summary>
 public class BulletinImageUpdateDto
 {
-    // Требует доработки
+    /// <summary>
+    /// Является ли изображение титульным 
+    /// </summary>
+    public bool IsMain { get; set; }
 }

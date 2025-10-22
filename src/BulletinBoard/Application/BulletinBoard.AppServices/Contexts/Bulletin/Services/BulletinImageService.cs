@@ -9,6 +9,8 @@ using BulletinBoard.Contracts.Bulletin.BulletinImage;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.CreateDto;
 using BulletinBoard.Contracts.Bulletin.BulletinImage.UpdateDto;
 using BulletinBoard.Contracts.Errors.Exeptions;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 
 namespace BulletinBoard.AppServices.Contexts.Bulletin.Services;
@@ -29,6 +31,7 @@ public class BulletinImageService : BaseCRUDService
 
     private IBulletinImageSpecificationBuilder _specificationBuilder;
     private IUnitOfWorkBulletin _unitOfWork;
+    private ILogger<BulletinImageService> _logger;
 
     /// <inheritdoc/>
     public BulletinImageService
@@ -37,11 +40,13 @@ public class BulletinImageService : BaseCRUDService
         IBulletinImageDtoValidatorFacade validator,
         IMapper autoMapper,
         IBulletinImageSpecificationBuilder specificationBuilder,
-        IUnitOfWorkBulletin unitOfWork
+        IUnitOfWorkBulletin unitOfWork,
+        ILogger<BulletinImageService> logger
         ) : base(repository, validator, autoMapper)
     {
         _specificationBuilder = specificationBuilder;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -54,6 +59,7 @@ public class BulletinImageService : BaseCRUDService
     /// <inheritdoc/>
     public new async Task<BulletinImageDto> CreateAsync(BulletinImageCreateDto createDto, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Для создания изображения была передана дто: {JsonSerializer.Serialize(createDto)}");
         await _validator.ValidateThrowValidationExeptionAsync(createDto);
 
         await _unitOfWork.BeginTransactionAsync();
@@ -97,6 +103,8 @@ public class BulletinImageService : BaseCRUDService
 
             await _unitOfWork.CommitTransactionAsync();
 
+            _logger.LogInformation($"Изображение с id {id} теперь считается основным.");
+
             return outputDto;
         }
         catch (Exception)
@@ -115,7 +123,10 @@ public class BulletinImageService : BaseCRUDService
         mainImage.IsMain = false;
         Guid mainImageId = mainImage.Id;
         BulletinImageUpdateDto mainImageUpdateDto = _autoMapper.Map<BulletinImageUpdateDto>(mainImage);
+
         BulletinImageDto? imageDto = await _repository.UpdateAsync(mainImageId, mainImageUpdateDto, cancellationToken);
+
+        _logger.LogInformation($"Изображение с id {mainImageId} перестало быть титульным.");
         
         return imageDto;
     }
@@ -131,6 +142,8 @@ public class BulletinImageService : BaseCRUDService
         IReadOnlyCollection<BulletinImageDto> mainImageCollection = await _repository.FindAsync(specification);
         if (mainImageCollection.Count == 0) { return null; }
         BulletinImageDto mainImage = mainImageCollection.First();
+
+        _logger.LogInformation($"Было найдено титульное изображение {JsonSerializer.Serialize(mainImage)}");
 
         return mainImage;
     }

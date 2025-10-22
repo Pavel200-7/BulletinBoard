@@ -100,6 +100,8 @@ public class ImagesGatewayController : ControllerBase
     ///
     ///     POST /api/images/upload
     ///     FormData: file
+    ///     bulletinId: 019a0a68-c03a-726d-9654-ddbba2a9eb4b
+    ///     isMain: true
     ///
     /// </remarks>
     /// <param name="file">Файл изображения.</param>
@@ -110,9 +112,11 @@ public class ImagesGatewayController : ControllerBase
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationErrorDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadImage(IFormFile file, Guid bulletinId, bool isMain)
+    public async Task<IActionResult> UploadImage(IFormFile file, [FromForm] Guid bulletinId, [FromForm] bool isMain)
     {
         var client = _httpClientFactory.CreateClient("ImageService");
+
+
 
         using var content = new MultipartFormDataContent();
         using var fileStream = file.OpenReadStream();
@@ -131,9 +135,16 @@ public class ImagesGatewayController : ControllerBase
                 IsMain = isMain
             };
 
+            _logger.LogInformation($"Для создания изображения передается id объявления {bulletinId}");
 
             Guid imageId = Guid.Parse(responseContent.Trim('"'));
-            await CreateImageInBulletinDomain(imageId, createDto);
+            var result = await CreateImageInBulletinDomain(imageId, createDto);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                await DeleteImageInImageDomain(imageId);
+                return await result.ToActionResult();
+            }
         }
 
         return await response.ToActionResult();
@@ -143,7 +154,7 @@ public class ImagesGatewayController : ControllerBase
     /// Создать изображение в домене объявлений.
     /// </summary>
     /// <returns></returns>
-    private async Task CreateImageInBulletinDomain(Guid imageId, ImageGatewayCreateDto gatewayCreateDto)
+    private async Task<HttpResponseMessage> CreateImageInBulletinDomain(Guid imageId, ImageGatewayCreateDto gatewayCreateDto)
     {
         var client = _httpClientFactory.CreateClient("BulletinService");
 
@@ -153,7 +164,9 @@ public class ImagesGatewayController : ControllerBase
             BulletinId = gatewayCreateDto.BulletinId,
             IsMain = gatewayCreateDto.IsMain
         };
+
         var response = await client.PostAsJsonAsync($"/api/BulletinImage", createDto);
+        return response;
     }
 
 

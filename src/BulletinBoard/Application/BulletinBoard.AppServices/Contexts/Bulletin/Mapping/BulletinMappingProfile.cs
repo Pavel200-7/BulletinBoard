@@ -89,6 +89,7 @@ public class BulletinMappingProfile : Profile
         // BulletinImage
         CreateMap<BulletinImageCreateDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageDto, BulletinImage>().ReverseMap();
+        CreateMap<BulletinImageDto, BulletinImageUpdateDto>().ReverseMap();
         CreateMap<BulletinImageUpdateDto, BulletinImage>().ReverseMap();
         CreateMap<BulletinImageCreateDto, BulletinImageCreateDtoWhileBulletinCreating>().ReverseMap();
         CreateMap<BulletinImageCreateDtoWhileBulletinCreating, BulletinImage>().ReverseMap();

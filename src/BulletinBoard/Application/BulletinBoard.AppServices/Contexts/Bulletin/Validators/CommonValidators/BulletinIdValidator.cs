@@ -32,8 +32,6 @@ public class BulletinIdValidator<T> : AsyncPropertyValidator<T, Guid>
     /// </summary>
     public override async Task<bool> IsValidAsync(ValidationContext<T> context, Guid bulletinId, CancellationToken cancellation)
     {
-
-
         var bulletin = await _bulletibRepository.GetByIdAsync(bulletinId);
 
         if (bulletin is null)
